@@ -21,11 +21,14 @@ class HomeViewModel
     val text: LiveData<String> = _text
 
 
-
-    private val _item = TextItem().apply {
-
-    }
+    private val _item = TextItem()
     val item: TextItem = _item
 
+
+
+    fun execute() = when(item.decrypt){
+        false -> item.encrypt()
+        true -> item.decrypt()
+    }
 
 }

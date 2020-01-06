@@ -29,6 +29,7 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Password"
+        android:text="@={item.password}"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +57,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:editable="false"
         android:ems="10"
         android:hint="Output"
+
         android:inputType="textPersonName"
+        android:singleLine="false"
+        android:text="@={item.output}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etInput" />
@@ -69,7 +74,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="ENCRYPT"
+        android:text="@{item.decrypt == false ? @string/encrypt : @string/decrypt }"
+        android:onClick="@{() -> viewModel.execute()}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etOutput" />
 
@@ -78,17 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:checked="@={item.decrypt}"
         app:layout_constraintBottom_toBottomOf="@+id/bExecute"
         app:layout_constraintEnd_toStartOf="@+id/bExecute"
         app:layout_constraintTop_toTopOf="@+id/bExecute" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{item.input}"
-        app:layout_constraintEnd_toEndOf="@+id/bExecute"
-        app:layout_constraintTop_toBottomOf="@+id/bExecute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
