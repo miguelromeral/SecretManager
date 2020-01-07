@@ -15,6 +15,9 @@
             type="es.miguelromeral.secretmanager.ui.models.TextItem" />
     </data>
 
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -50,6 +53,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
+    <Button
+        android:id="@+id/bExecute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="@{() -> viewModel.execute()}"
+        android:text="@{item.decrypt == false ? @string/encrypt : @string/decrypt }"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etInput" />
+
     <EditText
         android:id="@+id/etOutput"
         android:layout_width="0dp"
@@ -58,26 +72,26 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:enabled="false"
 
-        android:inputType="textCapSentences|textMultiLine"
+        android:enabled="false"
         android:hint="Output"
-        tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad"
+        android:inputType="textCapSentences|textMultiLine"
         android:overScrollMode="ifContentScrolls"
         android:singleLine="false"
         android:text="@={item.output}"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etInput" />
+        app:layout_constraintTop_toBottomOf="@+id/bExecute"
+        tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad" />
 
     <Button
-        android:id="@+id/bExecute"
+        android:id="@+id/bShareOutput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@{item.decrypt == false ? @string/encrypt : @string/decrypt }"
-        android:onClick="@{() -> viewModel.execute()}"
+        android:drawableStart="@android:drawable/ic_menu_share"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etOutput" />
 
@@ -89,18 +103,24 @@
         android:checked="@={item.decrypt}"
         app:layout_constraintBottom_toBottomOf="@+id/bExecute"
         app:layout_constraintEnd_toStartOf="@+id/bExecute"
-        app:layout_constraintTop_toTopOf="@+id/bExecute" />
+        app:layout_constraintTop_toTopOf="@+id/bExecute"
+        app:layout_constraintVertical_bias="0.333" />
 
     <Button
-        android:id="@+id/bShareOutput"
+        android:id="@+id/bExchange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:drawableStart="@android:drawable/ic_menu_share"
+        android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/arrow_up"
+        app:layout_constraintBottom_toTopOf="@+id/etOutput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOutput" />
+        app:layout_constraintTop_toBottomOf="@+id/etInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
 
 </layout>

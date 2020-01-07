@@ -49,10 +49,29 @@ class HomeFragment : Fragment() {
         binding.item = homeViewModel.item
 
         binding.bShareOutput.setOnClickListener{view ->
-            if(!homeViewModel.item.output.isEmpty()) {
+            if(homeViewModel.item.output.isNotEmpty()) {
                 shareContentText(view.context, homeViewModel.item.output)
+            }else{
+                Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
             }
         }
+
+        binding.bExchange.setOnClickListener{
+            homeViewModel.item.let{
+                if(it.output.isNotEmpty()) {
+                    it.input = it.output
+                    it.output = ""
+                }else{
+                    Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+
+        // DEBUGGING:
+        homeViewModel.item.input = "Debugging! \uD83D\uDE01"
+        //////////////
+
 
         // Returning the binding root
         return binding.root
