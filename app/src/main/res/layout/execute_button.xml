@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!--<import type="kotlin.jvm.functions.Function1"/>
+        <import type="kotlin.Unit"/>
+
+        <variable
+            name="action"
+            type="Function1&lt;Unit>" />-->
+        <variable
+            name="enableButton"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="checker"
+            type="java.lang.Boolean" />
+    </data>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <Button
+        android:id="@+id/bExecute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:enabled="@{enableButton}"
+        android:text="@{checker == false ? @string/encrypt : @string/decrypt }"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ENCRYPT" />
+
+    <Switch
+        android:id="@+id/sOperation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:checked="@={checker}"
+        app:layout_constraintBottom_toBottomOf="@+id/bExecute"
+        app:layout_constraintEnd_toStartOf="@+id/bExecute"
+        app:layout_constraintTop_toTopOf="@+id/bExecute"
+        app:layout_constraintVertical_bias="0.333" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

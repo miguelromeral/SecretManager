@@ -1,7 +1,6 @@
-package es.miguelromeral.secretmanager
+package es.miguelromeral.secretmanager.ui.activities
 
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.MyCipher
 import es.miguelromeral.secretmanager.classes.encode
 
@@ -24,13 +24,15 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home,
+                R.id.navigation_dashboard,
+                R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
+/*
         val c = MyCipher()
         val plain = "My plain message"
         val pwd = "pwdsadsadasdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
@@ -40,6 +42,6 @@ class MainActivity : AppCompatActivity() {
         val encrypted = c.encrypt(plain, pwd)
         Log.i("Test", "Encrypted: ${encode(encrypted)}")
         val restored = c.decrypt(encrypted, pwd)
-        Log.i("Test", "Restored: $restored")
+        Log.i("Test", "Restored: $restored")*/
     }
 }

@@ -22,11 +22,21 @@ class TextItem : BaseObservable() {
         }
         get() = field
 
+
+    @Bindable
+    var ready: Boolean = false
+        set(value){
+            field = value
+            notifyPropertyChanged(BR.ready)
+        }
+        get() = field
+
     @Bindable
     var password: String = String()
         set(value) {
             field = value
             notifyPropertyChanged(BR.password)
+            updateReady()
         }
         get() = field
 
@@ -35,8 +45,13 @@ class TextItem : BaseObservable() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.input)
+            updateReady()
         }
         get() = field
+
+    private fun updateReady(){
+        ready = (input.isNotEmpty() && password.isNotEmpty())
+    }
 
     @Bindable
     var output: String = String()
@@ -63,7 +78,7 @@ class TextItem : BaseObservable() {
         try{
             val decoded = decode(input)
             Log.i(TAG, "Decrypting $decoded with password $password")
-            output = myCipher.decrypt(decoded, password)
+            output = String(myCipher.decrypt(decoded, password))
             Log.i(TAG, "Resulting $output")
             Log.i(TAG, "And its encryption is ${myCipher.encrypt(output, password)}")
             return true

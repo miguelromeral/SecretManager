@@ -51,7 +51,7 @@ class MyCipher {
     }
 
     @Throws(Exception::class)
-    fun decrypt(encryptedIvTextBytes: ByteArray, key: String): String {
+    fun decrypt(encryptedIvTextBytes: ByteArray, key: String): ByteArray {
         val ivSize = 16
         val keySize = 16
 
@@ -77,6 +77,6 @@ class MyCipher {
         cipherDecrypt.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec)
         val decrypted = cipherDecrypt.doFinal(encryptedBytes)
 
-        return String(decrypted)
+        return decrypted
     }
 }

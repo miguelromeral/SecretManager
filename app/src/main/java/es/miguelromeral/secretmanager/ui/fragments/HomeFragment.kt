@@ -1,33 +1,20 @@
-package es.miguelromeral.secretmanager.ui.home
+package es.miguelromeral.secretmanager.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
-import androidx.core.view.GestureDetectorCompat
-import androidx.core.view.MotionEventCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.databinding.FragmentHomeBinding
-import es.miguelromeral.secretmanager.ui.models.TextItem
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
-import android.view.MotionEvent
-import android.app.Activity
-import android.content.Context
 import android.widget.Toast
-import es.miguelromeral.secretmanager.MainActivity
 import es.miguelromeral.secretmanager.ui.shareContentText
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -41,23 +28,23 @@ class HomeFragment : Fragment() {
         // Get the View Model Factory
         val vmf = HomeFactory(application)
         // Initialize View Model
-        homeViewModel = ViewModelProviders.of(this, vmf).get(HomeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, vmf).get(HomeViewModel::class.java)
         // Initialize Binding
         binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_home, container, false)
         // Passing the parameters to binding variables
-        binding.viewModel = homeViewModel
-        binding.item = homeViewModel.item
+        binding.viewModel = viewModel
+        binding.item = viewModel.item
 
         binding.bShareOutput.setOnClickListener{view ->
-            if(homeViewModel.item.output.isNotEmpty()) {
-                shareContentText(view.context, homeViewModel.item.output)
+            if(viewModel.item.output.isNotEmpty()) {
+                shareContentText(view.context, viewModel.item.output)
             }else{
                 Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
             }
         }
 
         binding.bExchange.setOnClickListener{
-            homeViewModel.item.let{
+            viewModel.item.let{
                 if(it.output.isNotEmpty()) {
                     it.input = it.output
                     it.output = ""
@@ -68,8 +55,13 @@ class HomeFragment : Fragment() {
         }
 
 
+        binding.executeButton.bExecute.setOnClickListener{
+            viewModel.execute()
+        }
+
         // DEBUGGING:
-        homeViewModel.item.input = "Debugging! \uD83D\uDE01"
+        viewModel.item.password = "password"
+        viewModel.item.input = "Debugging! \uD83D\uDE01"
         //////////////
 
 
