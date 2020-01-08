@@ -11,9 +11,9 @@ interface SecretDatabaseDao {
     @Insert
     fun insert(secret: Secret)
 
-    @Query("SELECT * FROM secret WHERE alias LIKE :criteria")
+   /* @Query("SELECT * FROM secret WHERE alias LIKE :criteria")
     fun search(criteria: String)
-
+*/
     @Query("DELETE FROM secret WHERE id = :key")
     fun deleteFromKey(key: Long)
 

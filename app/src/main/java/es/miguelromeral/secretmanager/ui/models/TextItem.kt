@@ -62,15 +62,35 @@ class TextItem : BaseObservable() {
         get() = field
 
 
+
+    @Bindable
+    var store: Boolean = false
+        set(value){
+            field = value
+            notifyPropertyChanged(BR.store)
+        }
+        get() = field
+
+    @Bindable
+    var alias: String = String()
+        set(value){
+            field = value
+            notifyPropertyChanged(BR.alias)
+        }
+        get() = field
+
+
+
     fun encrypt(): Boolean {
         try{
             Log.i(TAG, "Encrypting $input with password $password")
             output = encode(myCipher.encrypt(input, password))
             Log.i(TAG, "Resulting $output")
-            Log.i(TAG, "And its decryption is ${myCipher.decrypt(decode(input), password)}")
+            //Log.i(TAG, "And its decryption is ${myCipher.decrypt(decode(input), password)}")
             return true
         }catch (e: Exception){
             Log.i(TAG, "Something wrong happened during encryption: ${e.message}")
+            e.printStackTrace()
             return false
         }
     }

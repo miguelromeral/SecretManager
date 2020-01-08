@@ -13,6 +13,7 @@ import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
 import es.miguelromeral.secretmanager.R
+import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.ui.shareContentText
 import es.miguelromeral.secretmanager.ui.showHidePassword
 import kotlinx.android.synthetic.main.password_field.view.*
@@ -31,8 +32,10 @@ class HomeFragment : Fragment() {
 
         // Get the current application
         val application = requireNotNull(this.activity).application
+        // Get the database instance
+        val dataSource = SecretDatabase.getInstance(application).secretDatabaseDao
         // Get the View Model Factory
-        val vmf = HomeFactory(application)
+        val vmf = HomeFactory(dataSource, application)
         // Initialize View Model
         viewModel = ViewModelProviders.of(this, vmf).get(HomeViewModel::class.java)
         // Initialize Binding
@@ -61,7 +64,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.executeButton.bExecute.setOnClickListener{
-            viewModel.execute()
+            viewModel.execute(it.context)
         }
 
         // Functionality to Show / Hide Password in this fragment
@@ -72,6 +75,7 @@ class HomeFragment : Fragment() {
         // DEBUGGING:
         viewModel.item.password = "password"
         viewModel.item.input = "Debugging! \uD83D\uDE01"
+        viewModel.item.alias = "alias"
         //////////////
 
 

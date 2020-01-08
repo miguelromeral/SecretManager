@@ -22,7 +22,7 @@ abstract class SecretDatabase : RoomDatabase() {
                         context.applicationContext,
                         SecretDatabase::class.java,
                         "secret_database")
-                        //.fallbackToDestructiveMigration()
+                        .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                 }
