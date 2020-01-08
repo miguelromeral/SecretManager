@@ -17,11 +17,8 @@ class SecretsViewModel (
     application: Application
 ) : AndroidViewModel(application) {
 
+    val secrets = database.getAllSecrets()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
-    }
-    val text: LiveData<String> = _text
 
 
 }

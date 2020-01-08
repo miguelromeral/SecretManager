@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.databinding.FragmentSecretsBinding
+import es.miguelromeral.secretmanager.ui.adapters.SecretAdapter
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
@@ -21,6 +22,7 @@ class SecretsFragment : Fragment() {
 
     private lateinit var viewModel: SecretsViewModel
     private lateinit var binding: FragmentSecretsBinding
+    private var adapter = SecretAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,13 @@ class SecretsFragment : Fragment() {
 
         binding.setLifecycleOwner(this)
 
+        binding.secretsList.adapter = adapter
+
+        viewModel.secrets.observe(this, Observer {
+            it?.let{
+                adapter.submitList(it)
+            }
+        })
 
         return binding.root
     }

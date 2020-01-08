@@ -35,10 +35,10 @@ class HomeViewModel(
             false -> {
                 if(item.encrypt() && item.store){
                     if(item.alias.isNotEmpty()) {
-                        Toast.makeText(context, "I'd store it.", Toast.LENGTH_LONG).show()
-                        /*uiScope.launch {
-                        createNewSecret()
-                    }*/
+                        uiScope.launch {
+                            createNewSecret()
+                            Toast.makeText(context, "Stored successfully under the alias ${item.alias}", Toast.LENGTH_LONG).show()
+                        }
                     }else{
                         Toast.makeText(context, "You must provide an alias name to be stored.", Toast.LENGTH_LONG).show()
                     }
