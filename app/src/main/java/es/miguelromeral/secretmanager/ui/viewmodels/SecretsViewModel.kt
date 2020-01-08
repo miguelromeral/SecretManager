@@ -15,10 +15,7 @@ import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.ui.fragments.HomeFragment
 import es.miguelromeral.secretmanager.ui.fragments.SecretsFragmentDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id
 
 class SecretsViewModel (
@@ -28,6 +25,11 @@ class SecretsViewModel (
 
     val secrets = database.getAllSecrets()
 
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+
+
 
     fun openSecret(context: Context, view: View, item: Secret) {
         //Toast.makeText(context, "Hola! ${item.id}", Toast.LENGTH_LONG).show()
@@ -36,4 +38,35 @@ class SecretsViewModel (
             SecretsFragmentDirections.actionNavigationNotificationsToNavigationHome(item.content))
     }
 
+
+
+    fun removeSecret(item: Secret) {
+        uiScope.launch {
+            removeSecretIO(item.id)
+        }
+    }
+
+
+    fun clearDatabase() {
+        uiScope.launch {
+            clearDatabaseIO()
+        }
+    }
+
+    private suspend fun removeSecretIO(id: Long){
+        return withContext(Dispatchers.IO){
+            database.deleteFromKey(id)
+        }
+    }
+
+    private suspend fun clearDatabaseIO(){
+        return withContext(Dispatchers.IO){
+            database.clearStarts()
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }

@@ -10,13 +10,16 @@ import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.databinding.ItemSecretBinding
 import es.miguelromeral.secretmanager.ui.listeners.DecryptSecretListener
+import es.miguelromeral.secretmanager.ui.listeners.RemoveSecretListener
 
 
-class SecretAdapter(val decryptListener: DecryptSecretListener) : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCallback())
+class SecretAdapter(
+    val decryptListener: DecryptSecretListener,
+    val removeListener: RemoveSecretListener) : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCallback())
 {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, decryptListener)
+        holder.bind(item, decryptListener, removeListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,10 +30,11 @@ class SecretAdapter(val decryptListener: DecryptSecretListener) : ListAdapter<Se
 
     class ViewHolder private constructor(val binding: ItemSecretBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Secret, decryptListener: DecryptSecretListener){
+        fun bind(item: Secret, decryptListener: DecryptSecretListener, removeListener: RemoveSecretListener){
             val resources = itemView.context.resources
             binding.item = item
             binding.decryptListener = decryptListener
+            binding.removeListener = removeListener
             binding.executePendingBindings()
         }
 

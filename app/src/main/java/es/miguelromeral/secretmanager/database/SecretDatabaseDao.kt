@@ -19,4 +19,7 @@ interface SecretDatabaseDao {
 
     @Query("SELECT * FROM secret ORDER BY id DESC")
     fun getAllSecrets(): LiveData<List<Secret>>
+
+    @Query("DELETE FROM secret")
+    fun clearStarts()
 }

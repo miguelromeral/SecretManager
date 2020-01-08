@@ -35,6 +35,8 @@ fun showHidePassword(context: Context, cb: CheckBox, etPassword: EditText){
 }
 
 
+
+
 // https://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc
 fun readableFileSize(size: Long): String {
     if (size <= 0) return "0"

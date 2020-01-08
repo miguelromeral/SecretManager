@@ -5,9 +5,21 @@
     <string name="title_secrets">Secrets</string>
 
 
+    <string name="clear_secrets_title">Clear all secrets</string>
+    <string name="clear_secrets_body">You\'re about to perform a full clear of the list of secrets stored on this device.\nTake into account this action can\'t be restored.\nAre you sure you want to clear all records?</string>
+    <string name="clear_secrets_yes">Yes, delete</string>
+    <string name="clear_secrets_no">Cancel</string>
+
+    <string name="clear_secret_title">Remove secret</string>
+    <string name="clear_secret_body">This action can\'t be restored.\nAre you sure you want to remove the secret with alias \"%1$s\"</string>
+    <string name="clear_secret_yes">Yes, delete</string>
+    <string name="clear_secret_no">Cancel</string>
+
+
     <string name="decrypt">DECRYPT</string>
     <string name="encrypt">ENCRYPT</string>
     <string name="open">OPEN</string>
+    <string name="remove">REMOVE</string>
 
 
     <string name="show_pwd">Show Password</string>
