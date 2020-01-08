@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="es.miguelromeral.secretmanager.ui.fragments.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="input"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -21,5 +25,11 @@
         android:id="@+id/navigation_notifications"
         android:name="es.miguelromeral.secretmanager.ui.fragments.SecretsFragment"
         android:label="@string/title_secrets"
-        tools:layout="@layout/fragment_secrets" />
+        tools:layout="@layout/fragment_secrets" >
+        <action
+            android:id="@+id/action_navigation_notifications_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@+id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

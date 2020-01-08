@@ -13,6 +13,7 @@ import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.databinding.FragmentSecretsBinding
 import es.miguelromeral.secretmanager.ui.adapters.SecretAdapter
+import es.miguelromeral.secretmanager.ui.listeners.DecryptSecretListener
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
@@ -22,7 +23,7 @@ class SecretsFragment : Fragment() {
 
     private lateinit var viewModel: SecretsViewModel
     private lateinit var binding: FragmentSecretsBinding
-    private var adapter = SecretAdapter()
+    private lateinit var adapter: SecretAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,12 +40,15 @@ class SecretsFragment : Fragment() {
         // Initialize View Model
         viewModel = ViewModelProviders.of(this, vmf).get(SecretsViewModel::class.java)
         // Initialize Binding
-        binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_secrets, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_secrets, container, false)
         // Passing the parameters to binding variables
         binding.viewModel = viewModel
 
         binding.setLifecycleOwner(this)
 
+        adapter = SecretAdapter(DecryptSecretListener { item ->
+            viewModel.openSecret(application.baseContext, binding.secretsList, item)
+        })
         binding.secretsList.adapter = adapter
 
         viewModel.secrets.observe(this, Observer {

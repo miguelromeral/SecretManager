@@ -1,8 +1,11 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.*
 import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
@@ -14,6 +17,8 @@ import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.SecretDatabase
+import es.miguelromeral.secretmanager.ui.activities.MainActivity
+import es.miguelromeral.secretmanager.ui.models.TextItem
 import es.miguelromeral.secretmanager.ui.shareContentText
 import es.miguelromeral.secretmanager.ui.showHidePassword
 import kotlinx.android.synthetic.main.password_field.view.*
@@ -22,6 +27,7 @@ import kotlinx.android.synthetic.main.password_field.view.*
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var item: TextItem
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -42,18 +48,19 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_home, container, false)
         // Passing the parameters to binding variables
         binding.viewModel = viewModel
-        binding.item = viewModel.item
+        item = viewModel.item
+        binding.item = item
 
         binding.bShareOutput.setOnClickListener{view ->
-            if(viewModel.item.output.isNotEmpty()) {
-                shareContentText(view.context, viewModel.item.output)
+            if(item.output.isNotEmpty()) {
+                shareContentText(view.context, item.output)
             }else{
                 Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
             }
         }
 
         binding.bExchange.setOnClickListener{
-            viewModel.item.let{
+            item.let{
                 if(it.output.isNotEmpty()) {
                     it.input = it.output
                     it.output = ""
@@ -72,14 +79,37 @@ class HomeFragment : Fragment() {
             showHidePassword(it.context, it as CheckBox, binding.passwordLayout.etPassword)
         }
 
+
+        /*
         // DEBUGGING:
         viewModel.item.password = "password"
         viewModel.item.input = "Debugging! \uD83D\uDE01"
         viewModel.item.alias = "alias"
         //////////////
+*/
+
+        arguments?.let{
+            val args = HomeFragmentArgs.fromBundle(arguments!!)
+            Log.i("ARGS", "Input: ${args.input}")
+            item.input = args.input
+            item.decrypt = true
+            item.password = String()
+        }
 
 
         // Returning the binding root
         return binding.root
+    }
+
+
+    companion object {
+
+        fun initFragment(context: Context){
+            val intent = Intent(context, MainActivity::class.java).apply{
+                putExtra("message", "Message")
+            }
+
+        }
+
     }
 }

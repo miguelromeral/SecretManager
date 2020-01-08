@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.databinding.ItemSecretBinding
+import es.miguelromeral.secretmanager.ui.listeners.DecryptSecretListener
 
 
-class SecretAdapter : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCallback())
+class SecretAdapter(val decryptListener: DecryptSecretListener) : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCallback())
 {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, decryptListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,9 +27,10 @@ class SecretAdapter : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCa
 
     class ViewHolder private constructor(val binding: ItemSecretBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Secret){
+        fun bind(item: Secret, decryptListener: DecryptSecretListener){
             val resources = itemView.context.resources
             binding.item = item
+            binding.decryptListener = decryptListener
             binding.executePendingBindings()
         }
 

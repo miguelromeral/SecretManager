@@ -7,6 +7,7 @@
 
     <string name="decrypt">DECRYPT</string>
     <string name="encrypt">ENCRYPT</string>
+    <string name="open">OPEN</string>
 
 
     <string name="show_pwd">Show Password</string>
