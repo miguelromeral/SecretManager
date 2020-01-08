@@ -8,4 +8,8 @@
     <string name="decrypt">DECRYPT</string>
     <string name="encrypt">ENCRYPT</string>
 
+
+    <string name="show_pwd">Show Password</string>
+    <string name="hide_pwd">Hide Password</string>
+
 </resources>

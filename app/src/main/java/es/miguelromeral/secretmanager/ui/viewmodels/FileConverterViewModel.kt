@@ -8,7 +8,6 @@ import android.provider.FontsContract
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import es.miguelromeral.secretmanager.classes.getPath
 import es.miguelromeral.secretmanager.classes.getRealPathFromURI
 import es.miguelromeral.secretmanager.classes.readFile
 import es.miguelromeral.secretmanager.ui.models.FileItem
@@ -57,7 +56,7 @@ class FileConverterViewModel
                 if(it.moveToFirst()){
                     val displayName: String = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                     val size = it.getString(it.getColumnIndex(OpenableColumns.SIZE))
-                    item.path = getPath(context, data) ?: ""
+                    //item.path = getPath(context, data) ?: ""
                     item.name = displayName
                     item.size = readableFileSize(size.toLong())
                 }

@@ -23,7 +23,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<!--
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
@@ -34,10 +34,20 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:text="@={item.password}"
+        android:text="@={item.password}"/>-->
+
+    <include
+        android:id="@+id/password_layout"
+        layout="@layout/password_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        bind:password="@={item.password}" />
 
     <EditText
         android:id="@+id/etInput"
@@ -52,7 +62,7 @@
         android:text="@={item.input}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
 
     <EditText
