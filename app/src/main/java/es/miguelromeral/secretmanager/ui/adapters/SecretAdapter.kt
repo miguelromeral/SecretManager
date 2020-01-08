@@ -29,6 +29,7 @@ class SecretAdapter : ListAdapter<Secret, SecretAdapter.ViewHolder>(SecretDiffCa
         fun bind(item: Secret){
             val resources = itemView.context.resources
             binding.item = item
+            binding.executePendingBindings()
         }
 
         companion object{
