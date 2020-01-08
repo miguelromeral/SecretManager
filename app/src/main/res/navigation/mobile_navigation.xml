@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="es.miguelromeral.secretmanager.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="es.miguelromeral.secretmanager.ui.fragments.SecretsFragment"
+        android:label="@string/title_secrets"
+        tools:layout="@layout/fragment_secrets" />
 </navigation>
