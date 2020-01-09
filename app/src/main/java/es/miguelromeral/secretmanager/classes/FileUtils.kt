@@ -1,18 +1,17 @@
 package es.miguelromeral.secretmanager.classes
 
+import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileInputStream
 import android.provider.MediaStore
 import android.provider.DocumentsContract
 import android.content.ContentUris
 import android.os.Environment.getExternalStorageDirectory
 import android.os.Build
 import android.os.Environment
+import java.io.*
 
 
 fun getRealPathFromURI(context: Context, contentUri: Uri): String {
@@ -51,6 +50,27 @@ fun readFile(filePath: String): ByteArray? {
         return null
     }
 }
+
+// https://developer.android.com/guide/topics/providers/document-provider#c%C3%B3mo-obtener-un-inputstream
+
+@Throws(IOException::class)
+fun readTextFromUri(uri: Uri, contentResolver: ContentResolver): ByteArray? {
+    val ist = contentResolver.openInputStream(uri)?.readBytes()
+    return ist
+    /*
+    val stringBuilder = StringBuilder()
+    contentResolver.openInputStream(uri)?.use { inputStream ->
+        BufferedReader(InputStreamReader(inputStream)).use { reader ->
+            var line: String? = reader.readLine()
+            while (line != null) {
+                stringBuilder.append(line)
+                line = reader.readLine()
+            }
+        }
+    }
+    return stringBuilder.toString()*/
+}
+
 
 /*
 

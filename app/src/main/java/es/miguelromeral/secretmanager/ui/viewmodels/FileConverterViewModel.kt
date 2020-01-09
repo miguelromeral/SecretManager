@@ -2,14 +2,18 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.provider.FontsContract
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import es.miguelromeral.secretmanager.classes.getRealPathFromURI
 import es.miguelromeral.secretmanager.classes.readFile
+import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.ui.models.FileItem
 import es.miguelromeral.secretmanager.ui.readableFileSize
 import java.io.File
@@ -27,23 +31,8 @@ class FileConverterViewModel
     private val _item = FileItem()
     val item: FileItem = _item
 
-    fun execute() {
-        if(item.path.isNotEmpty()) {
+    fun execute(context: Context, fragment: Fragment) {
 
-            try {
-                val input = FileInputStream(item.path)
-
-                //val readFile = readFile(item.path)
-
-                /*
-            when (item.decrypt) {
-                false -> item.encrypt()
-                true -> item.decrypt()
-            }*/
-            }catch (e: Exception){
-                Log.i("FC", "Error: "+e.message)
-            }
-        }
     }
 
 
@@ -56,19 +45,20 @@ class FileConverterViewModel
                 if(it.moveToFirst()){
                     val displayName: String = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                     val size = it.getString(it.getColumnIndex(OpenableColumns.SIZE))
-                    //item.path = getPath(context, data) ?: ""
+                    item.uri = data
+                    item.path = data.path ?: ""
                     item.name = displayName
                     item.size = readableFileSize(size.toLong())
                 }
             }
 
+
+
         }else{
+            item.uri = null
             item.name = "Unknown"
             item.path = String()
 
         }
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.ui.models
 
+import android.net.Uri
 import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
@@ -13,6 +14,14 @@ private const val TAG = "FileItem"
 class FileItem : BaseObservable() {
 
     val myCipher = MyCipher()
+
+
+    var uri: Uri? = null
+        set(value){
+            field = value
+        }
+        get() = field
+
 
     @Bindable
     var name: String = String()

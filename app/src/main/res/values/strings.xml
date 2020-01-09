@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SecretManager</string>
+    <string name="app_name">Secret Manager</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Files</string>
     <string name="title_secrets">Secrets</string>

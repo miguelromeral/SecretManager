@@ -2,6 +2,7 @@ package es.miguelromeral.secretmanager.ui.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -16,6 +17,7 @@ import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
 import es.miguelromeral.secretmanager.R
+import es.miguelromeral.secretmanager.classes.IsBase64Encoded
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.models.TextItem
@@ -96,6 +98,13 @@ class HomeFragment : Fragment() {
             item.password = String()
         }
 
+
+        val shared = activity?.intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+        shared?.let {
+            val input = it.toString()
+            item.decrypt = IsBase64Encoded(input)
+            item.input = input
+        }
 
         // Returning the binding root
         return binding.root

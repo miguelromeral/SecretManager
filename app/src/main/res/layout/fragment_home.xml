@@ -23,18 +23,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:text="@={item.password}"/>-->
 
     <include
         android:id="@+id/password_layout"
@@ -49,20 +37,41 @@
         app:layout_constraintTop_toTopOf="parent"
         bind:password="@={item.password}" />
 
-    <EditText
-        android:id="@+id/etInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:id="@+id/scroll_input"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="Input"
-        android:inputType="textCapSentences|textMultiLine"
-        android:text="@={item.input}"
+        app:layout_constraintHeight_max="200sp"
+        app:layout_constraintHeight_min="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/password_layout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <EditText
+                android:id="@+id/etInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Input"
+                tools:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14"
+                android:inputType="textCapSentences|textMultiLine"
+                android:text="@={item.input}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 
     <EditText
@@ -104,7 +113,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etInput"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_input"
         bind:checker="@={item.decrypt}"
         bind:enableButton="@{item.ready}"/>
 
@@ -118,7 +127,7 @@
         android:text="TO INPUT"
         app:layout_constraintBottom_toTopOf="@+id/etOutput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etInput" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll_input" />
 
 
     <include
