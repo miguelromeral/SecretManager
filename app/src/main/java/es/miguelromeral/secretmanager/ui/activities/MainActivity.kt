@@ -37,41 +37,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-
-/*
-        navView.setOnNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId){
-                R.id.navigation_home -> {
-                    val fragment = HomeFragment()
-                    openFragment(fragment)
-                    true
-                }
-                R.id.navigation_dashboard -> {
-                    val fragment = FileConverterFragment()
-                    openFragment(fragment)
-                    true
-                }
-                R.id.navigation_notifications -> {
-                    val fragment = SecretsFragment()
-                    openFragment(fragment)
-                    true
-                }
-                R.id.action_settings -> {
-                    val fragment = SettingsFragment()
-                    openFragment(fragment)
-                    true
-                }
-                else -> false
-            }
-        }*/
-
     }
 
-    private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
 }

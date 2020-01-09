@@ -26,7 +26,6 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
             resources.getString(R.string.preference_key_theme) -> {
                 val style = preferences!!.getBoolean(resources.getString(R.string.preference_key_theme), false)
                 if(style){
-
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
