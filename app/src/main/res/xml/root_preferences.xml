@@ -1,0 +1,47 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+
+    <PreferenceCategory
+        android:title="UDP Configuration">
+
+        <EditTextPreference
+            android:key="@string/preference_key_udp_port"
+            android:title="Port to listen on"
+            android:dialogTitle="UDP Port:"
+            android:summary="Enter the same UDP port from your F1 Game pause menu."
+            android:defaultValue="20777"
+            android:inputType="number"
+            android:icon="@drawable/handler"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Performance Settings">
+
+        <SeekBarPreference
+            android:key="@string/preference_key_update_interval"
+            android:title="Update Interval"
+            android:summary="How many time has to wait the app to update the UI"
+            android:max="5000"
+            app:min="100"
+            android:defaultValue="100"
+            android:icon="@drawable/phone_data"/>
+
+    </PreferenceCategory>
+
+    -->
+
+    <PreferenceCategory
+        android:title="Display Settings">
+
+
+        <SwitchPreferenceCompat
+            android:key="@string/preference_key_theme"
+            android:title="Dark Theme"
+            android:summary="Enable dark colors for the application."/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

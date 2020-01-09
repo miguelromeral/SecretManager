@@ -21,6 +21,9 @@
     <string name="open">OPEN</string>
     <string name="remove">REMOVE</string>
 
+    <!-- Preferences -->
+    <string name="preference_key_theme">preference_app_theme</string>
+
 
     <string name="show_pwd">Show Password</string>
     <string name="hide_pwd">Hide Password</string>
