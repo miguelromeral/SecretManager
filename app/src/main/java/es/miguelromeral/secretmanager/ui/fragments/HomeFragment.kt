@@ -24,6 +24,7 @@ import es.miguelromeral.secretmanager.ui.models.TextItem
 import es.miguelromeral.secretmanager.ui.shareContentText
 import es.miguelromeral.secretmanager.ui.showHidePassword
 import kotlinx.android.synthetic.main.password_field.view.*
+import kotlinx.coroutines.delay
 
 
 class HomeFragment : Fragment() {
@@ -37,7 +38,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Get the current application
         val application = requireNotNull(this.activity).application
         // Get the database instance

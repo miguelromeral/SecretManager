@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "secret")
+@Entity(tableName = Secret.TABLE_NAME)
 data class Secret (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
@@ -12,9 +12,17 @@ data class Secret (
     @ColumnInfo(name = "time")
     val time: Long = System.currentTimeMillis(),
 
-    @ColumnInfo(name = "content")
-    var content: String = String(),
 
     @ColumnInfo(name = "alias")
-    var alias: String = String()
-)
+    var alias: String = String(),
+
+    @ColumnInfo(name = "content")
+    var content: String = String()
+
+){
+
+
+    companion object {
+        const val TABLE_NAME = "secret"
+    }
+}

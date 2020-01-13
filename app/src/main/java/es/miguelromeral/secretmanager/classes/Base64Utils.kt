@@ -4,7 +4,7 @@ import android.util.Base64
 import java.lang.Exception
 import java.util.*
 
-fun encode(content: ByteArray) = Base64.encodeToString(content, Base64.DEFAULT)
+fun encode(content: ByteArray) = Base64.encodeToString(content, Base64.DEFAULT).trim()
 
 fun decode(content: String) = Base64.decode(content, Base64.DEFAULT)
 

@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.classes
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
@@ -8,10 +9,57 @@ import android.util.Log
 import android.provider.MediaStore
 import android.provider.DocumentsContract
 import android.content.ContentUris
+import android.content.pm.PackageManager
 import android.os.Environment.getExternalStorageDirectory
 import android.os.Build
 import android.os.Environment
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import es.miguelromeral.secretmanager.database.Secret
+import es.miguelromeral.secretmanager.database.SecretDatabase
+import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import java.io.*
+import java.nio.file.Files.exists
+
+
+
+
+fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
+
+    val exportDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.getAbsolutePath(), "")
+    if (!exportDir.exists()) {
+        exportDir.mkdirs()
+    }
+
+    val fileName = "secret_manager"
+
+    val file = File(exportDir, fileName + ".txt")
+    try {
+        file.createNewFile()
+        val csvWrite = CSVWriter(FileWriter(file))
+        val curCSV = db.query("SELECT * FROM ${Secret.TABLE_NAME}", null)
+        csvWrite.writeNext(curCSV.getColumnNames())
+        while (curCSV.moveToNext()) {
+            //Which column you want to exprort
+            val columnCounts = curCSV.columnCount
+            val arrStr  = Array<String>(columnCounts){String()}
+            for (i in 0 until columnCounts)
+                arrStr[i] = curCSV.getString(i)
+            csvWrite.writeNext(arrStr)
+            //csvWrite.writeNext(null)
+        }
+        csvWrite.close()
+        curCSV.close()
+        //Toast.makeText(context, "Exported", Toast.LENGTH_SHORT).show()
+        return Uri.parse(file.absolutePath)
+    } catch (sqlEx: Exception) {
+        Log.e("ExportCSV", sqlEx.message, sqlEx)
+    }
+    return null
+}
+
+
 
 
 fun getRealPathFromURI(context: Context, contentUri: Uri): String {
