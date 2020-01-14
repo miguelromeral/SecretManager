@@ -13,9 +13,9 @@ import es.miguelromeral.secretmanager.classes.readTextFromUri
 
 private const val TAG = "FileItem"
 
-class FileItem : BaseObservable() {
+class FileItem : BaseObservable(), IExecutable {
 
-    val myCipher = MyCipher()
+    override val myCipher = MyCipher()
 
 
     var uri: Uri? = null
@@ -44,7 +44,7 @@ class FileItem : BaseObservable() {
 
 
     @Bindable
-    var decrypt: Boolean = false
+    override var decrypt: Boolean = false
         set(value){
             field = value
             notifyPropertyChanged(BR.decrypt)
@@ -57,8 +57,9 @@ class FileItem : BaseObservable() {
         ready = (uri != null && password.isNotEmpty())
     }
 
+
     @Bindable
-    var ready: Boolean = false
+    override var ready: Boolean = false
         set(value){
             field = value
             notifyPropertyChanged(BR.ready)
@@ -66,7 +67,7 @@ class FileItem : BaseObservable() {
         get() = field
 
     @Bindable
-    var password: String = String()
+    override var password: String = String()
         set(value) {
             field = value
             notifyPropertyChanged(BR.password)
@@ -75,25 +76,33 @@ class FileItem : BaseObservable() {
         get() = field
 
 
+    var input: ByteArray? = null
+
     var output: ByteArray? = null
 
 
 
 
 
-    fun encrypt(content: ByteArray): Boolean {
+    override fun encrypt(): Boolean {
         try{
-            output = myCipher.encrypt(content!!, password)
-            return true
+            input?.let {
+                output = myCipher.encrypt(it, password)
+                return true
+            }
+            return false
         }catch (e: Exception){
             return false
         }
     }
 
-    fun decrypt(content: ByteArray): Boolean {
+    override fun decrypt(): Boolean {
         try{
-            output = myCipher.decrypt(content!!, password)
-            return true
+            input?.let {
+                output = myCipher.decrypt(it, password)
+                return true
+            }
+            return false
         }catch (e: Exception){
             return false
         }

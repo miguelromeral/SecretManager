@@ -59,9 +59,9 @@ class FileConverterViewModel
             return
         }
 
-        val stream = readTextFromUri(item.uri!!, context.contentResolver)
+        item.output = readTextFromUri(item.uri!!, context.contentResolver)
 
-        if(stream == null){
+        if(item.output == null){
             Toast.makeText(context, "The file is empty.", Toast.LENGTH_LONG).show()
             return
         }
@@ -69,7 +69,7 @@ class FileConverterViewModel
 
         when (item.decrypt) {
             true -> {
-                if(item.decrypt(stream)){
+                if(item.decrypt()){
                     if(write(context, outputFileUri))
                         Toast.makeText(context, "File decrypted successfully!", Toast.LENGTH_LONG).show()
                 }else{
@@ -81,7 +81,7 @@ class FileConverterViewModel
                 }
             }
             false -> {
-                if(item.encrypt(stream)){
+                if(item.encrypt()){
                     if(write(context, outputFileUri))
                         Toast.makeText(context, "File encrypted successfully!", Toast.LENGTH_LONG).show()
                 }else{
@@ -99,6 +99,7 @@ class FileConverterViewModel
     fun proccessNewFile(context: Context, data: Uri?){
 
         item.output = null
+        item.input = null
 
         if(data != null){
             val cursor: Cursor? = context.contentResolver.query(data, null, null, null, null, null)

@@ -10,12 +10,12 @@ import es.miguelromeral.secretmanager.classes.encode
 
 private const val TAG = "TextItem"
 
-class TextItem : BaseObservable() {
+class TextItem : BaseObservable(), IExecutable {
 
-    val myCipher = MyCipher()
+    override val myCipher = MyCipher()
 
     @Bindable
-    var decrypt: Boolean = false
+    override var decrypt: Boolean = false
         set(value){
             field = value
             notifyPropertyChanged(BR.decrypt)
@@ -24,7 +24,7 @@ class TextItem : BaseObservable() {
 
 
     @Bindable
-    var ready: Boolean = false
+    override var ready: Boolean = false
         set(value){
             field = value
             notifyPropertyChanged(BR.ready)
@@ -32,13 +32,15 @@ class TextItem : BaseObservable() {
         get() = field
 
     @Bindable
-    var password: String = String()
+    override var password: String = String()
         set(value) {
             field = value
             notifyPropertyChanged(BR.password)
             updateReady()
         }
         get() = field
+
+
 
     @Bindable
     var input: String = String()
@@ -81,7 +83,7 @@ class TextItem : BaseObservable() {
 
 
 
-    fun encrypt(): Boolean {
+    override fun encrypt(): Boolean {
         try{
             Log.i(TAG, "Encrypting $input with password $password")
             output = encode(myCipher.encrypt(input, password))
@@ -94,7 +96,8 @@ class TextItem : BaseObservable() {
             return false
         }
     }
-    fun decrypt(): Boolean {
+
+    override fun decrypt(): Boolean {
         try{
             val decoded = decode(input)
             Log.i(TAG, "Decrypting $decoded with password $password")
