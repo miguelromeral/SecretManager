@@ -19,59 +19,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 -->
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/bPickFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Pick file"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/bPickFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Pick file"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_layout" />
 
-    <TextView
-        android:id="@+id/tvFilePath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@{fileItem.name}"
-        app:layout_constraintEnd_toEndOf="@+id/bPickFile"
-        app:layout_constraintStart_toStartOf="@+id/bPickFile"
-        app:layout_constraintTop_toBottomOf="@+id/bPickFile"
-        tools:text="path/to/my/file" />
+        <TextView
+            android:id="@+id/tvFilePath"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@{fileItem.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bPickFile"
+            app:layout_constraintTop_toTopOf="@+id/bPickFile"
+            tools:text="path/to/my/file" />
+
+        <include
+            android:id="@+id/password_layout"
+            layout="@layout/password_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:password="@={fileItem.password}" />
+
+        <TextView
+            android:id="@+id/tvFileSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@{fileItem.size}"
+            app:layout_constraintBottom_toBottomOf="@+id/bPickFile"
+            app:layout_constraintStart_toEndOf="@+id/bPickFile"
+            tools:text="1.2 MB" />
 
 
-    <TextView
-        android:id="@+id/tvFileSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@{fileItem.size}"
-        app:layout_constraintEnd_toEndOf="@+id/tvFilePath"
-        app:layout_constraintTop_toBottomOf="@+id/tvFilePath"
-        tools:text="1.2 MB" />
+        <include
+            android:id="@+id/execute_button"
+            layout="@layout/execute_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.565"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bPickFile"
+            bind:checker="@={fileItem.decrypt}"
+            bind:enableButton="@{fileItem.ready}" />
 
-
-    <include
-        android:id="@+id/execute_button"
-        bind:checker="@={fileItem.decrypt}"
-        bind:enableButton="@{fileItem.ready}"
-        layout="@layout/execute_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFileSize" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 <!--
 </ScrollView>
 -->

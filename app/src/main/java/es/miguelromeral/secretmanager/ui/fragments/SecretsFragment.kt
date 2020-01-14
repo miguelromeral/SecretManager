@@ -33,6 +33,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat.requestPermissions
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
+import es.miguelromeral.secretmanager.ui.createAlertDialog
 
 
 class SecretsFragment : Fragment() {
@@ -68,20 +69,19 @@ class SecretsFragment : Fragment() {
             },
             RemoveSecretListener { item ->
                 context?.let {
-                    val builder = AlertDialog.Builder(it)
-                    builder.setTitle(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secret_title))
-                    builder.setMessage(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secret_body, item.alias))
 
-                    // Set the alert dialog yes button click listener
-                    builder.setPositiveButton(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secret_yes),
-                        DialogInterface.OnClickListener { dialog, which ->
+                    val bu = createAlertDialog(it,
+                        title = R.string.clear_secret_title,
+                        body = R.string.clear_secret_body,
+                        negative = R.string.clear_secret_no)
 
-                            viewModel.removeSecret(item)
-                        })
-                    builder.setNegativeButton(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secret_no),null)
-
-                    val dialog = builder.create()
+                    bu.setPositiveButton(R.string.clear_secret_yes
+                    ) { dialog, which ->
+                        viewModel.removeSecret(item)
+                    }
+                    val dialog = bu.create()
                     dialog.show()
+
                 }
             })
         binding.secretsList.adapter = adapter
@@ -110,20 +110,16 @@ class SecretsFragment : Fragment() {
                 es.miguelromeral.secretmanager.R.id.option_clear_secrets -> {
 
                     context?.let {
+                        val bu = createAlertDialog(it,
+                            title = R.string.clear_secrets_title,
+                            body = R.string.clear_secrets_body,
+                            negative = R.string.clear_secrets_no)
 
-                        val builder = AlertDialog.Builder(it)
-                        builder.setTitle(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secrets_title))
-                        builder.setMessage(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secrets_body))
-
-                        // Set the alert dialog yes button click listener
-                        builder.setPositiveButton(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secrets_yes),
-                            DialogInterface.OnClickListener { dialog, which ->
-
-                                viewModel.clearDatabase()
-                            })
-                        builder.setNegativeButton(resources.getString(es.miguelromeral.secretmanager.R.string.clear_secrets_no),null)
-
-                        val dialog = builder.create()
+                        bu.setPositiveButton(R.string.clear_secrets_yes
+                        ) { dialog, which ->
+                            viewModel.clearDatabase()
+                        }
+                        val dialog = bu.create()
                         dialog.show()
                     }
                 }
@@ -168,9 +164,6 @@ class SecretsFragment : Fragment() {
                             Log.i("ExportCSV", "Permission has already been Granted")
                             (activity!! as MainActivity).exportSecrets()
                         }
-
-
-
 
 
                         //exportSecrets(it, SecretDatabase.getInstance(it))

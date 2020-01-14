@@ -16,8 +16,9 @@
         android:icon="@drawable/lock_list"
         android:title="@string/title_secrets" />
 
-    <item android:title="Settings"
+    <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/settings"/>
+        android:icon="@drawable/settings"
+        android:title="Settings"/>
 
 </menu>

@@ -29,15 +29,21 @@ import java.io.IOException
 import java.lang.Exception
 import android.webkit.MimeTypeMap
 import android.content.ContentResolver
+import android.widget.CheckBox
 import es.miguelromeral.secretmanager.classes.MyCipher
 import es.miguelromeral.secretmanager.classes.getFileMimeType
+import es.miguelromeral.secretmanager.classes.writeFile
+import es.miguelromeral.secretmanager.ui.createAlertDialog
+import es.miguelromeral.secretmanager.ui.showHidePassword
 
-private const val TAG = "FCVM"
 
 class FileConverterFragment : Fragment() {
 
     private lateinit var viewModel: FileConverterViewModel
     private lateinit var binding: FragmentFileConverterBinding
+
+
+    private val TAG = "FCVM"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +69,12 @@ class FileConverterFragment : Fragment() {
                 type = "*/*"
             }
             startActivityForResult(intent, REQUEST_CODE)
+        }
+
+
+        // Functionality to Show / Hide Password in this fragment
+        binding.passwordLayout.cbShowPassword.setOnClickListener{
+            showHidePassword(it.context, it as CheckBox, binding.passwordLayout.etPassword)
         }
 
         binding.executeButton.bExecute.setOnClickListener{
@@ -109,39 +121,6 @@ class FileConverterFragment : Fragment() {
     }
 
 
-
-    private fun write(from: Uri?, to: Uri?, decrypt: Boolean){
-        var fos: FileOutputStream? = null
-        try {
-            val stream = readTextFromUri(from!!, context!!.contentResolver)
-            val cypher = MyCipher()
-            val password = viewModel.item.password
-
-            val new_stream = if(decrypt){
-                cypher.decrypt(stream!!, password)
-            }else{
-                cypher.encrypt(stream!!, password)
-            }
-
-            context!!.contentResolver.openFileDescriptor(to!!, "w")?.use {
-                // use{} lets the document provider know you're done by automatically closing the stream
-                fos = FileOutputStream(it.fileDescriptor)
-                fos?.let { fos ->
-                    fos.write(new_stream)
-                }
-                Toast.makeText(context!!, "File was saved!", Toast.LENGTH_LONG).show()
-                Log.i(TAG, "File written")
-            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            fos?.close()
-        }
-    }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode){
             REQUEST_CODE -> {
@@ -150,9 +129,9 @@ class FileConverterFragment : Fragment() {
                 }
             }
             WRITE_REQUEST_CODE -> {
-                val tmp = data?.data
-
-                write(viewModel.item.uri, tmp, viewModel.item.decrypt)
+                if(resultCode == Activity.RESULT_OK) {
+                    viewModel.execute(context!!, data?.data)
+                }
             }
         }
     }
