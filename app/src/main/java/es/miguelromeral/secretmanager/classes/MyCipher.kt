@@ -21,8 +21,11 @@ class MyCipher {
 
     @Throws(Exception::class)
     fun encrypt(plainText: String, key: String): ByteArray {
-        val clean = plainText.toByteArray()
+        return encrypt(plainText.toByteArray(), key)
+    }
 
+    @Throws(Exception::class)
+    fun encrypt(clean: ByteArray, key: String): ByteArray {
         // Generating IV.
         val ivSize = 16
         val iv = ByteArray(ivSize)

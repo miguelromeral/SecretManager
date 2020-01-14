@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
 
 @Dao
 interface SecretDatabaseDao {
@@ -22,4 +24,9 @@ interface SecretDatabaseDao {
 
     @Query("DELETE FROM secret")
     fun clearStarts()
+
+
+/*
+    @RawQuery
+    fun insertDataRawFormat(SupportSQLiteQuery query): Boolean */
 }

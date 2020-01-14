@@ -3,6 +3,7 @@ package es.miguelromeral.secretmanager.ui.fragments
 import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,12 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Exception
+import android.webkit.MimeTypeMap
+import android.content.ContentResolver
+import es.miguelromeral.secretmanager.classes.MyCipher
+import es.miguelromeral.secretmanager.classes.getFileMimeType
+
+private const val TAG = "FCVM"
 
 class FileConverterFragment : Fragment() {
 
@@ -63,23 +70,27 @@ class FileConverterFragment : Fragment() {
             viewModel.item.uri?.let { data ->
                 try
                 {
-                    val stream = readTextFromUri(data, context!!.contentResolver)
-                    Log.i("FCVM", "Done it!")
+
+                    //write()
+
+                    val types = getFileMimeType(context!!, data)
+
+
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                         // Filter to only show results that can be "opened", such as
                         // a file (as opposed to a list of contacts or timezones).
                         addCategory(Intent.CATEGORY_OPENABLE)
 
                         // Create a file with the requested MIME type.
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TITLE, "testing.txt")
+                        type = types
+                        putExtra(Intent.EXTRA_TITLE, "testing")
                     }
                     startActivityForResult(intent, WRITE_REQUEST_CODE)
                 }catch (e: Exception){
-                    Log.i("FCVM", "Error: ${e.message}")
+                    Log.i(TAG, "Error: ${e.message}")
                     e.printStackTrace()
                 }finally {
-                    Log.i("FCVM", "Pasó")
+                    Log.i(TAG, "Pasó")
                 }
 
 
@@ -99,6 +110,38 @@ class FileConverterFragment : Fragment() {
 
 
 
+    private fun write(from: Uri?, to: Uri?, decrypt: Boolean){
+        var fos: FileOutputStream? = null
+        try {
+            val stream = readTextFromUri(from!!, context!!.contentResolver)
+            val cypher = MyCipher()
+            val password = viewModel.item.password
+
+            val new_stream = if(decrypt){
+                cypher.decrypt(stream!!, password)
+            }else{
+                cypher.encrypt(stream!!, password)
+            }
+
+            context!!.contentResolver.openFileDescriptor(to!!, "w")?.use {
+                // use{} lets the document provider know you're done by automatically closing the stream
+                fos = FileOutputStream(it.fileDescriptor)
+                fos?.let { fos ->
+                    fos.write(new_stream)
+                }
+                Toast.makeText(context!!, "File was saved!", Toast.LENGTH_LONG).show()
+                Log.i(TAG, "File written")
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            fos?.close()
+        }
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode){
             REQUEST_CODE -> {
@@ -107,20 +150,9 @@ class FileConverterFragment : Fragment() {
                 }
             }
             WRITE_REQUEST_CODE -> {
-                try {
-                    context!!.contentResolver.openFileDescriptor(viewModel.item.uri!!, "w")?.use {
-                        // use{} lets the document provider know you're done by automatically closing the stream
-                        FileOutputStream(it.fileDescriptor).use {
-                            it.write(
-                                ("Overwritten by MyCloud at ${System.currentTimeMillis()}\n").toByteArray()
-                            )
-                        }
-                    }
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
+                val tmp = data?.data
+
+                write(viewModel.item.uri, tmp, viewModel.item.decrypt)
             }
         }
     }

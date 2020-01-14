@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         //Thread.sleep(4000)
 
         setTheme(es.miguelromeral.secretmanager.R.style.AppTheme)

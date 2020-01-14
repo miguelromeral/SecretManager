@@ -16,6 +16,7 @@ import android.os.Environment
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.sqlite.db.SimpleSQLiteQuery
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
@@ -23,6 +24,7 @@ import java.io.*
 import java.nio.file.Files.exists
 
 
+private const val FILENAME = "secret_manager.csv"
 
 
 fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
@@ -32,9 +34,7 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
         exportDir.mkdirs()
     }
 
-    val fileName = "secret_manager"
-
-    val file = File(exportDir, fileName + ".txt")
+    val file = File(exportDir, FILENAME)
     try {
         file.createNewFile()
         val csvWrite = CSVWriter(FileWriter(file))
@@ -59,6 +59,45 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
     return null
 }
 
+
+fun importSecrets(db: SecretDatabase){
+    val csvReader = CSVReader(FileReader(Environment.DIRECTORY_DOCUMENTS!! + "/" + FILENAME))
+    var nextLine: Array<String>? = arrayOf<String>()
+    var count = 0
+    val columns = StringBuilder()
+    val value = StringBuilder()
+
+
+    while (true) {
+
+        nextLine = csvReader.readNext()
+        if(nextLine == null){
+            break
+        }
+
+        var i = 0
+        while(i < nextLine.size){
+            if (count == 0) {
+                if (i == nextLine.size - 2)
+                    columns.append(nextLine[i])
+                else
+                    columns.append(nextLine[i]).append(",")
+            } else {
+                if (i == nextLine.size - 2)
+                    value.append("'").append(nextLine[i]).append("'")
+                else
+                    value.append("'").append(nextLine[i]).append("',")
+            }
+            i++
+
+        }
+
+
+
+
+        Log.d("ImportCSV", "$columns -------" + value)
+    }
+}
 
 
 
@@ -97,6 +136,13 @@ fun readFile(filePath: String): ByteArray? {
         e.printStackTrace()
         return null
     }
+}
+
+
+fun getFileMimeType(context: Context, data: Uri): String? {
+    val cR = context.getContentResolver()
+    //val mime = MimeTypeMap.getSingleton()
+    return cR.getType(data)
 }
 
 // https://developer.android.com/guide/topics/providers/document-provider#c%C3%B3mo-obtener-un-inputstream
