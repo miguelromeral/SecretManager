@@ -16,12 +16,16 @@ import android.os.Environment
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import java.io.*
 import java.nio.file.Files.exists
+import org.bouncycastle.util.Strings.toByteArray
+
+
 
 
 private const val FILENAME = "secret_manager.csv"
@@ -155,7 +159,7 @@ fun writeFile(context: Context, to: Uri?, content: ByteArray): Boolean {
             return false
         }
 
-        context.contentResolver.openFileDescriptor(to, "w")?.use {
+        context.contentResolver.openFileDescriptor(to, "rw")?.use {
             // use{} lets the document provider know you're done by automatically closing the stream
             fos = FileOutputStream(it.fileDescriptor)
             fos?.let { fos ->
@@ -170,6 +174,9 @@ fun writeFile(context: Context, to: Uri?, content: ByteArray): Boolean {
     } catch (e: IOException) {
         Log.i(TAG, "Exception catched while writing file: ${e.message}.")
         e.printStackTrace()
+    } catch (e: java.lang.Exception) {
+        Log.i(TAG, "Exception catched while writing file: ${e.message}.")
+        e.printStackTrace()
     } finally {
         Log.i(TAG, "FileOutputStream has been closed.")
         fos?.close()
@@ -178,12 +185,42 @@ fun writeFile(context: Context, to: Uri?, content: ByteArray): Boolean {
 }
 
 
+@Throws(IOException::class)
+fun readBytes(uri: Uri, contentResolver: ContentResolver): ByteArray {
+
+    val inputStream = contentResolver.openInputStream(uri)
+
+    // this dynamically extends to take the bytes you read
+    val byteBuffer = ByteArrayOutputStream()
+
+    // this is storage overwritten on each iteration with bytes
+    val bufferSize = 1024
+    val buffer = ByteArray(bufferSize)
+
+    // we need to know how may bytes were read to write them to the byteBuffer
+    var len = 0
+    while (true) {
+        len = inputStream?.read(buffer) ?: -1
+        if(len == -1)
+            break
+
+        byteBuffer.write(buffer, 0, len)
+    }
+
+    // and then we can return your byte array.
+    return byteBuffer.toByteArray()
+}
+
 // https://developer.android.com/guide/topics/providers/document-provider#c%C3%B3mo-obtener-un-inputstream
 
-@Throws(IOException::class)
 fun readTextFromUri(uri: Uri, contentResolver: ContentResolver): ByteArray? {
-    val ist = contentResolver.openInputStream(uri)?.readBytes()
-    return ist
+    try {
+        val ist = contentResolver.openInputStream(uri)?.readBytes()
+        return ist
+    }catch (e: java.lang.Exception){
+        Log.i("FileUtils", "Read Text Problem: ${e.message}")
+        return null
+    }
     /*
     val stringBuilder = StringBuilder()
     contentResolver.openInputStream(uri)?.use { inputStream ->

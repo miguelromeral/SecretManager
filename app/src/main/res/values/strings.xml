@@ -25,6 +25,11 @@
     <string name="preference_key_theme">preference_app_theme</string>
 
 
+    <string name="channel_id_files">channel_id_files</string>
+    <string name="channel_id_files_name">channel_id_files_name</string>
+
+
+
     <string name="show_pwd">Show Password</string>
     <string name="hide_pwd">Hide Password</string>
 

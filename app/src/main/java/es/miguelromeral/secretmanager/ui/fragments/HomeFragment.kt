@@ -2,10 +2,7 @@ package es.miguelromeral.secretmanager.ui.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.*
 import android.widget.CheckBox
@@ -16,15 +13,12 @@ import es.miguelromeral.secretmanager.databinding.FragmentHomeBinding
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
-import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.IsBase64Encoded
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.models.TextItem
-import es.miguelromeral.secretmanager.ui.shareContentText
-import es.miguelromeral.secretmanager.ui.showHidePassword
-import kotlinx.android.synthetic.main.password_field.view.*
-import kotlinx.coroutines.delay
+import es.miguelromeral.secretmanager.ui.utils.shareContentText
+import es.miguelromeral.secretmanager.ui.utils.showHidePassword
 
 
 class HomeFragment : Fragment() {
@@ -78,7 +72,11 @@ class HomeFragment : Fragment() {
 
         // Functionality to Show / Hide Password in this fragment
         binding.passwordLayout.cbShowPassword.setOnClickListener{
-            showHidePassword(it.context, it as CheckBox, binding.passwordLayout.etPassword)
+            showHidePassword(
+                it.context,
+                it as CheckBox,
+                binding.passwordLayout.etPassword
+            )
         }
 
 

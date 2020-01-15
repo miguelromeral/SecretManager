@@ -1,19 +1,21 @@
 package es.miguelromeral.secretmanager.ui.viewmodels
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.classes.writeFile
-import es.miguelromeral.secretmanager.ui.createAlertDialog
 import es.miguelromeral.secretmanager.ui.models.FileItem
-import es.miguelromeral.secretmanager.ui.readableFileSize
+import es.miguelromeral.secretmanager.ui.utils.readableFileSize
+import es.miguelromeral.secretmanager.ui.utils.sendNotification
 import kotlinx.coroutines.*
 
 
@@ -56,6 +58,7 @@ class FileConverterViewModel
 
 
     private fun write(context: Context, to: Uri?): Boolean{
+//        item.input?.let{
         item.output?.let{
             if(writeFile(context, to, it)){
                 Log.i(TAG, "File written")
@@ -67,6 +70,8 @@ class FileConverterViewModel
         return false
     }
 
+
+
     private fun isLoading(loading: Boolean){
         item.ready = !loading
         _loading.postValue(loading)
@@ -76,6 +81,14 @@ class FileConverterViewModel
     fun execute(context: Context, outputFileUri: Uri?) {
         uiScope.launch {
             isLoading(true)
+
+/*
+
+            val notificationManager = ContextCompat.getSystemService(context, NotificationManager::class.java) as NotificationManager
+
+            notificationManager.sendNotification("File encrypted successfully!", context,
+                item.uri!!)
+*/
             executeInScope(context, outputFileUri)
             isLoading(false)
         }
@@ -91,6 +104,7 @@ class FileConverterViewModel
                 return@withContext
             }
 
+            //item.input = readBytes(item.uri!!, context.contentResolver)
             item.input = readTextFromUri(item.uri!!, context.contentResolver)
 
             if (item.input == null) {
@@ -98,22 +112,29 @@ class FileConverterViewModel
                 return@withContext
             }
 
+            val notificationManager = ContextCompat.getSystemService(context, NotificationManager::class.java) as NotificationManager
 
             when (item.decrypt) {
                 true -> {
                     if (item.decrypt()) {
-                        write(context, outputFileUri)
-                        if (write(context, outputFileUri))
-                            _errorMessage.postValue("File decrypted successfully!")
+                        if (write(context, outputFileUri)){
+                            notificationManager.sendNotification("File ${item.name} decrypted successfully!", context, outputFileUri!!)
+//                            _errorMessage.postValue("File decrypted successfully!")
+                        }
                     } else {
                         _errorDecrypting.postValue(true)
                     }
                 }
                 false -> {
                     if (item.encrypt()) {
-                        write(context, outputFileUri)
-                        if (write(context, outputFileUri))
-                            _errorMessage.postValue("File encrypted successfully!")
+                        if (write(context, outputFileUri)) {
+
+
+                            notificationManager.sendNotification("File encrypted successfully!", context,
+                                outputFileUri!!)
+
+                            //_errorMessage.postValue("File encrypted successfully!")
+                        }
                     } else {
                         _errorDecrypting.postValue(false)
                     }
@@ -137,7 +158,8 @@ class FileConverterViewModel
                     val size = it.getString(it.getColumnIndex(OpenableColumns.SIZE))
                     item.uri = data
                     item.name = displayName
-                    item.size = readableFileSize(size.toLong())
+                    item.size =
+                        readableFileSize(size.toLong())
                 }
             }
 

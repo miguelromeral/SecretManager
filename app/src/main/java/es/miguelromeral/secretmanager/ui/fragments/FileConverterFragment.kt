@@ -1,8 +1,12 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,9 +23,10 @@ import es.miguelromeral.secretmanager.ui.viewmodels.FileConverterViewModel
 import java.lang.Exception
 import android.os.Parcelable
 import android.widget.CheckBox
+import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.*
-import es.miguelromeral.secretmanager.ui.createAlertDialog
-import es.miguelromeral.secretmanager.ui.showHidePassword
+import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
+import es.miguelromeral.secretmanager.ui.utils.showHidePassword
 
 
 class FileConverterFragment(val data: Intent? = null) : Fragment() {
@@ -61,7 +66,11 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
         // Functionality to Show / Hide Password in this fragment
         binding.passwordLayout.cbShowPassword.setOnClickListener{
-            showHidePassword(it.context, it as CheckBox, binding.passwordLayout.etPassword)
+            showHidePassword(
+                it.context,
+                it as CheckBox,
+                binding.passwordLayout.etPassword
+            )
         }
 
         binding.executeButton.bExecute.setOnClickListener{
@@ -69,8 +78,17 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             viewModel.item.uri?.let { data ->
                 try
                 {
+                    /*
+                    val file = viewModel.item.uri!!
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        //setDataAndType(file, getFileMimeType(context!!, file))
+                        setData(file)
+                    }
+                    startActivity(intent)
+*/
 
-                    //write()
+
+
 
                     val types = getFileMimeType(context!!, data)
 
@@ -102,6 +120,8 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
 
         }
+
+
 
 
 
@@ -144,13 +164,10 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             }
         })
 
-        /*
-
-        if(data != null){
-            handleSendImage(data)
-            Log.i("TAG", "YAY!")
-        }*/
-
+        createChannel(
+            getString(R.string.channel_id_files),
+            getString(R.string.channel_id_files_name)
+        )
 
         // Returning the binding root
         return binding.root
@@ -178,6 +195,33 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
                 }
             }
         }
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+        // TODO: Step 1.6 START create a channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                // TODO: Step 2.4 change importance
+                NotificationManager.IMPORTANCE_HIGH
+            )// TODO: Step 2.6 disable badges for this channel
+                .apply {
+                    setShowBadge(false)
+                }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = "Notification Description"
+
+            val notificationManager = requireActivity().getSystemService(
+                NotificationManager::class.java
+            )
+
+            notificationManager.createNotificationChannel(notificationChannel)
+
+        }
+        // TODO: Step 1.6 END create a channel
     }
 
     companion object{

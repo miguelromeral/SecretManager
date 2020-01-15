@@ -1,14 +1,10 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.*
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -16,24 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import es.miguelromeral.secretmanager.R
-import es.miguelromeral.secretmanager.classes.exportSecrets
-import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.databinding.FragmentSecretsBinding
 import es.miguelromeral.secretmanager.ui.adapters.SecretAdapter
 import es.miguelromeral.secretmanager.ui.listeners.DecryptSecretListener
 import es.miguelromeral.secretmanager.ui.listeners.RemoveSecretListener
-import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
-import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import es.miguelromeral.secretmanager.ui.viewmodels.SecretsViewModel
-import java.io.FileReader
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat.requestPermissions
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
-import es.miguelromeral.secretmanager.ui.createAlertDialog
+import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 
 
 class SecretsFragment : Fragment() {
@@ -70,10 +59,12 @@ class SecretsFragment : Fragment() {
             RemoveSecretListener { item ->
                 context?.let {
 
-                    val bu = createAlertDialog(it,
+                    val bu = createAlertDialog(
+                        it,
                         title = R.string.clear_secret_title,
                         body = R.string.clear_secret_body,
-                        negative = R.string.clear_secret_no)
+                        negative = R.string.clear_secret_no
+                    )
 
                     bu.setPositiveButton(R.string.clear_secret_yes
                     ) { dialog, which ->
@@ -110,10 +101,12 @@ class SecretsFragment : Fragment() {
                 es.miguelromeral.secretmanager.R.id.option_clear_secrets -> {
 
                     context?.let {
-                        val bu = createAlertDialog(it,
+                        val bu = createAlertDialog(
+                            it,
                             title = R.string.clear_secrets_title,
                             body = R.string.clear_secrets_body,
-                            negative = R.string.clear_secrets_no)
+                            negative = R.string.clear_secrets_no
+                        )
 
                         bu.setPositiveButton(R.string.clear_secrets_yes
                         ) { dialog, which ->

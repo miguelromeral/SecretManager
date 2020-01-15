@@ -1,4 +1,4 @@
-package es.miguelromeral.secretmanager.ui
+package es.miguelromeral.secretmanager.ui.utils
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

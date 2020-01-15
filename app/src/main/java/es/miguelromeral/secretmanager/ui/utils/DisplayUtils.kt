@@ -1,7 +1,6 @@
-package es.miguelromeral.secretmanager.ui
+package es.miguelromeral.secretmanager.ui.utils
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -54,11 +53,12 @@ fun readableFileSize(size: Long): String {
 
 fun createAlertDialog(context: Context, title: Int? = null, body: Int? = null, negative: Int? = null): AlertDialog.Builder{
     val resources = context.resources
-    return createAlertDialog(context,
-        title = if(title != null) resources.getString(title) else null,
-        body = if(body != null) resources.getString(body) else null,
-        negative = if(negative != null) resources.getString(negative) else null
-        )
+    return createAlertDialog(
+        context,
+        title = if (title != null) resources.getString(title) else null,
+        body = if (body != null) resources.getString(body) else null,
+        negative = if (negative != null) resources.getString(negative) else null
+    )
 }
 
 fun createAlertDialog(context: Context, title: String? = null, body: String? = null, negative: String? = null): AlertDialog.Builder {
