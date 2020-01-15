@@ -11,4 +11,9 @@
 
     </style>
 
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_night</item>
+    </style>
+
 </resources>

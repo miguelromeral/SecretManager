@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import es.miguelromeral.secretmanager.R
-import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.databinding.FragmentFileConverterBinding
 import es.miguelromeral.secretmanager.ui.shareContentText
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.FileConverterFactory
@@ -29,15 +28,16 @@ import java.io.IOException
 import java.lang.Exception
 import android.webkit.MimeTypeMap
 import android.content.ContentResolver
+import android.content.Context
+import android.os.Parcelable
 import android.widget.CheckBox
-import es.miguelromeral.secretmanager.classes.MyCipher
-import es.miguelromeral.secretmanager.classes.getFileMimeType
-import es.miguelromeral.secretmanager.classes.writeFile
+import es.miguelromeral.secretmanager.classes.*
+import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.createAlertDialog
 import es.miguelromeral.secretmanager.ui.showHidePassword
 
 
-class FileConverterFragment : Fragment() {
+class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
     private lateinit var viewModel: FileConverterViewModel
     private lateinit var binding: FragmentFileConverterBinding
@@ -116,8 +116,39 @@ class FileConverterFragment : Fragment() {
 
         }
 
+
+
+        arguments?.let{
+            val args = FileConverterFragmentArgs.fromBundle(arguments!!)
+            handleSendImage(args.data)
+            Log.i("TAG", "YAY!")
+        }
+
+
+        viewModel.loading.observe(this, Observer {
+            if(it){
+                binding.progressBar.visibility = View.VISIBLE
+            }else{
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+
+        /*
+
+        if(data != null){
+            handleSendImage(data)
+            Log.i("TAG", "YAY!")
+        }*/
+
+
         // Returning the binding root
         return binding.root
+    }
+
+    private fun handleSendImage(intent: Intent) {
+        (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+            viewModel.proccessNewFile(context!!, it)
+        }
     }
 
 
@@ -139,5 +170,20 @@ class FileConverterFragment : Fragment() {
     companion object{
         private const val REQUEST_CODE = 10
         private const val WRITE_REQUEST_CODE = 43
+
+        const val ARGUMENT_INTENT = "argument_intent"
+
+        fun getInstance(data: Intent?): FileConverterFragment{
+            return FileConverterFragment(data)
+
+            /*
+            val intent = Intent(context, MainActivity::class.java).apply{
+                putExtra("message", "Message")
+            }
+            data?.let{
+                intent.putExtra(ARGUMENT_INTENT, data)
+            }
+            return intent*/
+        }
     }
 }

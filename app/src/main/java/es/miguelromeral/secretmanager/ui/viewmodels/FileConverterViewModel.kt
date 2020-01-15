@@ -12,13 +12,17 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import es.miguelromeral.secretmanager.classes.getRealPathFromURI
 import es.miguelromeral.secretmanager.classes.readFile
 import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.classes.writeFile
+import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.createAlertDialog
 import es.miguelromeral.secretmanager.ui.models.FileItem
 import es.miguelromeral.secretmanager.ui.readableFileSize
+import kotlinx.coroutines.*
 import java.io.File
 import java.lang.Exception
 import java.io.FileInputStream
@@ -33,8 +37,17 @@ class FileConverterViewModel
     private val _item = FileItem()
     val item: FileItem = _item
 
+    private var _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
 
+    init{
+        _loading.postValue(false)
+    }
 
 
     private fun write(context: Context, to: Uri?): Boolean{
@@ -44,52 +57,84 @@ class FileConverterViewModel
                 return true
 
             }else{
-                Toast.makeText(context!!, "There was a problem writing the file. Please try again later", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context!!, "There was a problem writing the file. Please try again later", Toast.LENGTH_LONG).show()
                 Log.i(TAG, "File not written")
             }
         }
         return false
     }
 
+    private fun isLoading(loading: Boolean){
+        item.ready = !loading
+        _loading.postValue(loading)
+    }
 
-    fun execute(context: Context, outputFileUri: Uri?){
 
-        if(item.uri == null){
-            Toast.makeText(context, "There's no file to process", Toast.LENGTH_LONG).show()
-            return
+    fun execute(context: Context, outputFileUri: Uri?) {
+        uiScope.launch {
+            isLoading(true)
+            executeInScope(context, outputFileUri)
+            isLoading(false)
         }
-
-        item.output = readTextFromUri(item.uri!!, context.contentResolver)
-
-        if(item.output == null){
-            Toast.makeText(context, "The file is empty.", Toast.LENGTH_LONG).show()
-            return
-        }
+    }
 
 
-        when (item.decrypt) {
-            true -> {
-                if(item.decrypt()){
-                    if(write(context, outputFileUri))
-                        Toast.makeText(context, "File decrypted successfully!", Toast.LENGTH_LONG).show()
-                }else{
-                    val builder = createAlertDialog(context!!,
-                        title = "Error while decryption",
-                        body = "The password doesn't match with the file to be decrypted",
-                        negative = "OK")
-                    builder.create().show()
-                }
+
+
+    private suspend fun executeInScope(context: Context, outputFileUri: Uri?){
+        return withContext(Dispatchers.IO) {
+            if (item.uri == null) {
+                //Toast.makeText(context, "There's no file to process", Toast.LENGTH_LONG).show()
+                return@withContext
             }
-            false -> {
-                if(item.encrypt()){
-                    if(write(context, outputFileUri))
-                        Toast.makeText(context, "File encrypted successfully!", Toast.LENGTH_LONG).show()
-                }else{
-                    val builder = createAlertDialog(context!!,
-                        title = "Error while encryption",
-                        body = "There was a problem while encrypting your file. Please, try again later",
-                        negative = "OK")
-                    builder.create().show()
+
+            item.input = readTextFromUri(item.uri!!, context.contentResolver)
+
+            if (item.input == null) {
+                //Toast.makeText(context, "The file is empty.", Toast.LENGTH_LONG).show()
+                return@withContext
+            }
+
+
+            when (item.decrypt) {
+                true -> {
+                    if (item.decrypt()) {
+                        write(context, outputFileUri)
+
+                        /*if (write(context, outputFileUri))
+                            Toast.makeText(
+                                context,
+                                "File decrypted successfully!",
+                                Toast.LENGTH_LONG
+                            ).show()*/
+                    } /* else {
+                        val builder = createAlertDialog(
+                            context!!,
+                            title = "Error while decryption",
+                            body = "The password doesn't match with the file to be decrypted",
+                            negative = "OK"
+                        )
+                        builder.create().show()
+                    }*/
+                }
+                false -> {
+                    if (item.encrypt()) {
+                        write(context, outputFileUri)
+                        /*if (write(context, outputFileUri))
+                            Toast.makeText(
+                                context,
+                                "File encrypted successfully!",
+                                Toast.LENGTH_LONG
+                            ).show()*/
+                    }/* else {
+                        val builder = createAlertDialog(
+                            context!!,
+                            title = "Error while encryption",
+                            body = "There was a problem while encrypting your file. Please, try again later",
+                            negative = "OK"
+                        )
+                        builder.create().show()
+                    }*/
                 }
             }
         }
@@ -119,6 +164,12 @@ class FileConverterViewModel
             item.name = "Unknown"
 
         }
+    }
+
+
+    override fun onCleared(){
+        super.onCleared()
+        viewModelJob.cancel()
     }
 
     companion object{

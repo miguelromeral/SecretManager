@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.ui.activities
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -20,17 +21,12 @@ import es.miguelromeral.secretmanager.classes.MyCipher
 import es.miguelromeral.secretmanager.classes.encode
 import es.miguelromeral.secretmanager.classes.exportSecrets
 import es.miguelromeral.secretmanager.database.SecretDatabase
-import es.miguelromeral.secretmanager.ui.fragments.FileConverterFragment
-import es.miguelromeral.secretmanager.ui.fragments.HomeFragment
-import es.miguelromeral.secretmanager.ui.fragments.SecretsFragment
-import es.miguelromeral.secretmanager.ui.fragments.SettingsFragment
-import android.content.Intent
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
-
-
-
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import es.miguelromeral.secretmanager.ui.fragments.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,27 +37,71 @@ class MainActivity : AppCompatActivity() {
 
         //Thread.sleep(4000)
 
-        setTheme(es.miguelromeral.secretmanager.R.style.AppTheme)
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(es.miguelromeral.secretmanager.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        val navView: BottomNavigationView = findViewById(es.miguelromeral.secretmanager.R.id.nav_view)
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        val t: View = findViewById(es.miguelromeral.secretmanager.R.id.nav_host_fragment)
+        val navController = findNavController(R.id.nav_host_fragment)
 
-        val navController = findNavController(es.miguelromeral.secretmanager.R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                es.miguelromeral.secretmanager.R.id.navigation_home,
-                es.miguelromeral.secretmanager.R.id.navigation_dashboard,
-                es.miguelromeral.secretmanager.R.id.navigation_notifications,
-                es.miguelromeral.secretmanager.R.id.action_settings
+                R.id.navigation_home,
+                R.id.navigation_dashboard,
+                R.id.navigation_notifications,
+                R.id.action_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+/*
+        navView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navigation_home -> {
+                    replaceFragment(HomeFragment())
+                    true
+                }
+                R.id.navigation_dashboard -> {
+                    replaceFragment(FileConverterFragment())
+                    true
+                }
+                R.id.navigation_notifications -> {
+                    replaceFragment(SecretsFragment())
+                    true
+                }
+                R.id.action_settings -> {
+                    replaceFragment(SettingsFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+*/
+
+        if(intent?.action == Intent.ACTION_SEND) {
+            if (intent.type?.startsWith("image/") == true ||
+                intent.type?.startsWith("video/") == true ||
+                intent.type?.startsWith("application/") == true) {
+                //openFileConverterFragment(intent)
+
+                navController.navigate(HomeFragmentDirections.actionNavigationHomeToNavigationDashboard(intent))
+            }
+        }
+
+        SettingsFragment.setStyleTheme(baseContext)
+
+    }
+
+    private fun replaceFragment(someFragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.nav_host_fragment, someFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -92,9 +132,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun exportSecrets(){
-        exportSecrets(baseContext, SecretDatabase.getInstance(baseContext))?.let{uri ->
+        exportSecrets(baseContext, SecretDatabase.getInstance(baseContext))?.let{ uri ->
 
-            val view: View = findViewById(es.miguelromeral.secretmanager.R.id.nav_view)
+            val view: View = findViewById(R.id.nav_view)
 
             val snackbar = Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             snackbar.setAction("Open file", View.OnClickListener {
@@ -121,6 +161,14 @@ class MainActivity : AppCompatActivity() {
             Log.i("ExportCSV", "Snack showed")
         }
 
+    }
+
+    private fun openFileConverterFragment(data: Intent){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.nav_host_fragment, FileConverterFragment.getInstance(data))
+            .addToBackStack(null)
+            .commit()
     }
 
 }

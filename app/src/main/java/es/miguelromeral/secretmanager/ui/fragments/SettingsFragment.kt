@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -9,10 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
+import androidx.preference.*
 import es.miguelromeral.secretmanager.R
 
 class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnSharedPreferenceChangeListener {
@@ -24,12 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
     override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
         when(key){
             resources.getString(R.string.preference_key_theme) -> {
-                val style = preferences!!.getBoolean(resources.getString(R.string.preference_key_theme), false)
-                if(style){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }else{
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+                setStyleTheme(context!!, preferences)
             }
         }
     }
@@ -69,6 +62,21 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
     override fun onPause() {
         super.onPause()
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    companion object {
+
+        fun setStyleTheme(context: Context, sharedPreferences: SharedPreferences? = null){
+            val preferences = sharedPreferences ?: PreferenceManager.getDefaultSharedPreferences(context)
+            val resources = context.resources
+
+            val style = preferences!!.getBoolean(resources.getString(R.string.preference_key_theme), false)
+            if(style){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 
 }
