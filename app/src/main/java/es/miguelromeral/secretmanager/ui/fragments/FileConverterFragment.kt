@@ -2,37 +2,24 @@ package es.miguelromeral.secretmanager.ui.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.databinding.FragmentFileConverterBinding
-import es.miguelromeral.secretmanager.ui.shareContentText
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.FileConverterFactory
-import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.FileConverterViewModel
-import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 import java.lang.Exception
-import android.webkit.MimeTypeMap
-import android.content.ContentResolver
-import android.content.Context
 import android.os.Parcelable
 import android.widget.CheckBox
 import es.miguelromeral.secretmanager.classes.*
-import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.createAlertDialog
 import es.miguelromeral.secretmanager.ui.showHidePassword
 
@@ -133,6 +120,30 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             }
         })
 
+        viewModel.errorMessage.observe(this, Observer {message ->
+            message?.let{
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                viewModel.clearErrorMessage()
+            }
+        })
+
+        viewModel.errorDecrypting.observe(this, Observer { error ->
+            error?.let{
+                val title = if(it) "Error while decryption" else "Error while encryption"
+                val body = if(it) "The password doesn't match with the file to be decrypted" else
+                    "There was a problem while encrypting your file. Please, try again later"
+
+                val builder = createAlertDialog(
+                    context!!,
+                    title = title,
+                    body = body,
+                    negative = "OK"
+                )
+                builder.create().show()
+                viewModel.clearErrorExecuting()
+            }
+        })
+
         /*
 
         if(data != null){
@@ -150,6 +161,8 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             viewModel.proccessNewFile(context!!, it)
         }
     }
+
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -185,5 +198,6 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             }
             return intent*/
         }
+
     }
 }

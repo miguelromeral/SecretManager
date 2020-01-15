@@ -2,31 +2,19 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
-import android.provider.FontsContract
 import android.provider.OpenableColumns
 import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import es.miguelromeral.secretmanager.classes.getRealPathFromURI
-import es.miguelromeral.secretmanager.classes.readFile
 import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.classes.writeFile
-import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.createAlertDialog
 import es.miguelromeral.secretmanager.ui.models.FileItem
 import es.miguelromeral.secretmanager.ui.readableFileSize
 import kotlinx.coroutines.*
-import java.io.File
-import java.lang.Exception
-import java.io.FileInputStream
-import java.security.AccessController.getContext
 
 
 class FileConverterViewModel
@@ -45,6 +33,23 @@ class FileConverterViewModel
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
 
+    private var _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?>
+        get() = _errorMessage
+
+    fun clearErrorMessage(){
+        _errorMessage.postValue(null)
+    }
+
+    private var _errorDecrypting = MutableLiveData<Boolean?>()
+    val errorDecrypting: LiveData<Boolean?>
+        get() = _errorDecrypting
+
+    fun clearErrorExecuting(){
+        _errorDecrypting.postValue(null)
+    }
+
+
     init{
         _loading.postValue(false)
     }
@@ -55,9 +60,7 @@ class FileConverterViewModel
             if(writeFile(context, to, it)){
                 Log.i(TAG, "File written")
                 return true
-
             }else{
-                //Toast.makeText(context!!, "There was a problem writing the file. Please try again later", Toast.LENGTH_LONG).show()
                 Log.i(TAG, "File not written")
             }
         }
@@ -84,14 +87,14 @@ class FileConverterViewModel
     private suspend fun executeInScope(context: Context, outputFileUri: Uri?){
         return withContext(Dispatchers.IO) {
             if (item.uri == null) {
-                //Toast.makeText(context, "There's no file to process", Toast.LENGTH_LONG).show()
+                _errorMessage.postValue("There's no file to process")
                 return@withContext
             }
 
             item.input = readTextFromUri(item.uri!!, context.contentResolver)
 
             if (item.input == null) {
-                //Toast.makeText(context, "The file is empty.", Toast.LENGTH_LONG).show()
+                _errorMessage.postValue("The file is empty.")
                 return@withContext
             }
 
@@ -100,41 +103,20 @@ class FileConverterViewModel
                 true -> {
                     if (item.decrypt()) {
                         write(context, outputFileUri)
-
-                        /*if (write(context, outputFileUri))
-                            Toast.makeText(
-                                context,
-                                "File decrypted successfully!",
-                                Toast.LENGTH_LONG
-                            ).show()*/
-                    } /* else {
-                        val builder = createAlertDialog(
-                            context!!,
-                            title = "Error while decryption",
-                            body = "The password doesn't match with the file to be decrypted",
-                            negative = "OK"
-                        )
-                        builder.create().show()
-                    }*/
+                        if (write(context, outputFileUri))
+                            _errorMessage.postValue("File decrypted successfully!")
+                    } else {
+                        _errorDecrypting.postValue(true)
+                    }
                 }
                 false -> {
                     if (item.encrypt()) {
                         write(context, outputFileUri)
-                        /*if (write(context, outputFileUri))
-                            Toast.makeText(
-                                context,
-                                "File encrypted successfully!",
-                                Toast.LENGTH_LONG
-                            ).show()*/
-                    }/* else {
-                        val builder = createAlertDialog(
-                            context!!,
-                            title = "Error while encryption",
-                            body = "There was a problem while encrypting your file. Please, try again later",
-                            negative = "OK"
-                        )
-                        builder.create().show()
-                    }*/
+                        if (write(context, outputFileUri))
+                            _errorMessage.postValue("File encrypted successfully!")
+                    } else {
+                        _errorDecrypting.postValue(false)
+                    }
                 }
             }
         }
