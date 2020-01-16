@@ -16,139 +16,161 @@
             type="es.miguelromeral.secretmanager.ui.models.TextItem" />
     </data>
 
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 <ScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/password_layout"
-        layout="@layout/password_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        bind:password="@={item.password}" />
-
-    <ScrollView
-        android:id="@+id/scroll_input"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintHeight_max="200sp"
-        app:layout_constraintHeight_min="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/etInput"
-                android:layout_width="0dp"
+            <include
+                android:id="@+id/password_layout"
+                layout="@layout/password_field"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Input"
-                tools:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14"
-                android:inputType="textCapSentences|textMultiLine"
-                android:text="@={item.input}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                bind:password="@={item.password}" />
+
+            <ScrollView
+                android:id="@+id/scroll_input"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_max="200sp"
+                app:layout_constraintHeight_min="36dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/store_layout">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <EditText
+                        android:id="@+id/etInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Input"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:text="@={item.input}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+
+            <EditText
+                android:id="@+id/etOutput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+
+                android:layout_marginBottom="80dp"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="Output"
+                android:inputType="textCapSentences|textMultiLine"
+                android:overScrollMode="ifContentScrolls"
+                android:singleLine="false"
+                android:text="@={item.output}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/execute_button"
+                tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad" />
+
+            <include
+                android:id="@+id/execute_button"
+                layout="@layout/execute_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scroll_input"
+                bind:checker="@={item.decrypt}"
+                bind:enableButton="@{item.ready}" />
+
+            <Button
+                android:id="@+id/bExchange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TO INPUT"
+                app:layout_constraintBottom_toTopOf="@+id/etOutput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scroll_input" />
+
+
+            <include
+                android:id="@+id/store_layout"
+                layout="@layout/store_secret"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password_layout"
+                bind:alias="@={item.alias}"
+                bind:show="@{!item.decrypt}"
+                bind:store="@={item.store}" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
 
 
-    <EditText
-        android:id="@+id/etOutput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
 
-        android:ems="10"
-        android:enabled="false"
-        android:hint="Output"
-        android:inputType="textCapSentences|textMultiLine"
-        android:overScrollMode="ifContentScrolls"
-        android:singleLine="false"
-        android:text="@={item.output}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/execute_button"
-        tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad" />
-
-    <Button
-        android:id="@+id/bShareOutput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:drawableStart="@android:drawable/ic_menu_share"
-        android:text="SHARE"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOutput" />
-
-    <include
-        android:id="@+id/execute_button"
-        layout="@layout/execute_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll_input"
-        bind:checker="@={item.decrypt}"
-        bind:enableButton="@{item.ready}"/>
-
-    <Button
-        android:id="@+id/bExchange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="TO INPUT"
-        app:layout_constraintBottom_toTopOf="@+id/etOutput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll_input" />
-
-
-    <include
-        android:id="@+id/store_layout"
-        layout="@layout/store_secret"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bShareOutput"
-        bind:show="@{!item.decrypt}"
-        bind:alias="@={item.alias}"
-        bind:store="@={item.store}" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:layout_gravity="end|bottom"
+            android:focusable="true"
+            android:src="@drawable/share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </FrameLayout>
 
 
 </layout>

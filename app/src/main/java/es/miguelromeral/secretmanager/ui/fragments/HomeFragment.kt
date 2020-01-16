@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
         item = viewModel.item
         binding.item = item
 
-        binding.bShareOutput.setOnClickListener{view ->
+        binding.floatingActionButton.setOnClickListener{view ->
             if(item.output.isNotEmpty()) {
                 shareContentText(view.context, item.output)
             }else{
