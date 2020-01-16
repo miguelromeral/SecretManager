@@ -69,9 +69,9 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
                     val bu = createAlertDialog(
                         it,
-                        title = es.miguelromeral.secretmanager.R.string.clear_secret_title,
-                        body = es.miguelromeral.secretmanager.R.string.clear_secret_body,
-                        negative = es.miguelromeral.secretmanager.R.string.clear_secret_no
+                        title = getString(es.miguelromeral.secretmanager.R.string.clear_secret_title),
+                        body = getString(R.string.clear_secret_body, item.alias),
+                        negative = getString(es.miguelromeral.secretmanager.R.string.clear_secret_no)
                     )
 
                     bu.setPositiveButton(
@@ -89,6 +89,7 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         viewModel.secrets.observe(this, Observer {
             viewModel.filteredList.postValue(it)
+            binding.warningEmptyDbSecrets.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         })
 
         viewModel.filteredList.observe(this, Observer {

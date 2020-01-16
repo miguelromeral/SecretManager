@@ -3,6 +3,7 @@ package es.miguelromeral.secretmanager.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,26 @@ class SecretAdapter(
             binding.item = item
             binding.decryptListener = decryptListener
             binding.removeListener = removeListener
+
+            binding.tvThreeDots.setOnClickListener { view ->
+                val popupMenu = PopupMenu(view.context, view)
+                popupMenu.inflate(R.menu.option_menu)
+                popupMenu.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.option_show_secret -> {
+                            decryptListener.onClick(item)
+                            true
+                        }
+                        R.id.option_delete_secret -> {
+                            removeListener.onClick(item)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
+
             binding.executePendingBindings()
         }
 
