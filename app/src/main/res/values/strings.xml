@@ -23,6 +23,8 @@
 
     <!-- Preferences -->
     <string name="preference_key_theme">preference_app_theme</string>
+    <string name="preference_key_filename">preference_app_filenamme</string>
+    <string name="preference_filename_default">secret_manager_file</string>
 
 
     <string name="channel_id_files">channel_id_files</string>

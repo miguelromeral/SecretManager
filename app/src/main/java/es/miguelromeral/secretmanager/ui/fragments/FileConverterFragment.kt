@@ -23,6 +23,7 @@ import es.miguelromeral.secretmanager.ui.viewmodels.FileConverterViewModel
 import java.lang.Exception
 import android.os.Parcelable
 import android.widget.CheckBox
+import androidx.preference.PreferenceManager
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.*
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
@@ -91,7 +92,10 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
 
                     val types = getFileMimeType(context!!, data)
-
+                    val filename = PreferenceManager.getDefaultSharedPreferences(context)
+                        .getString(
+                            getString(R.string.preference_key_filename),
+                            getString(R.string.preference_filename_default))
 
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                         // Filter to only show results that can be "opened", such as
@@ -100,7 +104,7 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
                         // Create a file with the requested MIME type.
                         type = types
-                        putExtra(Intent.EXTRA_TITLE, "testing")
+                        putExtra(Intent.EXTRA_TITLE,  filename)
                     }
                     startActivityForResult(intent, WRITE_REQUEST_CODE)
                 }catch (e: Exception){

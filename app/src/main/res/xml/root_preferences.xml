@@ -44,4 +44,17 @@
 
     </PreferenceCategory>
 
+
+    <PreferenceCategory
+        android:title="Execution">
+
+        <EditTextPreference
+            android:key="@string/preference_key_filename"
+            android:title="Default name of the file processed"
+            android:summary="%a"
+            android:defaultValue="@string/preference_filename_default"
+            android:dialogTitle="Set the file's name"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

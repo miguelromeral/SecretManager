@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -21,16 +22,24 @@ import es.miguelromeral.secretmanager.ui.listeners.RemoveSecretListener
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.SecretsViewModel
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 
 
-class SecretsFragment : Fragment() {
+
+
+
+class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
+
 
     private lateinit var viewModel: SecretsViewModel
     private lateinit var binding: FragmentSecretsBinding
     private lateinit var adapter: SecretAdapter
     private lateinit var dataSource: SecretDatabaseDao
+
+    private var fullList: List<Secret>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +70,13 @@ class SecretsFragment : Fragment() {
 
                     val bu = createAlertDialog(
                         it,
-                        title = R.string.clear_secret_title,
-                        body = R.string.clear_secret_body,
-                        negative = R.string.clear_secret_no
+                        title = es.miguelromeral.secretmanager.R.string.clear_secret_title,
+                        body = es.miguelromeral.secretmanager.R.string.clear_secret_body,
+                        negative = es.miguelromeral.secretmanager.R.string.clear_secret_no
                     )
 
-                    bu.setPositiveButton(R.string.clear_secret_yes
+                    bu.setPositiveButton(
+                        es.miguelromeral.secretmanager.R.string.clear_secret_yes
                     ) { dialog, which ->
                         viewModel.removeSecret(item)
                     }
@@ -75,25 +85,64 @@ class SecretsFragment : Fragment() {
 
                 }
             })
+
         binding.secretsList.adapter = adapter
+
 
         viewModel.secrets.observe(this, Observer {
             it?.let{
-                adapter.submitList(it)
+                fullList = it
+                adapter.submitList(fullList)
             }
         })
 
         setHasOptionsMenu(true)
+
 
         return binding.root
     }
 
 
 
+    private lateinit var searchView: SearchView
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(es.miguelromeral.secretmanager.R.menu.options_secrets, menu)
+        searchView = menu.findItem(es.miguelromeral.secretmanager.R.id.action_search).actionView as SearchView
+        searchView.setOnQueryTextListener(this)
     }
+
+    override fun onQueryTextSubmit(p0: String?): Boolean {
+        return onSearchCriteriaChange(p0)
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return onSearchCriteriaChange(p0)
+    }
+
+    private fun onSearchCriteriaChange(p0: String?): Boolean {
+        if(p0 == null){
+            adapter.submitList(fullList)
+        }else {
+            val filteredList = mutableListOf<Secret>()
+            val input = p0.toLowerCase()
+
+            fullList?.let {
+                for (s in it) {
+                    if (s.alias.toLowerCase().contains(p0)){
+                        filteredList.add(s)
+                    }
+                }
+            }
+
+            adapter.submitList(filteredList)
+
+        }
+
+        return true
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item != null){
@@ -103,12 +152,13 @@ class SecretsFragment : Fragment() {
                     context?.let {
                         val bu = createAlertDialog(
                             it,
-                            title = R.string.clear_secrets_title,
-                            body = R.string.clear_secrets_body,
-                            negative = R.string.clear_secrets_no
+                            title = es.miguelromeral.secretmanager.R.string.clear_secrets_title,
+                            body = es.miguelromeral.secretmanager.R.string.clear_secrets_body,
+                            negative = es.miguelromeral.secretmanager.R.string.clear_secrets_no
                         )
 
-                        bu.setPositiveButton(R.string.clear_secrets_yes
+                        bu.setPositiveButton(
+                            es.miguelromeral.secretmanager.R.string.clear_secrets_yes
                         ) { dialog, which ->
                             viewModel.clearDatabase()
                         }
