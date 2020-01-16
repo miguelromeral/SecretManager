@@ -50,8 +50,8 @@
 
         <EditTextPreference
             android:key="@string/preference_key_filename"
-            android:title="Default name of the file processed"
-            android:summary="%a"
+            android:title="New file's name"
+            android:summary="Default name for the new file processed"
             android:defaultValue="@string/preference_filename_default"
             android:dialogTitle="Set the file's name"/>
 

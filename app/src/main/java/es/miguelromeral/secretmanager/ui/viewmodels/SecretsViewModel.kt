@@ -3,6 +3,7 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 import android.app.Application
 import android.content.Context
 import android.view.View
+import android.widget.ListAdapter
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -13,6 +14,7 @@ import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
+import es.miguelromeral.secretmanager.ui.adapters.SecretAdapter
 import es.miguelromeral.secretmanager.ui.fragments.HomeFragment
 import es.miguelromeral.secretmanager.ui.fragments.SecretsFragmentDirections
 import kotlinx.coroutines.*
@@ -28,7 +30,28 @@ class SecretsViewModel (
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    val filteredList: MutableLiveData<List<Secret>> = MutableLiveData()
 
+
+
+    fun filterSecrets(p0: String?): Boolean {
+        if(p0 == null || p0.isEmpty()){
+            filteredList.postValue(secrets.value)
+        }else {
+            val tmp = mutableListOf<Secret>()
+            val input = p0.toLowerCase()
+
+            secrets.value?.let {
+                for (s in it) {
+                    if (s.alias.toLowerCase().contains(p0)){
+                        tmp.add(s)
+                    }
+                }
+            }
+            filteredList.postValue(tmp)
+        }
+        return true
+    }
 
 
     fun openSecret(context: Context, view: View, item: Secret) {

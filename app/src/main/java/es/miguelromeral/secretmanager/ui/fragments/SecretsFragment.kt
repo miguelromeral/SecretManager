@@ -39,7 +39,6 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var adapter: SecretAdapter
     private lateinit var dataSource: SecretDatabaseDao
 
-    private var fullList: List<Secret>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,12 +87,12 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         binding.secretsList.adapter = adapter
 
-
         viewModel.secrets.observe(this, Observer {
-            it?.let{
-                fullList = it
-                adapter.submitList(fullList)
-            }
+            viewModel.filteredList.postValue(it)
+        })
+
+        viewModel.filteredList.observe(this, Observer {
+            adapter.submitList(it)
         })
 
         setHasOptionsMenu(true)
@@ -114,33 +113,11 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {
-        return onSearchCriteriaChange(p0)
+        return viewModel.filterSecrets(p0)
     }
 
     override fun onQueryTextChange(p0: String?): Boolean {
-        return onSearchCriteriaChange(p0)
-    }
-
-    private fun onSearchCriteriaChange(p0: String?): Boolean {
-        if(p0 == null){
-            adapter.submitList(fullList)
-        }else {
-            val filteredList = mutableListOf<Secret>()
-            val input = p0.toLowerCase()
-
-            fullList?.let {
-                for (s in it) {
-                    if (s.alias.toLowerCase().contains(p0)){
-                        filteredList.add(s)
-                    }
-                }
-            }
-
-            adapter.submitList(filteredList)
-
-        }
-
-        return true
+        return viewModel.filterSecrets(p0)
     }
 
 
