@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.ui.models.TextItem
@@ -37,10 +38,10 @@ class HomeViewModel(
                     if(item.alias.isNotEmpty()) {
                         uiScope.launch {
                             createNewSecret()
-                            Toast.makeText(context, "Stored successfully under the alias ${item.alias}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.secret_stored, item.alias), Toast.LENGTH_LONG).show()
                         }
                     }else{
-                        Toast.makeText(context, "You must provide an alias name to be stored.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, R.string.error_unprovided_alias, Toast.LENGTH_LONG).show()
                     }
                 }
             }

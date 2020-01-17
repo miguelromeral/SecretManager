@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //Thread.sleep(4000)
-
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,35 +56,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-/*
-        navView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.navigation_home -> {
-                    replaceFragment(HomeFragment())
-                    true
-                }
-                R.id.navigation_dashboard -> {
-                    replaceFragment(FileConverterFragment())
-                    true
-                }
-                R.id.navigation_notifications -> {
-                    replaceFragment(SecretsFragment())
-                    true
-                }
-                R.id.action_settings -> {
-                    replaceFragment(SettingsFragment())
-                    true
-                }
-                else -> false
-            }
-        }
-*/
 
         if(intent?.action == Intent.ACTION_SEND) {
             if (intent.type?.startsWith("image/") == true ||
                 intent.type?.startsWith("video/") == true ||
                 intent.type?.startsWith("application/") == true) {
-                //openFileConverterFragment(intent)
 
                 navController.navigate(HomeFragmentDirections.actionNavigationHomeToNavigationDashboard(intent))
             }
@@ -96,13 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun replaceFragment(someFragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.nav_host_fragment, someFragment)
-            .addToBackStack(null)
-            .commit()
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
@@ -136,13 +103,14 @@ class MainActivity : AppCompatActivity() {
 
             val view: View = findViewById(R.id.nav_view)
 
-            val snackbar = Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            snackbar.setAction("Open file", View.OnClickListener {
+            val snackbar = Snackbar.make(view, R.string.exported_secrets_title, Snackbar.LENGTH_LONG)
+            snackbar.setAction(R.string.open_file){
 
 
                 Log.i("ExportCSV", "Preparing action: "+uri.path)
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.setDataAndType(uri, "*/*")
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(uri)
+                //intent.setDataAndType(uri, "*/*")
 
 
                 if (intent.resolveActivityInfo(packageManager, 0) != null) {
@@ -155,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-            })
+            }
             //snackbar.setActionTextColor(Color.BLUE)
             snackbar.show()
             Log.i("ExportCSV", "Snack showed")

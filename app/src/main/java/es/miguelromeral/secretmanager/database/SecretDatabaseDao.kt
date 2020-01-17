@@ -16,13 +16,13 @@ interface SecretDatabaseDao {
    /* @Query("SELECT * FROM secret WHERE alias LIKE :criteria")
     fun search(criteria: String)
 */
-    @Query("DELETE FROM secret WHERE id = :key")
+    @Query("DELETE FROM ${Secret.TABLE_NAME} WHERE id = :key")
     fun deleteFromKey(key: Long)
 
-    @Query("SELECT * FROM secret ORDER BY id DESC")
+    @Query("SELECT * FROM ${Secret.TABLE_NAME} ORDER BY id DESC")
     fun getAllSecrets(): LiveData<List<Secret>>
 
-    @Query("DELETE FROM secret")
+    @Query("DELETE FROM ${Secret.TABLE_NAME}")
     fun clearStarts()
 
 

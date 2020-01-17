@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/option_show_secret"
-        android:title="Open"/>
+        android:title="@string/list_open_secret"/>
 
 
     <item android:id="@+id/option_delete_secret"
-        android:title="Delete"/>
+        android:title="@string/list_delete_secret"/>
 
 </menu>

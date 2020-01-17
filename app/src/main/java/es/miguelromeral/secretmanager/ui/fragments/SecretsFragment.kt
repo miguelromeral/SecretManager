@@ -28,9 +28,6 @@ import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 
 
-
-
-
 class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
 
@@ -164,7 +161,7 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                                 // this thread waiting for the user's response! After the user
                                 // sees the explanation, try again to request the permission.
 
-                                Toast.makeText(it, "In order to export your secrets, you'll need to allow the application to write the exported result in your device. Please, allow the permission required to use this functionality", Toast.LENGTH_LONG).show()
+                                Toast.makeText(it, R.string.explanation_file_permissions, Toast.LENGTH_LONG).show()
                                 Log.i("ExportCSV", "Permission Explanation")
 
                             } else {
@@ -185,9 +182,6 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                             Log.i("ExportCSV", "Permission has already been Granted")
                             (activity!! as MainActivity).exportSecrets()
                         }
-
-
-                        //exportSecrets(it, SecretDatabase.getInstance(it))
                     }
                 }
             }

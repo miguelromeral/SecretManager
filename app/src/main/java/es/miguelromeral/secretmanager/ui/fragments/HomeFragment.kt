@@ -13,6 +13,7 @@ import es.miguelromeral.secretmanager.databinding.FragmentHomeBinding
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
+import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.IsBase64Encoded
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
@@ -41,7 +42,7 @@ class HomeFragment : Fragment() {
         // Initialize View Model
         viewModel = ViewModelProviders.of(this, vmf).get(HomeViewModel::class.java)
         // Initialize Binding
-        binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         // Passing the parameters to binding variables
         binding.viewModel = viewModel
         item = viewModel.item
@@ -51,7 +52,7 @@ class HomeFragment : Fragment() {
             if(item.output.isNotEmpty()) {
                 shareContentText(view.context, item.output)
             }else{
-                Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -61,7 +62,7 @@ class HomeFragment : Fragment() {
                     it.input = it.output
                     it.output = ""
                 }else{
-                    Toast.makeText(context, "Output is empty yet.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -78,15 +79,6 @@ class HomeFragment : Fragment() {
                 binding.passwordLayout.etPassword
             )
         }
-
-
-        /*
-        // DEBUGGING:
-        viewModel.item.password = "password"
-        viewModel.item.input = "Debugging! \uD83D\uDE01"
-        viewModel.item.alias = "alias"
-        //////////////
-*/
 
         arguments?.let{
             val args = HomeFragmentArgs.fromBundle(arguments!!)
@@ -108,15 +100,4 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
-    companion object {
-
-        fun initFragment(context: Context){
-            val intent = Intent(context, MainActivity::class.java).apply{
-                putExtra("message", "Message")
-            }
-
-        }
-
-    }
 }

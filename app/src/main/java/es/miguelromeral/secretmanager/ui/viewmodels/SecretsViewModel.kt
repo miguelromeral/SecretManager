@@ -3,22 +3,13 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 import android.app.Application
 import android.content.Context
 import android.view.View
-import android.widget.ListAdapter
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
-import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
-import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
-import es.miguelromeral.secretmanager.ui.adapters.SecretAdapter
-import es.miguelromeral.secretmanager.ui.fragments.HomeFragment
 import es.miguelromeral.secretmanager.ui.fragments.SecretsFragmentDirections
 import kotlinx.coroutines.*
-import org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id
 
 class SecretsViewModel (
     val database: SecretDatabaseDao,
@@ -34,16 +25,16 @@ class SecretsViewModel (
 
 
 
-    fun filterSecrets(p0: String?): Boolean {
-        if(p0 == null || p0.isEmpty()){
+    fun filterSecrets(criteria: String?): Boolean {
+        if(criteria == null || criteria.isEmpty()){
             filteredList.postValue(secrets.value)
         }else {
             val tmp = mutableListOf<Secret>()
-            val input = p0.toLowerCase()
+            val input = criteria.toLowerCase()
 
             secrets.value?.let {
                 for (s in it) {
-                    if (s.alias.toLowerCase().contains(p0)){
+                    if (s.alias.toLowerCase().contains(criteria)){
                         tmp.add(s)
                     }
                 }
@@ -55,8 +46,6 @@ class SecretsViewModel (
 
 
     fun openSecret(context: Context, view: View, item: Secret) {
-        //Toast.makeText(context, "Hola! ${item.id}", Toast.LENGTH_LONG).show()
-
         view.findNavController().navigate(
             SecretsFragmentDirections.actionNavigationNotificationsToNavigationHome(item.content))
     }

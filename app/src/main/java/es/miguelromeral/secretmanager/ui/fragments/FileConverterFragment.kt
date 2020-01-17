@@ -51,7 +51,7 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         // Initialize View Model
         viewModel = ViewModelProviders.of(this, vmf).get(FileConverterViewModel::class.java)
         // Initialize Binding
-        binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_file_converter, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_file_converter, container, false)
         // Passing the parameters to binding variables
         binding.viewModel = viewModel
         binding.fileItem = viewModel.item
@@ -153,15 +153,14 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
         viewModel.errorDecrypting.observe(this, Observer { error ->
             error?.let{
-                val title = if(it) "Error while decryption" else "Error while encryption"
-                val body = if(it) "The password doesn't match with the file to be decrypted" else
-                    "There was a problem while encrypting your file. Please, try again later"
+                val title = getString(if(it) R.string.error_decryption else R.string.error_encryption)
+                val body = getString(if(it) R.string.error_mismatch_password else R.string.error_wrong_encryption)
 
                 val builder = createAlertDialog(
                     context!!,
                     title = title,
                     body = body,
-                    negative = "OK"
+                    negative = getString(R.string.ok_answer)
                 )
                 builder.create().show()
                 viewModel.clearErrorExecuting()
@@ -169,8 +168,8 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         })
 
         createChannel(
-            getString(R.string.channel_id_files),
-            getString(R.string.channel_id_files_name)
+            getString(R.string.channel_files_id),
+            getString(R.string.channel_files_name)
         )
 
         // Returning the binding root
@@ -216,7 +215,7 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
 
             notificationChannel.enableLights(true)
             notificationChannel.enableVibration(true)
-            notificationChannel.description = "Notification Description"
+            notificationChannel.description = getString(R.string.channel_files_description)
 
             val notificationManager = requireActivity().getSystemService(
                 NotificationManager::class.java
@@ -232,7 +231,6 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         private const val REQUEST_CODE = 10
         private const val WRITE_REQUEST_CODE = 43
 
-        const val ARGUMENT_INTENT = "argument_intent"
 
         fun getInstance(data: Intent?): FileConverterFragment{
             return FileConverterFragment(data)

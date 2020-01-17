@@ -50,12 +50,12 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
 
     val builder = NotificationCompat.Builder(
         applicationContext,
-        applicationContext.getString(R.string.channel_id_files)
+        applicationContext.getString(R.string.channel_files_id)
     )
         .setSmallIcon(R.drawable.sm_logo_72)
         .setContentTitle("Notification Title")
         .setContentText(messageBody)
-        //.setContentIntent(contentPendingIntent)
+        .setContentIntent(contentPendingIntent)
         .setAutoCancel(true)
 
     notify(NOTIFICATION_ID, builder.build())

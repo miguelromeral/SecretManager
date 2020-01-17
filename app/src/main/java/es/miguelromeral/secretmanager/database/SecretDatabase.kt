@@ -14,6 +14,8 @@ abstract class SecretDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: SecretDatabase? = null
 
+        const val DATABASE_NAME = "secret_database"
+
         fun getInstance(context: Context): SecretDatabase {
             synchronized(this){
                 var instance = INSTANCE
@@ -21,7 +23,7 @@ abstract class SecretDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         SecretDatabase::class.java,
-                        "secret_database")
+                        DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.classes.writeFile
 import es.miguelromeral.secretmanager.ui.models.FileItem
@@ -100,7 +101,7 @@ class FileConverterViewModel
     private suspend fun executeInScope(context: Context, outputFileUri: Uri?){
         return withContext(Dispatchers.IO) {
             if (item.uri == null) {
-                _errorMessage.postValue("There's no file to process")
+                _errorMessage.postValue(context.getString(R.string.error_no_file_process))
                 return@withContext
             }
 
@@ -108,7 +109,7 @@ class FileConverterViewModel
             item.input = readTextFromUri(item.uri!!, context.contentResolver)
 
             if (item.input == null) {
-                _errorMessage.postValue("The file is empty.")
+                _errorMessage.postValue(context.getString(R.string.error_empty_file))
                 return@withContext
             }
 
@@ -118,8 +119,8 @@ class FileConverterViewModel
                 true -> {
                     if (item.decrypt()) {
                         if (write(context, outputFileUri)){
-                            notificationManager.sendNotification("File ${item.name} decrypted successfully!", context, outputFileUri!!)
-//                            _errorMessage.postValue("File decrypted successfully!")
+                            notificationManager.sendNotification(
+                                context.getString(R.string.channel_files_body_decrypted, item.name), context, outputFileUri!!)
                         }
                     } else {
                         _errorDecrypting.postValue(true)
@@ -130,10 +131,9 @@ class FileConverterViewModel
                         if (write(context, outputFileUri)) {
 
 
-                            notificationManager.sendNotification("File encrypted successfully!", context,
+                            notificationManager.sendNotification(context.getString(R.string.channel_files_body_encrypted), context,
                                 outputFileUri!!)
 
-                            //_errorMessage.postValue("File encrypted successfully!")
                         }
                     } else {
                         _errorDecrypting.postValue(false)
@@ -165,7 +165,7 @@ class FileConverterViewModel
 
         }else{
             item.uri = null
-            item.name = "Unknown"
+            item.name = context.getString(R.string.error_unknown_file)
 
         }
     }

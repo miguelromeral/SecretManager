@@ -58,7 +58,7 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
         //Toast.makeText(context, "Exported", Toast.LENGTH_SHORT).show()
         return Uri.parse(file.absolutePath)
     } catch (sqlEx: Exception) {
-        Log.e("ExportCSV", sqlEx.message, sqlEx)
+        Log.e(TAG, sqlEx.message, sqlEx)
     }
     return null
 }
@@ -99,7 +99,7 @@ fun importSecrets(db: SecretDatabase){
 
 
 
-        Log.d("ImportCSV", "$columns -------" + value)
+        Log.d(TAG, "$columns -------" + value)
     }
 }
 
