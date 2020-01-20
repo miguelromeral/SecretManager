@@ -100,11 +100,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun importSecrets(){
-        val res = importSecretsFU(baseContext, SecretDatabase.getInstance(baseContext))
-        Log.i("MainActivity", "Resultado: $res")
-    }
-
     fun exportSecrets(){
         exportSecrets(baseContext, SecretDatabase.getInstance(baseContext))?.let{ uri ->
 

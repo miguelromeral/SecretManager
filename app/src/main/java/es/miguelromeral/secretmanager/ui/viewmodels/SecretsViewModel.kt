@@ -2,11 +2,17 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.database.Secret
+import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.ui.fragments.SecretsFragmentDirections
 import kotlinx.coroutines.*
@@ -16,13 +22,32 @@ class SecretsViewModel (
     application: Application
 ) : AndroidViewModel(application) {
 
-    val secrets = database.getAllSecrets()
+    lateinit var secrets: LiveData<List<Secret>>
+
+    private var _dataChanged = MutableLiveData<Boolean>()
+    val dataChanged: LiveData<Boolean>
+        get() = _dataChanged
+
+
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     val filteredList: MutableLiveData<List<Secret>> = MutableLiveData()
 
+
+    init {
+        updateAllSecrets()
+    }
+
+    fun updateAllSecrets(){
+        secrets = database.getAllSecrets()
+        _dataChanged.postValue(true)
+    }
+
+    fun finalDataChanged(){
+        _dataChanged.postValue(false)
+    }
 
 
     fun filterSecrets(criteria: String?): Boolean {
@@ -76,6 +101,33 @@ class SecretsViewModel (
             database.clearStarts()
         }
     }
+
+    fun importSecrets(list: RecyclerView) = uiScope.launch {
+
+        val task = async(Dispatchers.IO) {
+            importSecretsFU(list.context, list, database)
+
+        }
+
+        when(task.await()){
+            true -> {
+               /* list.adapter?.let {
+                    it.notifyDataSetChanged()
+                    //secrets = database.getAllSecrets()
+                    //filterSecrets(null)
+                }*/
+
+                updateAllSecrets()
+                //secrets.value = database.getAllSecrets().value
+
+                Log.i("FileUtils", "Everything OK!")
+            }
+            false -> {
+                Log.i("FileUtils", "Something went wrong")
+            }
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

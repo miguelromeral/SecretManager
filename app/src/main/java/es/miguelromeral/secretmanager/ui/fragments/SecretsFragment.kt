@@ -23,6 +23,7 @@ import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.SecretsViewModel
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
@@ -84,9 +85,17 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         binding.secretsList.adapter = adapter
 
-        viewModel.secrets.observe(this, Observer {
-            viewModel.filteredList.postValue(it)
-            binding.warningEmptyDbSecrets.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        viewModel.dataChanged.observe(this, Observer { changed ->
+            if(changed == true){
+                viewModel.secrets.observe(this, Observer {
+                    it?.let {
+                        viewModel.filteredList.postValue(it)
+                        binding.warningEmptyDbSecrets.visibility =
+                            if (it.isEmpty()) View.VISIBLE else View.GONE
+                    }
+                })
+                viewModel.finalDataChanged()
+            }
         })
 
         viewModel.filteredList.observe(this, Observer {
@@ -143,7 +152,11 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                 }
 
                 R.id.option_import_secrets -> {
-                    (activity!! as MainActivity).importSecrets()
+
+                    binding.warningEmptyDbSecrets.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                    viewModel.importSecrets(binding.secretsList)
+                    binding.progressBar.visibility = View.GONE
                 }
 
                 es.miguelromeral.secretmanager.R.id.option_export_secrets -> {

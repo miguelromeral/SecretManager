@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
+import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
@@ -33,7 +34,7 @@ private const val FILENAME = "secret_manager.csv"
 private const val TAG = "FileUtils"
 
 
-fun importSecretsFU(context: Context, db: SecretDatabase): Uri? {
+suspend fun importSecretsFU(context: Context, recyclerView: RecyclerView, db: SecretDatabaseDao): Boolean {
     val exportDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.getAbsolutePath(), "")
     if (!exportDir.exists()) {
         exportDir.mkdirs()
@@ -44,14 +45,12 @@ fun importSecretsFU(context: Context, db: SecretDatabase): Uri? {
 
         val csvReader = CSVReader(FileReader(file))
 
-        var count = 0
-        var columns = StringBuilder()
-        var value = StringBuilder()
-
-
         val job = Job()
         val uiScope = CoroutineScope(Dispatchers.Main + job)
 
+        var count = 0
+        var columns = StringBuilder()
+        var value = StringBuilder()
 
         var keep = true
 
@@ -83,10 +82,8 @@ fun importSecretsFU(context: Context, db: SecretDatabase): Uri? {
                 val query = SimpleSQLiteQuery("Insert INTO "+ Secret.TABLE_NAME + " (" + columns + ") values(" + value +")")
                 Log.i(TAG, "Query: ${query.sql}")
                 try {
-                    uiScope.launch {
-                        val s = insertRow(query, db)
-                        Log.i(TAG, "Success: $s")
-                    }
+                    val s = db.insertDataRawFormat(query)
+                    Log.i(TAG, "Success: $s")
                 }catch (e: java.lang.Exception){
                     Log.i(TAG, "Excepcion while inserting: ${e.message}")
                     e.printStackTrace()
@@ -97,23 +94,12 @@ fun importSecretsFU(context: Context, db: SecretDatabase): Uri? {
             count += 1
         }
 
-        return Uri.parse(file.absolutePath)
+        return count != 1
 
     } catch (sqlEx: Exception) {
         Log.e(TAG, sqlEx.message, sqlEx)
     }
-    return null
-}
-
-suspend fun insertRow(query: SimpleSQLiteQuery, db: SecretDatabase): Boolean{
-    return withContext(Dispatchers.IO){
-        try {
-            db.secretDatabaseDao.insertDataRawFormat(query)
-        }catch (e: java.lang.Exception){
-            Log.i(TAG, "Exception while inserting query: ${e.message}")
-            false
-        }
-    }
+    return false
 }
 
 
@@ -140,7 +126,6 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
             for (i in 0 until columnCounts)
                 arrStr[i] = curCSV.getString(i)
             csvWrite.writeNext(arrStr)
-            //csvWrite.writeNext(null)
         }
         csvWrite.close()
         curCSV.close()
