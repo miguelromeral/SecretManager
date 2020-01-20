@@ -21,6 +21,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
+import kotlinx.coroutines.*
 import java.io.*
 import java.nio.file.Files.exists
 import org.bouncycastle.util.Strings.toByteArray
@@ -30,6 +31,94 @@ import org.bouncycastle.util.Strings.toByteArray
 
 private const val FILENAME = "secret_manager.csv"
 private const val TAG = "FileUtils"
+
+
+fun importSecretsFU(context: Context, db: SecretDatabase): Uri? {
+    val exportDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.getAbsolutePath(), "")
+    if (!exportDir.exists()) {
+        exportDir.mkdirs()
+    }
+
+    val file = File(exportDir, FILENAME)
+    try {
+
+        val csvReader = CSVReader(FileReader(file))
+
+        var count = 0
+        var columns = StringBuilder()
+        var value = StringBuilder()
+
+
+        val job = Job()
+        val uiScope = CoroutineScope(Dispatchers.Main + job)
+
+
+        var keep = true
+
+        while(keep){
+            var nextLine = csvReader.readNext()
+            if(nextLine == null){
+                keep = false
+                break
+            }
+            var i = 0
+            while(i < nextLine.size){
+                if(count == 0){
+                    if(i == nextLine.size - 1)
+                        columns.append(nextLine[i])
+                    else
+                        columns.append(nextLine[i]).append(",")
+                } else {
+                    if(i == nextLine.size - 1)
+                        value.append("'").append(nextLine[i]).append("'")
+                    else
+                        value.append("'").append(nextLine[i]).append("',")
+                }
+
+                i += 1
+            }
+
+            Log.d(TAG, "${columns}-------${value}")
+            if(count != 0){
+                val query = SimpleSQLiteQuery("Insert INTO "+ Secret.TABLE_NAME + " (" + columns + ") values(" + value +")")
+                Log.i(TAG, "Query: ${query.sql}")
+                try {
+                    uiScope.launch {
+                        val s = insertRow(query, db)
+                        Log.i(TAG, "Success: $s")
+                    }
+                }catch (e: java.lang.Exception){
+                    Log.i(TAG, "Excepcion while inserting: ${e.message}")
+                    e.printStackTrace()
+                }
+                value = StringBuilder()
+            }
+
+            count += 1
+        }
+
+        return Uri.parse(file.absolutePath)
+
+    } catch (sqlEx: Exception) {
+        Log.e(TAG, sqlEx.message, sqlEx)
+    }
+    return null
+}
+
+suspend fun insertRow(query: SimpleSQLiteQuery, db: SecretDatabase): Boolean{
+    return withContext(Dispatchers.IO){
+        try {
+            db.secretDatabaseDao.insertDataRawFormat(query)
+        }catch (e: java.lang.Exception){
+            Log.i(TAG, "Exception while inserting query: ${e.message}")
+            false
+        }
+    }
+}
+
+
+
+
 
 fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
 
@@ -61,46 +150,6 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
         Log.e(TAG, sqlEx.message, sqlEx)
     }
     return null
-}
-
-
-fun importSecrets(db: SecretDatabase){
-    val csvReader = CSVReader(FileReader(Environment.DIRECTORY_DOCUMENTS!! + "/" + FILENAME))
-    var nextLine: Array<String>? = arrayOf<String>()
-    var count = 0
-    val columns = StringBuilder()
-    val value = StringBuilder()
-
-
-    while (true) {
-
-        nextLine = csvReader.readNext()
-        if(nextLine == null){
-            break
-        }
-
-        var i = 0
-        while(i < nextLine.size){
-            if (count == 0) {
-                if (i == nextLine.size - 2)
-                    columns.append(nextLine[i])
-                else
-                    columns.append(nextLine[i]).append(",")
-            } else {
-                if (i == nextLine.size - 2)
-                    value.append("'").append(nextLine[i]).append("'")
-                else
-                    value.append("'").append(nextLine[i]).append("',")
-            }
-            i++
-
-        }
-
-
-
-
-        Log.d(TAG, "$columns -------" + value)
-    }
 }
 
 

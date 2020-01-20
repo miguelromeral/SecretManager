@@ -28,10 +28,8 @@
 
 
     <Button
+        style="@style/myButton"
         android:id="@+id/bExecute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:enabled="@{enableButton}"
         android:text="@{checker == false ? @string/encrypt : @string/decrypt }"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +38,7 @@
         tools:text="@string/encrypt" />
 
     <Switch
+        style="@style/mySwitch"
         android:id="@+id/sOperation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -8,7 +8,6 @@
         <item name="colorAccent">#cf69ff</item>
         <item name="android:windowBackground">#000</item>
         <item name="android:navigationBarColor">#000</item>
-
     </style>
 
 
@@ -20,6 +19,10 @@
     <style name="IconTheme">
         <item name="android:tint">#fff</item>
     </style>
+
+
+
+
 
 </resources>
 

@@ -1,20 +1,27 @@
 package es.miguelromeral.secretmanager.ui.utils
 
+import android.content.Context
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.preference.PreferenceManager
+import es.miguelromeral.secretmanager.R
 import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter("dateFormatted")
 fun TextView.setDateFormatted(date: Long?) {
     date?.let {
-        text = convertLongToTime(date)
+        val format = PreferenceManager.getDefaultSharedPreferences(context).getString(
+            context.getString(R.string.preference_date_format_id),
+            context.getString(R.string.date_format_one)
+        ) ?: context.getString(R.string.date_format_one)
+        text = convertLongToTime(format, date)
     }
 }
 
 
-fun convertLongToTime(time: Long): String {
+fun convertLongToTime(format: String, time: Long): String {
     val date = Date(time)
-    val format = SimpleDateFormat("yyyy\\/MM\\/dd HH:mm")
+    val format = SimpleDateFormat( format)
     return format.format(date)
 }

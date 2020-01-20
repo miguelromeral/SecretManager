@@ -27,10 +27,8 @@
 
 
         <Button
+            style="@style/myButton"
             android:id="@+id/bPickFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="@string/pick_file"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +36,8 @@
 
         <TextView
             android:id="@+id/tvFilePath"
+            style="@style/myTextView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:text="@{fileItem.name}"
@@ -63,13 +61,11 @@
 
         <TextView
             android:id="@+id/tvFileSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="@{fileItem.size}"
             app:layout_constraintBottom_toBottomOf="@+id/bPickFile"
             app:layout_constraintStart_toEndOf="@+id/bPickFile"
-            tools:text="1.2 MB" />
+            tools:text="1.2 MB"
+            style="@style/myTextView" />
 
 
         <include

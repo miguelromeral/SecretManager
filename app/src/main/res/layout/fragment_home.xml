@@ -63,10 +63,9 @@
                     android:layout_height="0dp">
 
                     <EditText
+                        style="@style/myEditText"
                         android:id="@+id/etInput"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
                         android:maxLines="10"
                         android:hint="@string/hint_input"
                         android:inputType="textCapSentences|textMultiLine"
@@ -85,25 +84,15 @@
 
             <EditText
                 android:id="@+id/etOutput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="80dp"
-                android:ems="10"
-                android:enabled="false"
                 android:hint="@string/hint_output"
-                android:inputType="textCapSentences|textMultiLine"
-                android:overScrollMode="ifContentScrolls"
-                android:singleLine="false"
                 android:text="@={item.output}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/execute_button"
-                tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad" />
+                tools:text="asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddedad"
+                style="@style/editTextOutput" />
 
             <include
                 android:id="@+id/execute_button"
@@ -118,12 +107,8 @@
                 bind:enableButton="@{item.ready}" />
 
             <Button
+                style="@style/myButton"
                 android:id="@+id/bExchange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/copy_from_output"
                 app:layout_constraintBottom_toTopOf="@+id/etOutput"
                 app:layout_constraintStart_toStartOf="parent"
@@ -153,16 +138,10 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:layout_gravity="end|bottom"
-            android:focusable="true"
             android:src="@drawable/share"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/myFloatingActionButton" />
 
     </FrameLayout>
 

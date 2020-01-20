@@ -26,6 +26,14 @@
     <string name="preference_key_theme" translatable="false">preference_app_theme</string>
     <string name="preference_key_filename" translatable="false">preference_app_filenamme</string>
     <string name="preference_filename_default">secret_manager_file</string>
+    <string name="preference_date_format_id" translatable="false">preferenceDateFormat</string>
+    <string name="preference_date_format_title">Date Format</string>
+
+
+    <string name="date_format_one" translatable="false">yyyy\/MM\/dd HH:mm</string>
+    <string name="date_format_two" translatable="false">dd\/MM\/yyyy HH:mm</string>
+    <string name="date_format_three" translatable="false">yyyy\/MM\/dd</string>
+    <string name="date_format_four" translatable="false">dd\/MM\/yyyy</string>
 
     <!-- Text Execution -->
     <string name="secret_stored">Stored successfully under the alias \"%1$s\"</string>
@@ -71,10 +79,11 @@
 
     <!-- Notifications -->
     <string name="channel_files_id">channel_id_files</string>
-    <string name="channel_files_name">channel_id_files_name</string>
+    <string name="channel_files_name">File Conversions Completed</string>
+    <string name="channel_files_title">File Converted</string>
     <string name="channel_files_body_decrypted">File \"%1$s\" decrypted successfully!</string>
     <string name="channel_files_body_encrypted">File encrypted successfully!</string>
-    <string name="channel_files_description">Notification Description</string>
+    <string name="channel_files_description">Shows a notification when the file conversion has been completed.</string>
 
 
     <string name="show_pwd">Show Password</string>

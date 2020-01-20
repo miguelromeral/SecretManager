@@ -142,6 +142,10 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                     }
                 }
 
+                R.id.option_import_secrets -> {
+                    (activity!! as MainActivity).importSecrets()
+                }
+
                 es.miguelromeral.secretmanager.R.id.option_export_secrets -> {
                     context?.let {
 

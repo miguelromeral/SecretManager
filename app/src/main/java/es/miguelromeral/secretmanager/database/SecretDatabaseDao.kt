@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface SecretDatabaseDao {
@@ -26,7 +27,7 @@ interface SecretDatabaseDao {
     fun clearStarts()
 
 
-/*
+
     @RawQuery
-    fun insertDataRawFormat(SupportSQLiteQuery query): Boolean */
+    fun insertDataRawFormat(query: SupportSQLiteQuery): Boolean
 }

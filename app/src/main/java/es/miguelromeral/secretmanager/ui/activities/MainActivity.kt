@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.os.FileUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -26,6 +27,7 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.ui.fragments.*
 
 
@@ -96,6 +98,11 @@ class MainActivity : AppCompatActivity() {
                 // Ignore all other requests.
             }
         }
+    }
+
+    fun importSecrets(){
+        val res = importSecretsFU(baseContext, SecretDatabase.getInstance(baseContext))
+        Log.i("MainActivity", "Resultado: $res")
     }
 
     fun exportSecrets(){
