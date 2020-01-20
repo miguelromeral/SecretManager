@@ -1,4 +1,4 @@
-# <img alt='SecretManager' src='https://raw.githubusercontent.com/miguelromeral/SecretManager/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_sm_round.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-7.1-green)
+# <img alt='SecretManager' src='https://github.com/miguelromeral/SecretManager/blob/master/app/src/main/ic_launcher_sm_v2-web.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-7.1-green)
 
 ## Introduction
 
@@ -58,4 +58,4 @@ GNU GENERAL PUBLIC LICENSE 3.0
 
 ## Privacy Policy
 
-You can read the app Privacy Policy in [this link](https://github.com/miguelromeral/SecretManager/blob/master/PRIVACY-POLICY.md).
+You can read the [app Privacy Policy](https://github.com/miguelromeral/SecretManager/blob/master/PRIVACY-POLICY.md).
