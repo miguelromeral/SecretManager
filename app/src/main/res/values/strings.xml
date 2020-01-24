@@ -28,6 +28,7 @@
     <string name="preference_filename_default">secret_manager_file</string>
     <string name="preference_date_format_id" translatable="false">preferenceDateFormat</string>
     <string name="preference_date_format_title">Date Format</string>
+    <string name="preference_help_id" translatable="false">preference_app_help</string>
 
 
     <string name="date_format_one" translatable="false">yyyy\/MM\/dd HH:mm</string>

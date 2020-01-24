@@ -1,4 +1,4 @@
-# <img alt='SecretManager' src='https://github.com/miguelromeral/SecretManager/blob/master/app/src/main/ic_launcher_sm_v2-web.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-7.1-green)
+# <img alt='SecretManager' src='https://github.com/miguelromeral/SecretManager/blob/master/app/src/main/ic_launcher_sm_v2-web.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-7.1-green) <a href='https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="70" width="auto" /></a>
 
 ## Introduction
 
@@ -6,11 +6,9 @@ Android application that performs encryption and decryption of user's data, such
 
 ## Availability
 
-In those moments, Secret Manager is being developed and **is not currently available on Google Play yet. The application will not be released until, at least, Febrary 2020.**
+You can download Secret Manager from [Google Play](https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager), currently on its Beta version.
 
-*Meanwhile, you can look for other apps developed by MiguelRomeral on [Google Play's Developer Page](https://play.google.com/store/apps/dev?id=8494694764432462089)*
-
-This app requires Android 7.1 or better to be dowloaded and installed on your device.
+This app requires Android 7.1 or better to be downloaded and installed on your device.
 
 ## Functionalities and Screenshots
 
@@ -23,10 +21,15 @@ This app requires Android 7.1 or better to be dowloaded and installed on your de
 * Export and import secrets stored oon the device.
 * Day / Night app theme.
 
+## Help
+
+If you need help with the application, please visit the [FAQs](https://github.com/miguelromeral/SecretManager/blob/master/HOW-TO.md) or contact the developer via the information given below.
+
 ## Version Notes
 
 Version|Code|Changes
 --- | --- | ---
+1.1|2|Added File Limit to 50 MB.
 1.0|1|First Version
 
 ## TO BE DONE
@@ -36,7 +39,6 @@ Version|Code|Changes
 * Comment code
 * Test functionalities
 * Spanish Translation
-* Official Release on Google Play (not before Febrary 2020)
 
 ## About
 

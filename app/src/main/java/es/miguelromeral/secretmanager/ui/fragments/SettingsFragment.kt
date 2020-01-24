@@ -12,11 +12,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.*
 import es.miguelromeral.secretmanager.R
+import android.content.Intent
+import android.net.Uri
+
 
 class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        findPreference(getString(R.string.preference_help_id)).setOnPreferenceClickListener {
+            context?.let{
+                val i = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://github.com/miguelromeral/SecretManager/blob/master/HOW-TO.md")
+                }
+                it.startActivity(i)
+                return@setOnPreferenceClickListener true
+            }
+            false
+        }
     }
 
     override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
