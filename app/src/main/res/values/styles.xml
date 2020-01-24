@@ -14,6 +14,7 @@
 
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="IconTheme">
@@ -23,7 +24,6 @@
     <style name="IconThemeWhite">
         <item name="android:tint">#FFF</item>
     </style>
-
 
 
 
@@ -51,7 +51,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="editTextOutput">
@@ -76,7 +76,7 @@
         <item name="android:clickable">true</item>
         <item name="android:layout_gravity">end|bottom</item>
         <item name="android:focusable">true</item>
-        <item name="tint">@color/colorAccent</item>
+        <item name="tint">@color/white</item>
     </style>
 
     <style name="threeDotsText">
@@ -92,7 +92,7 @@
     </style>
 
     <style name="myCardView">
-        <item name="cardBackgroundColor">@color/almost_black</item>
+        <item name="cardBackgroundColor">@color/almost_white</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">8sp</item>
@@ -102,7 +102,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ems">10</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="myCheckBox">

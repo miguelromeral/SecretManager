@@ -10,6 +10,7 @@
     <color name="white">#fff</color>
     <color name="gray">#777</color>
     <color name="almost_black">#222</color>
+    <color name="almost_white">#ddd</color>
     <color name="black">#000</color>
 
 </resources>

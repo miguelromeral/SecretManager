@@ -1,6 +1,7 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -161,49 +162,54 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
                 es.miguelromeral.secretmanager.R.id.option_export_secrets -> {
                     context?.let {
-
-                        // Here, thisActivity is the current activity
-                        if (ContextCompat.checkSelfPermission(activity!!,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-
-
-                            Log.i("ExportCSV", "Permission NOT Granted")
-
-                            // Permission is not granted
-                            // Should we show an explanation?
-                            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                // Show an explanation to the user *asynchronously* -- don't block
-                                // this thread waiting for the user's response! After the user
-                                // sees the explanation, try again to request the permission.
-
-                                Toast.makeText(it, R.string.explanation_file_permissions, Toast.LENGTH_LONG).show()
-                                Log.i("ExportCSV", "Permission Explanation")
-
-                            } else {
-                                // No explanation needed, we can request the permission.
-                                ActivityCompat.requestPermissions(activity!!,
-                                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                                    REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION)
-
-
-                                Log.i("ExportCSV", "Permission NO explanation needed")
-
-                                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                                // app-defined int constant. The callback method gets the
-                                // result of the request.
-                            }
-                        } else {
-                            // Permission has already been granted
-                            Log.i("ExportCSV", "Permission has already been Granted")
-                            (activity!! as MainActivity).exportSecrets()
-                        }
+                        exportSecrets(it)
                     }
                 }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun exportSecrets(it: Context){
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(activity!!,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+
+            Log.i("ExportCSV", "Permission NOT Granted")
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                Toast.makeText(it, R.string.explanation_file_permissions, Toast.LENGTH_LONG).show()
+                Log.i("ExportCSV", "Permission Explanation")
+
+
+            }
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(activity!!,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION)
+
+
+                Log.i("ExportCSV", "Permission NO explanation needed")
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+
+        } else {
+            // Permission has already been granted
+            Log.i("ExportCSV", "Permission has already been Granted")
+            (activity!! as MainActivity).exportSecrets()
+        }
     }
 
 

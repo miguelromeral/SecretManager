@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -15,6 +16,7 @@ import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.readTextFromUri
 import es.miguelromeral.secretmanager.classes.writeFile
 import es.miguelromeral.secretmanager.ui.models.FileItem
+import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 import es.miguelromeral.secretmanager.ui.utils.readableFileSize
 import es.miguelromeral.secretmanager.ui.utils.sendNotification
 import kotlinx.coroutines.*
@@ -143,11 +145,16 @@ class FileConverterViewModel
         }
     }
 
+    private fun clearFileSelected(){
+        item.output = null
+        item.input = null
+        item.uri = null
+        item.name = String()
+    }
 
     fun proccessNewFile(context: Context, data: Uri?){
 
-        item.output = null
-        item.input = null
+        clearFileSelected()
 
         if(data != null){
             val cursor: Cursor? = context.contentResolver.query(data, null, null, null, null, null)
@@ -158,8 +165,25 @@ class FileConverterViewModel
                     val size = it.getString(it.getColumnIndex(OpenableColumns.SIZE))
                     item.uri = data
                     item.name = displayName
-                    item.size =
-                        readableFileSize(size.toLong())
+                    val size_val = size.toLong()
+                    item.size = readableFileSize(size_val)
+
+                    if(size_val > MAX_FILE_SIZE){
+                        item.size = context.getString(R.string.error_file_size_not_allowed,
+                            readableFileSize(size_val),
+                            readableFileSize(size_val - MAX_FILE_SIZE))
+                        val bu = createAlertDialog(
+                            context,
+                            title = context.getString(R.string.error_max_file_size_title),
+                            body = context.getString(R.string.error_max_file_size, readableFileSize(MAX_FILE_SIZE.toLong()))
+                        )
+                        bu.setPositiveButton(context.getString(R.string.ok_answer))
+                        {dialog, which ->}
+
+                        val dialog = bu.create()
+                        dialog.show()
+                        clearFileSelected()
+                    }
                 }
             }
 
@@ -178,5 +202,7 @@ class FileConverterViewModel
 
     companion object{
         private const val TAG = "FileConverterViewModel"
+
+        const val MAX_FILE_SIZE = 50 * 1024 * 1024
     }
 }

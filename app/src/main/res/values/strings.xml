@@ -76,6 +76,9 @@
     <string name="error_empty_file">The file is empty.</string>
     <string name="error_unknown_file">Unknown File</string>
     <string name="error_unprovided_alias">You must provide an alias name to be stored.</string>
+    <string name="error_max_file_size_title">File too large.</string>
+    <string name="error_max_file_size">Unfortunately, the max size of file to be converted is %1$s. Please, choose another file.</string>
+    <string name="error_file_size_not_allowed">Your file is %1$s, exceeding the size limit by %2$s.</string>
 
     <!-- Notifications -->
     <string name="channel_files_id">channel_id_files</string>

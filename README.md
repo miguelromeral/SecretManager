@@ -8,7 +8,7 @@ Android application that performs encryption and decryption of user's data, such
 
 In those moments, Secret Manager is being developed and **is not currently available on Google Play yet. The application will not be released until, at least, Febrary 2020.**
 
-`Meanwhile, you can look for other apps developed by MiguelRomeral on [Google Play's Developer Page](https://play.google.com/store/apps/dev?id=8494694764432462089)`
+*Meanwhile, you can look for other apps developed by MiguelRomeral on [Google Play's Developer Page](https://play.google.com/store/apps/dev?id=8494694764432462089)*
 
 This app requires Android 7.1 or better to be dowloaded and installed on your device.
 
