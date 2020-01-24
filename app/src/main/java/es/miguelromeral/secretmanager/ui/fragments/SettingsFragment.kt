@@ -14,13 +14,19 @@ import androidx.preference.*
 import es.miguelromeral.secretmanager.R
 import android.content.Intent
 import android.net.Uri
+import android.graphics.PorterDuff
+import android.R.color
+import android.graphics.drawable.Drawable
+
+
 
 
 class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        findPreference(getString(R.string.preference_help_id)).setOnPreferenceClickListener {
+        val p = findPreference(getString(R.string.preference_help_id))
+        p.setOnPreferenceClickListener {
             context?.let{
                 val i = Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse("https://github.com/miguelromeral/SecretManager/blob/master/HOW-TO.md")
@@ -29,6 +35,27 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
                 return@setOnPreferenceClickListener true
             }
             false
+        }
+
+        setTintColor(context)
+    }
+
+    private fun setTintColor(context: Context?){
+        context?.let {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val night = isNightThemeEnabled(context, sharedPreferences)
+            val preferences = listOf(
+                context.getString(R.string.preference_help_id),
+                context.getString(R.string.preference_date_format_id),
+                context.getString(R.string.preference_key_theme),
+                context.getString(R.string.preference_key_filename)
+            )
+
+            for (spr in preferences) {
+                val pref = findPreference(spr).icon.setTint(
+                    if (night) context.getColor(R.color.purple) else context.getColor(R.color.black)
+                )
+            }
         }
     }
 
@@ -56,6 +83,10 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
     }
 
     companion object {
+
+        fun isNightThemeEnabled(context: Context, sharedPreferences: SharedPreferences) =
+            sharedPreferences!!.getBoolean(context.getString(R.string.preference_key_theme), false)
+
 
         fun setStyleTheme(context: Context, sharedPreferences: SharedPreferences? = null){
             val preferences = sharedPreferences ?: PreferenceManager.getDefaultSharedPreferences(context)
