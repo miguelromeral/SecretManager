@@ -53,11 +53,13 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
                 context.getString(R.string.preference_help_id),
                 context.getString(R.string.preference_date_format_id),
                 context.getString(R.string.preference_key_theme),
-                context.getString(R.string.preference_key_filename)
+                context.getString(R.string.preference_key_filename),
+                context.getString(R.string.preference_save_qr_id)
             )
 
             for (spr in preferences) {
-                val pref = findPreference(spr).icon.setTint(
+                val pref = findPreference(spr)
+                pref.icon.setTint(
                     if (night) context.getColor(R.color.purple) else context.getColor(R.color.black)
                 )
             }

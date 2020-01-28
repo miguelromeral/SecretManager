@@ -107,13 +107,6 @@
                 bind:checker="@={item.decrypt}"
                 bind:enableButton="@{item.ready}" />
 
-            <Button
-                style="@style/myButton"
-                android:id="@+id/bExchange"
-                android:text="@string/copy_from_output"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scroll_input" />
-
 
             <EditText
                 android:id="@+id/etOutput"

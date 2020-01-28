@@ -30,9 +30,13 @@ import android.opengl.Visibility
 import android.os.Environment
 import android.util.AttributeSet
 import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import es.miguelromeral.secretmanager.classes.createQrImage
+import es.miguelromeral.secretmanager.classes.exportSecrets
+import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
@@ -72,20 +76,17 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.bExchange.setOnClickListener{
-            item.let{
-                if(it.output.isNotEmpty()) {
-                    it.input = it.output
-                    it.output = ""
-                }else{
-                    Toast.makeText(context, es.miguelromeral.secretmanager.R.string.error_output_empty, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-
         binding.executeButton.bExecute.setOnClickListener{
             viewModel.execute(it.context)
         }
+/*
+        binding.executeButton.sOperation.setOnCheckedChangeListener { compoundButton, b ->
+            when(b){
+                true -> {
+                    binding.viewModel.
+                }
+            }
+        }*/
 
         // Functionality to Show / Hide Password in this fragment
         binding.passwordLayout.cbShowPassword.setOnClickListener{
@@ -104,7 +105,8 @@ class HomeFragment : Fragment() {
             if(it != null){
                 icon.visibility = View.GONE
 
-                createQrImage(context!!, it, "photo")
+                if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(getString(R.string.preference_save_qr_id), false))
+                    createQrImage(context!!, it, item.alias)
 
                 image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
                 image.visibility = View.VISIBLE
@@ -132,8 +134,37 @@ class HomeFragment : Fragment() {
             item.input = input
         }
 
+        setHasOptionsMenu(true)
+
+
         // Returning the binding root
         return binding.root
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(es.miguelromeral.secretmanager.R.menu.options_home, menu)
+    }
+
+
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        if(menuItem != null){
+            when(menuItem.itemId) {
+                R.id.option_output_to_input -> {
+                    item.let{
+                        if(it.output.isNotEmpty()) {
+                            it.input = it.output
+                            it.output = ""
+                        }else{
+                            Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(menuItem)
     }
 
 }

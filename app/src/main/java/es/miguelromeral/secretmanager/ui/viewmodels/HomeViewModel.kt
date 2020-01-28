@@ -90,7 +90,10 @@ class HomeViewModel(
                 }
                 generateQR(item.output)
             }
-            true -> item.decrypt()
+            true -> {
+                item.decrypt()
+                generateQR(item.output)
+            }
         }
     }
 

@@ -4,6 +4,13 @@
     <PreferenceCategory
         android:title="Execution">
 
+        <SwitchPreferenceCompat
+            android:key="@string/preference_save_qr_id"
+            android:title="Auto Save QR"
+            android:summary="Saves automatically the QR for the stored secrets in internal storage"
+            android:icon="@drawable/qr"
+            android:defaultValue="true"/>
+
         <EditTextPreference
             android:key="@string/preference_key_filename"
             android:title="New file's name"
