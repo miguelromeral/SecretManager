@@ -8,4 +8,8 @@
     <item android:id="@+id/option_delete_secret"
         android:title="@string/list_delete_secret"/>
 
+
+    <item android:id="@+id/option_get_qr"
+        android:title="@string/list_get_qr_code"/>
+
 </menu>

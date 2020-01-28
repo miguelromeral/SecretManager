@@ -1,6 +1,15 @@
 package es.miguelromeral.secretmanager.classes
 
 import android.util.Base64
+import android.util.Log
+import co.metalab.asyncawait.async
+import es.miguelromeral.secretmanager.network.ApiQR
+import es.miguelromeral.secretmanager.network.getSizeQuery
+import kotlinx.coroutines.awaitAll
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.Exception
 import java.util.*
 
@@ -22,3 +31,5 @@ fun IsBase64Encoded(str: String): Boolean
         return false
     }
 }
+
+

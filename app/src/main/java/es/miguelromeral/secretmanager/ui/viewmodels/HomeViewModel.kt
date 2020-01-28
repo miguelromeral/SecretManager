@@ -4,32 +4,20 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.network.ApiQR
-import es.miguelromeral.secretmanager.network.ServiceQR
 import es.miguelromeral.secretmanager.ui.models.TextItem
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
-import java.nio.file.Files.delete
-import java.nio.file.Files.exists
-import android.os.Environment.getExternalStorageDirectory
-import android.os.Environment
 import es.miguelromeral.secretmanager.network.getSizeQuery
 import okhttp3.ResponseBody
-import java.io.File
-import java.io.FileOutputStream
 
 
 class HomeViewModel(
@@ -52,7 +40,7 @@ class HomeViewModel(
     private fun generateQR(text: String?){
 
         if(text != null) {
-            ApiQR.retrofitService.getProperties(
+            ApiQR.retrofitService.getImage(
                 data = text,
                 size = getSizeQuery()
             ).enqueue(

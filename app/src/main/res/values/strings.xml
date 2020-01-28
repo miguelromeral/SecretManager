@@ -47,6 +47,7 @@
     <string name="store_secret_switch">Store Secret</string>
     <string name="list_open_secret">Open</string>
     <string name="list_delete_secret">Delete</string>
+    <string name="list_get_qr_code">Get QR Code</string>
     <string name="option_clear_secrets">Clear all secrets</string>
     <string name="option_export_secrets">Export secrets</string>
     <string name="option_import_secrets">Import secrets</string>

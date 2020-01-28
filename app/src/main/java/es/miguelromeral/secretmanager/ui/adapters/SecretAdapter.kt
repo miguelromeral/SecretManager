@@ -1,5 +1,7 @@
 package es.miguelromeral.secretmanager.ui.adapters
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.databinding.ItemSecretBinding
+import es.miguelromeral.secretmanager.network.ServiceQR
 import es.miguelromeral.secretmanager.ui.listeners.DecryptSecretListener
 import es.miguelromeral.secretmanager.ui.listeners.RemoveSecretListener
 
@@ -48,6 +51,10 @@ class SecretAdapter(
                         }
                         R.id.option_delete_secret -> {
                             removeListener.onClick(item)
+                            true
+                        }
+                        R.id.option_get_qr -> {
+                            ServiceQR.openQRIntent(itemView.context, item.content)
                             true
                         }
                         else -> false
