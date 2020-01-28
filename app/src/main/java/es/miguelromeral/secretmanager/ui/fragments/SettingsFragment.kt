@@ -16,7 +16,12 @@ import android.content.Intent
 import android.net.Uri
 import android.graphics.PorterDuff
 import android.R.color
+import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.R.attr.mode
+
+
 
 
 
@@ -88,12 +93,22 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
             sharedPreferences!!.getBoolean(context.getString(R.string.preference_key_theme), false)
 
 
-        fun setStyleTheme(context: Context, sharedPreferences: SharedPreferences? = null){
-            val preferences = sharedPreferences ?: PreferenceManager.getDefaultSharedPreferences(context)
+        private fun setStyleTheme(context: Context, sharedPreferences: SharedPreferences? = null){
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             val resources = context.resources
 
             val style = preferences!!.getBoolean(resources.getString(R.string.preference_key_theme), false)
             if(style){
+                //getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+/*
+
+                val config = Configuration(resources.getConfiguration())
+                config.uiMode = Configuration.UI_MODE_NIGHT_YES
+                if (Build.VERSION.SDK_INT >= 17) {
+                    context.createConfigurationContext(config)
+                }*/
+
+
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }else{
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

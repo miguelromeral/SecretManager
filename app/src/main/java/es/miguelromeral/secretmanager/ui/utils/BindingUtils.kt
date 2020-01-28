@@ -25,3 +25,8 @@ fun convertLongToTime(format: String, time: Long): String {
     val format = SimpleDateFormat( format)
     return format.format(date)
 }
+
+@BindingAdapter("characterCount")
+fun TextView.setCharacterCount(string: String){
+    text = resources.getString(R.string.length_characters, string.count())
+}

@@ -2,6 +2,7 @@ package es.miguelromeral.secretmanager.ui.activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.os.FileUtils
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -27,6 +29,7 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.preference.PreferenceManager
 import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.ui.fragments.*
 
@@ -68,7 +71,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        SettingsFragment.setStyleTheme(baseContext)
+        //SettingsFragment.setStyleTheme(baseContext)
+        //getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
     }
 

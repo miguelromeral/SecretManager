@@ -13,6 +13,7 @@ import es.miguelromeral.secretmanager.databinding.FragmentHomeBinding
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.IsBase64Encoded
 import es.miguelromeral.secretmanager.database.SecretDatabase
@@ -20,6 +21,21 @@ import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import es.miguelromeral.secretmanager.ui.models.TextItem
 import es.miguelromeral.secretmanager.ui.utils.shareContentText
 import es.miguelromeral.secretmanager.ui.utils.showHidePassword
+import kotlinx.android.synthetic.main.layout_qr.view.*
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.opengl.Visibility
+import android.os.Environment
+import android.util.AttributeSet
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
+import es.miguelromeral.secretmanager.classes.createQrImage
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
 
 class HomeFragment : Fragment() {
@@ -42,7 +58,7 @@ class HomeFragment : Fragment() {
         // Initialize View Model
         viewModel = ViewModelProviders.of(this, vmf).get(HomeViewModel::class.java)
         // Initialize Binding
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, es.miguelromeral.secretmanager.R.layout.fragment_home, container, false)
         // Passing the parameters to binding variables
         binding.viewModel = viewModel
         item = viewModel.item
@@ -52,7 +68,7 @@ class HomeFragment : Fragment() {
             if(item.output.isNotEmpty()) {
                 shareContentText(view.context, item.output)
             }else{
-                Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, es.miguelromeral.secretmanager.R.string.error_output_empty, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -62,7 +78,7 @@ class HomeFragment : Fragment() {
                     it.input = it.output
                     it.output = ""
                 }else{
-                    Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, es.miguelromeral.secretmanager.R.string.error_output_empty, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -79,6 +95,26 @@ class HomeFragment : Fragment() {
                 binding.passwordLayout.etPassword
             )
         }
+
+        viewModel.qr.observe(this, Observer {
+
+            val image = binding.qrLayout.imageQr
+            val icon = binding.qrLayout.iconQr
+
+            if(it != null){
+                icon.visibility = View.GONE
+
+                createQrImage(context!!, it, "photo")
+
+                image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+                image.visibility = View.VISIBLE
+            }
+            else{
+                icon.visibility = View.VISIBLE
+                image.visibility = View.GONE
+            }
+        })
+
 
         arguments?.let{
             val args = HomeFragmentArgs.fromBundle(arguments!!)

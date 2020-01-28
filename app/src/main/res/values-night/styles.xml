@@ -6,13 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#cf69ff</item>
-        <item name="android:windowBackground">#000</item>
-        <item name="android:navigationBarColor">#000</item>
+        <item name="android:windowBackground">#111</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
 
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_night</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
 

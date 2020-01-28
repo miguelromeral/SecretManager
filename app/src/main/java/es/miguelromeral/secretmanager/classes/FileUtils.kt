@@ -103,7 +103,30 @@ suspend fun importSecretsFU(context: Context, recyclerView: RecyclerView, db: Se
 }
 
 
+fun createQrImage(context: Context, content: ByteArray, name: String = "secret_manager_qr"): Boolean{
+    var fos: FileOutputStream? = null
+    try {
+        val exportDir = File(context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.getAbsolutePath(), "")
+        if (!exportDir.exists()) {
+            exportDir.mkdirs()
+        }
 
+        val photo = File(exportDir, "${name}.png")
+
+        if (photo.exists()) {
+            photo.delete()
+        }
+
+        val fos = FileOutputStream(photo.getPath())
+        fos.write(content)
+
+        return true
+    }catch (e: java.lang.Exception){
+        Log.i("TAG", "Good!")
+            fos?.close()
+    }
+    return false
+}
 
 
 fun exportSecrets(context: Context, db: SecretDatabase): Uri?{

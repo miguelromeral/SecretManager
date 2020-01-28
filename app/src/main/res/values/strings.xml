@@ -51,6 +51,7 @@
     <string name="option_export_secrets">Export secrets</string>
     <string name="option_import_secrets">Import secrets</string>
     <string name="option_search_secrets">Search</string>
+    <string name="length_characters">Lenght: %1$d characters.</string>
 
 
     <!-- Import / Export Secrets -->
