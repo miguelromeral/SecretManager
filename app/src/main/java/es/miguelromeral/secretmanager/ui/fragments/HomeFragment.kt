@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory
 import android.opengl.Visibility
 import android.os.Environment
 import android.util.AttributeSet
+import android.widget.AdapterView
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -36,6 +37,7 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import es.miguelromeral.secretmanager.classes.createQrImage
 import es.miguelromeral.secretmanager.classes.exportSecrets
+import es.miguelromeral.secretmanager.network.ServiceQR
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 import java.io.File
 import java.io.FileOutputStream
@@ -79,14 +81,6 @@ class HomeFragment : Fragment() {
         binding.executeButton.bExecute.setOnClickListener{
             viewModel.execute(it.context)
         }
-/*
-        binding.executeButton.sOperation.setOnCheckedChangeListener { compoundButton, b ->
-            when(b){
-                true -> {
-                    binding.viewModel.
-                }
-            }
-        }*/
 
         // Functionality to Show / Hide Password in this fragment
         binding.passwordLayout.cbShowPassword.setOnClickListener{
@@ -109,10 +103,17 @@ class HomeFragment : Fragment() {
                     createQrImage(context!!, it, item.alias)
 
                 image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+
+                image.setOnLongClickListener{
+                    ServiceQR.openQRIntent(it.context, item.output)
+                    return@setOnLongClickListener true
+                }
+
                 image.visibility = View.VISIBLE
             }
             else{
                 icon.visibility = View.VISIBLE
+                image.setOnClickListener{}
                 image.visibility = View.GONE
             }
         })

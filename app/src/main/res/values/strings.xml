@@ -21,6 +21,7 @@
     <string name="hint_output">Your processed text will be shown here</string>
     <string name="hint_password">Password</string>
     <string name="hint_store_secret">Alias for your secret</string>
+    <string name="hint_long_click_qr">Long click on the QR image to open it in your browser.</string>
 
     <!-- Preferences -->
     <string name="preference_key_theme" translatable="false">preference_app_theme</string>
