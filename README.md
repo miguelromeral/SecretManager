@@ -1,4 +1,4 @@
-# <img alt='SecretManager' src='https://github.com/miguelromeral/SecretManager/blob/master/app/src/main/ic_launcher_sm_v2-web.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-7.1-green) <a href='https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="70" width="auto" /></a>
+# <img alt='SecretManager' src='https://github.com/miguelromeral/SecretManager/blob/master/app/src/main/ic_launcher_sm_v2-web.png' height="35" width="auto" /> Secret Manager ![](https://img.shields.io/badge/android-6.0-green) <a href='https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="70" width="auto" /></a>
 
 ## Introduction
 
@@ -8,19 +8,44 @@ Android application that performs encryption and decryption of user's data, such
 
 You can free download Secret Manager from [Google Play](https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager), currently on its Beta version.
 
-This app requires Android 6.0 or better to be downloaded and installed on your device.
+This app requires Android 6.0 or higher to be downloaded and installed on your device.
 
 ## Functionalities and Screenshots
 
 * Conversion between texts.
-* Conversion between other files (images, videos, documents, etc.)
-* Store text encrypted and retrieve it when you want to decrypt it.
-* Share the texts converted with other apps.
 * QR codes for processed text.
+* Share the texts converted with other apps.
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320480.png" height="400px" width="auto">
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320572.png" height="400px" width="auto">
+
+* Conversion between other files (images, videos, documents, etc.)
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320662.png" height="400px" width="auto">
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320695.png" height="400px" width="auto">
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580322527.png" height="400px" width="auto">
+
+* Store text encrypted and retrieve it when you want to decrypt it.
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320766.png" height="400px" width="auto">
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320859.png" height="400px" width="auto">
+
 * Process text directly when select some text in any other Android app.
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580322478.png" height="400px" width="auto">
+
 * Pass a file from other app to Secret Manager to be converted.
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580322598.png" height="400px" width="auto">
+
 * Export and import secrets stored oon the device.
+
+<img src="https://raw.githubusercontent.com/miguelromeral/SecretManager/master/screenshots/Screenshot_1580320842.png" height="400px" width="auto">
+
 * Day / Night app theme.
+
+
+<img src="" height="400px" width="auto">
 
 ## Help
 
@@ -33,6 +58,7 @@ Version|Code|Changes
 1.1|2|Added File Limit to 50 MB.
 |||Added QR Codes for output.
 |||App can return results for text.
+|||Help link in Settings
 1.0|1|First Version.
 
 ## TO BE DONE
