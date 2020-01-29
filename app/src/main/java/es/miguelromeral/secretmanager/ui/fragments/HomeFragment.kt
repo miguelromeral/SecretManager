@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -32,6 +33,10 @@ import android.net.Uri
 import android.opengl.Visibility
 import android.os.Environment
 import android.util.AttributeSet
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.AnimationSet
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -134,6 +139,23 @@ class HomeFragment : Fragment() {
                 }
 
                 image.visibility = View.VISIBLE
+
+                /*
+                val animator = ObjectAnimator.ofFloat(image, View.ALPHA, 0f)
+                animator.repeatCount = 1
+                animator.duration = 500
+                animator.repeatMode = ObjectAnimator.REVERSE
+                animator.start()
+*/
+
+                val fadeIn = AlphaAnimation(0f, 1f)
+                fadeIn.interpolator = DecelerateInterpolator() //add this
+                fadeIn.duration = 1000
+
+                val animation = AnimationSet(false) //change to false
+                animation.addAnimation(fadeIn)
+                //image.setAnimation(animation)
+                image.startAnimation(animation)
             }
             else{
                 icon.visibility = View.VISIBLE

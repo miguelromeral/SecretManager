@@ -17,7 +17,7 @@
             android:id="@+id/action_navigation_home_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard"
             app:popUpTo="@+id/navigation_dashboard"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment

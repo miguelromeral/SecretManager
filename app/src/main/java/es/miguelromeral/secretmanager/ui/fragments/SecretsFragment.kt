@@ -24,9 +24,11 @@ import es.miguelromeral.secretmanager.ui.viewmodelfactories.SecretsFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.SecretsViewModel
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
+import es.miguelromeral.secretmanager.ui.utils.convertLongToTime
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
 
 
@@ -92,8 +94,11 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                 viewModel.secrets.observe(this, Observer {
                     it?.let {
                         viewModel.filteredList.postValue(it)
-                        binding.warningEmptyDbSecrets.visibility =
-                            if (it.isEmpty()) View.VISIBLE else View.GONE
+                        if(it.isEmpty()){
+                            binding.warningEmptyDbSecrets.visibility = View.VISIBLE
+                        }else{
+                            binding.warningEmptyDbSecrets.visibility = View.GONE
+                        }
                     }
                 })
                 viewModel.finalDataChanged()
@@ -122,11 +127,20 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {
-        return viewModel.filterSecrets(p0)
+        return filter(p0)
     }
 
     override fun onQueryTextChange(p0: String?): Boolean {
-        return viewModel.filterSecrets(p0)
+        return filter(p0)
+    }
+
+    private fun filter(p0: String?): Boolean{
+        val cont = context!!
+        val format = PreferenceManager.getDefaultSharedPreferences(cont).getString(
+            cont.getString(R.string.preference_date_format_id),
+            cont.getString(R.string.date_format_one)
+        ) ?: cont.getString(R.string.date_format_one)
+        return viewModel.filterSecrets(format, p0)
     }
 
 

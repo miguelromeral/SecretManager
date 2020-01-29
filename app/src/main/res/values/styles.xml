@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/red</item>
-        <item name="android:textColorPrimary">#000</item>
-        <item name="android:textColor">#000</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
 
     </style>
@@ -25,6 +23,9 @@
         <item name="android:tint">#FFF</item>
     </style>
 
+    <style name="backgroundStyle">
+        <item name="android:background">#e8e8e8</item>
+    </style>
 
 
 

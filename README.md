@@ -8,7 +8,7 @@ Android application that performs encryption and decryption of user's data, such
 
 You can free download Secret Manager from [Google Play](https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager), currently on its Beta version.
 
-This app requires Android 7.1 or better to be downloaded and installed on your device.
+This app requires Android 6.0 or better to be downloaded and installed on your device.
 
 ## Functionalities and Screenshots
 
