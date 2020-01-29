@@ -60,6 +60,7 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         binding.setLifecycleOwner(this)
 
+        // Adding the adapter
         adapter = SecretAdapter(DecryptSecretListener { item ->
                 viewModel.openSecret(application.baseContext, binding.secretsList, item)
             },

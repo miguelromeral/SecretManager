@@ -187,7 +187,7 @@ class HomeFragment : Fragment() {
                             it.input = it.output
                             it.output = ""
                         }else{
-                            Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_SHORT).show()
                         }
                     }
                     true
@@ -202,6 +202,9 @@ class HomeFragment : Fragment() {
 
                     }
                     true
+                }
+                R.id.option_delete_input -> {
+                    item.input = ""
                 }
             }
         }

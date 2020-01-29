@@ -22,10 +22,6 @@ import android.os.Build
 import android.R.attr.mode
 
 
-
-
-
-
 class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
