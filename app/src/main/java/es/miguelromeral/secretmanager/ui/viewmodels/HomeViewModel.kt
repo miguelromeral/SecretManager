@@ -75,24 +75,43 @@ class HomeViewModel(
         }
     }
 
-    fun execute(context: Context) {
+    fun execute(context: Context): Boolean {
         when(item.decrypt){
             false -> {
-                if(item.encrypt() && item.store){
-                    if(item.alias.isNotEmpty()) {
-                        uiScope.launch {
-                            createNewSecret()
-                            Toast.makeText(context, context.getString(es.miguelromeral.secretmanager.R.string.secret_stored, item.alias), Toast.LENGTH_LONG).show()
+                if(item.encrypt()){
+                    if(item.store) {
+                        if (item.alias.isNotEmpty()) {
+                            uiScope.launch {
+                                createNewSecret()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(
+                                        es.miguelromeral.secretmanager.R.string.secret_stored,
+                                        item.alias
+                                    ),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } else {
+                            Toast.makeText(
+                                context,
+                                es.miguelromeral.secretmanager.R.string.error_unprovided_alias,
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
-                    }else{
-                        Toast.makeText(context, es.miguelromeral.secretmanager.R.string.error_unprovided_alias, Toast.LENGTH_LONG).show()
                     }
+                    generateQR(item.output)
+                    return true
+                }else{
+                    return false
                 }
-                generateQR(item.output)
             }
             true -> {
-                item.decrypt()
-                generateQR(item.output)
+                if(item.decrypt()) {
+                    generateQR(item.output)
+                    return true
+                }else
+                    return false
             }
         }
     }

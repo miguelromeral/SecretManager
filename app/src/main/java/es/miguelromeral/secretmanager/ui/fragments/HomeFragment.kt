@@ -1,5 +1,6 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -29,6 +30,7 @@ import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.opengl.Visibility
 import android.os.Environment
 import android.util.AttributeSet
@@ -53,6 +55,10 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var item: TextItem
     private lateinit var binding: FragmentHomeBinding
+
+    private val TAG = "HomeFragment"
+
+    private var toReturn = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +89,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.executeButton.bExecute.setOnClickListener{
-            viewModel.execute(it.context)
+            if(viewModel.execute(it.context) && toReturn){
+                Log.i(TAG, "Getting ready to send back the result: ${item.output}")
+                val i = Intent()
+                i.putExtra(Intent.EXTRA_PROCESS_TEXT, item.output)
+                activity!!.setResult(Activity.RESULT_OK, i)
+                activity!!.finish()
+            }
         }
 
         // Functionality to Show / Hide Password in this fragment
@@ -125,19 +137,25 @@ class HomeFragment : Fragment() {
 
         arguments?.let{
             val args = HomeFragmentArgs.fromBundle(arguments!!)
-            Log.i("ARGS", "Input: ${args.input}")
+            Log.i(TAG, "Input: ${args.input}")
             item.input = args.input
             item.decrypt = true
             item.password = String()
         }
 
 
-        val shared = activity?.intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        shared?.let {
-            val input = it.toString()
-            item.decrypt = IsBase64Encoded(input)
-            item.input = input
+        activity?.intent?.let{ intent ->
+            val shared = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+            shared?.let {
+                val input = it.toString()
+                item.decrypt = IsBase64Encoded(input)
+                item.input = input
+
+                //toReturn = intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false)
+                toReturn = true
+            }
         }
+
 
         setHasOptionsMenu(true)
 
