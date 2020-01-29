@@ -38,14 +38,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private val TAG = "MainActivity"
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // We change the Splash theme to the main theme
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Set up the bottom navigation menu
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
         val navController = findNavController(R.id.nav_host_fragment)
 
         // Passing each menu ID as a set of Ids because each
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
+        // If we recieve one file, send it to the FileConverter Fragment.
         if(intent?.action == Intent.ACTION_SEND) {
             if (intent.type?.startsWith("image/") == true ||
                 intent.type?.startsWith("video/") == true ||
@@ -71,9 +73,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //SettingsFragment.setStyleTheme(baseContext)
-        //getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
+        Log.i(TAG, "MainActivity created successfully.")
     }
 
 
@@ -136,13 +136,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    private fun openFileConverterFragment(data: Intent){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.nav_host_fragment, FileConverterFragment.getInstance(data))
-            .addToBackStack(null)
-            .commit()
-    }
-
 }

@@ -31,6 +31,7 @@
     <string name="preference_date_format_title">Date Format</string>
     <string name="preference_help_id" translatable="false">preference_app_help</string>
     <string name="preference_save_qr_id" translatable="false">preference_save_qr_id</string>
+    <string name="preference_auto_return_result_id" translatable="false">preference_auto_return_result_id</string>
 
     <string name="date_format_one" translatable="false">yyyy\/MM\/dd HH:mm</string>
     <string name="date_format_two" translatable="false">dd\/MM\/yyyy HH:mm</string>
@@ -55,10 +56,14 @@
     <string name="preference_help_title">Frequent Questions and Answers</string>
     <string name="preference_help_summary">Take a look at how to use the application in its GitHub repository help page.</string>
 
+    <string name="preference_auto_return_title">Always return results</string>
+    <string name="preference_auto_return_summary">When you open the app from a text selected, if it\'s possible, replace the selected text with the execution output.</string>
+
 
 
     <!-- Text Execution -->
     <string name="secret_stored">Stored successfully under the alias \"%1$s\"</string>
+    <string name="output_copied">Output copied to Clipboard</string>
 
     <!-- File Converter -->
 
@@ -69,7 +74,8 @@
     <string name="list_open_secret">Open</string>
     <string name="list_delete_secret">Delete</string>
     <string name="list_get_qr_code">Get QR Code</string>
-    <string name="option_output_to_input">Copy Output to Input</string>
+    <string name="option_output_to_input">Replace Input with Output</string>
+    <string name="option_output_to_clipboard">Copy Output to Clipboard</string>
     <string name="option_clear_secrets">Clear all secrets</string>
     <string name="option_export_secrets">Export secrets</string>
     <string name="option_import_secrets">Import secrets</string>

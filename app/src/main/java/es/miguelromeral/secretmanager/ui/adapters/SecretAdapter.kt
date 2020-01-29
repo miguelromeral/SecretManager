@@ -31,7 +31,6 @@ class SecretAdapter(
     }
 
 
-
     class ViewHolder private constructor(val binding: ItemSecretBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Secret, decryptListener: DecryptSecretListener, removeListener: RemoveSecretListener){
@@ -40,6 +39,7 @@ class SecretAdapter(
             binding.decryptListener = decryptListener
             binding.removeListener = removeListener
 
+            // Three dots menu for each item
             binding.tvThreeDots.setOnClickListener { view ->
                 val popupMenu = PopupMenu(view.context, view)
                 popupMenu.inflate(R.menu.option_menu)

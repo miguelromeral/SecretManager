@@ -9,14 +9,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import es.miguelromeral.secretmanager.databinding.FragmentHomeBinding
 import es.miguelromeral.secretmanager.ui.viewmodelfactories.HomeFactory
 import es.miguelromeral.secretmanager.ui.viewmodels.HomeViewModel
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import es.miguelromeral.secretmanager.R
 import es.miguelromeral.secretmanager.classes.IsBase64Encoded
@@ -34,8 +32,7 @@ import android.net.Uri
 import android.opengl.Visibility
 import android.os.Environment
 import android.util.AttributeSet
-import android.widget.AdapterView
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -55,6 +52,9 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var item: TextItem
     private lateinit var binding: FragmentHomeBinding
+
+    private var myClipboard: ClipboardManager? = null
+    private var myClip: ClipData? = null
 
     private val TAG = "HomeFragment"
 
@@ -80,6 +80,9 @@ class HomeFragment : Fragment() {
         item = viewModel.item
         binding.item = item
 
+        myClipboard = context!!.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+
+        // Floating Action Button behaviour
         binding.floatingActionButton.setOnClickListener{view ->
             if(item.output.isNotEmpty()) {
                 shareContentText(view.context, item.output)
@@ -88,13 +91,15 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // Execution Button
         binding.executeButton.bExecute.setOnClickListener{
             if(viewModel.execute(it.context) && toReturn){
-                Log.i(TAG, "Getting ready to send back the result: ${item.output}")
+                // We only send back the result if it was called by an intent-filter
                 val i = Intent()
                 i.putExtra(Intent.EXTRA_PROCESS_TEXT, item.output)
                 activity!!.setResult(Activity.RESULT_OK, i)
                 activity!!.finish()
+                Log.i(TAG, "Sending back the result.")
             }
         }
 
@@ -107,19 +112,22 @@ class HomeFragment : Fragment() {
             )
         }
 
+        // Update QR iamge if there's new content to display
         viewModel.qr.observe(this, Observer {
-
             val image = binding.qrLayout.imageQr
             val icon = binding.qrLayout.iconQr
 
             if(it != null){
                 icon.visibility = View.GONE
 
+                // We save the image to internal storage according to the preferences.
                 if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(getString(R.string.preference_save_qr_id), false))
                     createQrImage(context!!, it, item.alias)
 
+                // Set the QR image from raw data
                 image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
 
+                // Long click behaviour
                 image.setOnLongClickListener{
                     ServiceQR.openQRIntent(it.context, item.output)
                     return@setOnLongClickListener true
@@ -134,16 +142,16 @@ class HomeFragment : Fragment() {
             }
         })
 
-
+        // Check if there's data from the bundle
         arguments?.let{
             val args = HomeFragmentArgs.fromBundle(arguments!!)
-            Log.i(TAG, "Input: ${args.input}")
+            Log.i(TAG, "Getting input from bundle.")
             item.input = args.input
             item.decrypt = true
             item.password = String()
         }
 
-
+        // Check if the fragment was initiated by the EXTRA_PROCESS_TEXT intent-filter
         activity?.intent?.let{ intent ->
             val shared = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
             shared?.let {
@@ -151,14 +159,13 @@ class HomeFragment : Fragment() {
                 item.decrypt = IsBase64Encoded(input)
                 item.input = input
 
-                //toReturn = intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false)
-                toReturn = true
+                if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(getString(R.string.preference_auto_return_result_id), true))
+                    toReturn = !intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false)
             }
         }
 
-
+        // The fragment has a menu
         setHasOptionsMenu(true)
-
 
         // Returning the binding root
         return binding.root
@@ -182,6 +189,17 @@ class HomeFragment : Fragment() {
                         }else{
                             Toast.makeText(context, R.string.error_output_empty, Toast.LENGTH_LONG).show()
                         }
+                    }
+                    true
+                }
+                R.id.option_output_to_clipboard -> {
+                    if(item.output.isNotEmpty()){
+                        val myClip = ClipData.newPlainText(getString(R.string.app_name), item.output)
+                        myClipboard?.setPrimaryClip(myClip)
+
+                        Toast.makeText(context!!, R.string.output_copied, Toast.LENGTH_SHORT).show()
+                        Log.i(TAG, "Output copied to clipboard.")
+
                     }
                     true
                 }

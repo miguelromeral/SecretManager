@@ -54,7 +54,8 @@ class SettingsFragment : PreferenceFragmentCompat(),  SharedPreferences.OnShared
                 context.getString(R.string.preference_date_format_id),
                 context.getString(R.string.preference_key_theme),
                 context.getString(R.string.preference_key_filename),
-                context.getString(R.string.preference_save_qr_id)
+                context.getString(R.string.preference_save_qr_id),
+                getString(R.string.preference_auto_return_result_id)
             )
 
             for (spr in preferences) {

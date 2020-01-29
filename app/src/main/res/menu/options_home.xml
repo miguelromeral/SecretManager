@@ -6,5 +6,8 @@
         android:id="@+id/option_output_to_input"
         android:title="@string/option_output_to_input" />
 
+    <item
+        android:id="@+id/option_output_to_clipboard"
+        android:title="@string/option_output_to_clipboard" />
 
 </menu>
