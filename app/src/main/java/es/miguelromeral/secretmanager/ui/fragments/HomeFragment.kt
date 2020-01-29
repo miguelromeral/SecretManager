@@ -1,6 +1,9 @@
 package es.miguelromeral.secretmanager.ui.fragments
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -33,6 +36,7 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import es.miguelromeral.secretmanager.classes.createQrImage

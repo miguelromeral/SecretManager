@@ -32,11 +32,30 @@
     <string name="preference_help_id" translatable="false">preference_app_help</string>
     <string name="preference_save_qr_id" translatable="false">preference_save_qr_id</string>
 
-
     <string name="date_format_one" translatable="false">yyyy\/MM\/dd HH:mm</string>
     <string name="date_format_two" translatable="false">dd\/MM\/yyyy HH:mm</string>
     <string name="date_format_three" translatable="false">yyyy\/MM\/dd</string>
     <string name="date_format_four" translatable="false">dd\/MM\/yyyy</string>
+
+    <!-- Preferences Fragment -->
+    <string name="preference_section_execution">Execution Settings</string>
+    <string name="preference_section_display">Display Settings</string>
+    <string name="preference_section_help">Help</string>
+
+    <string name="preference_save_qr_title">Auto Save QR</string>
+    <string name="preference_save_qr_summary">Saves automatically the QR for the stored secrets in internal storage, in the App Picture folder (Android/data/es.miguelromeral.secretmanager/files/Pictures)</string>
+
+    <string name="preference_filename_title">New file\'s name</string>
+    <string name="preference_filename_summary">Default name for the new file processed</string>
+    <string name="preference_filename_dialog">Set the file\'s name</string>
+
+    <string name="preference_theme_title">Dark Theme</string>
+    <string name="preference_theme_summary">Enable dark colors for the application.</string>
+
+    <string name="preference_help_title">Frequent Questions and Answers</string>
+    <string name="preference_help_summary">Take a look at how to use the application in its GitHub repository help page.</string>
+
+
 
     <!-- Text Execution -->
     <string name="secret_stored">Stored successfully under the alias \"%1$s\"</string>

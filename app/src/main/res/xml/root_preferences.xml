@@ -2,33 +2,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Execution">
+        android:title="@string/preference_section_execution">
 
         <SwitchPreferenceCompat
             android:key="@string/preference_save_qr_id"
-            android:title="Auto Save QR"
-            android:summary="Saves automatically the QR for the stored secrets in internal storage"
+            android:title="@string/preference_save_qr_title"
+            android:summary="@string/preference_save_qr_summary"
             android:icon="@drawable/qr"
             android:defaultValue="true"/>
 
         <EditTextPreference
             android:key="@string/preference_key_filename"
-            android:title="New file's name"
-            android:summary="Default name for the new file processed"
+            android:title="@string/preference_filename_title"
+            android:summary="@string/preference_filename_summary"
             android:defaultValue="@string/preference_filename_default"
-            android:dialogTitle="Set the file's name"
+            android:dialogTitle="@string/preference_filename_dialog"
             android:icon="@drawable/file_name"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Display Settings">
+        android:title="@string/preference_section_display">
 
 
         <SwitchPreferenceCompat
             android:key="@string/preference_key_theme"
-            android:title="Dark Theme"
-            android:summary="Enable dark colors for the application."
+            android:title="@string/preference_theme_title"
+            android:summary="@string/preference_theme_summary"
             android:icon="@drawable/night_theme"/>
 
 
@@ -45,12 +45,12 @@
 
 
     <PreferenceCategory
-        android:title="Help">
+        android:title="@string/preference_section_help">
 
         <Preference
             app:key="@string/preference_help_id"
-            app:title="Frequent Questions and Answers"
-            app:summary="Take a look at how to use the application in its GitHub repository help page."
+            app:title="@string/preference_help_title"
+            app:summary="@string/preference_help_summary"
             android:icon="@drawable/help"
             style="@styles/IconTheme"/>
 
