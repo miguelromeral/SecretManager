@@ -6,7 +6,7 @@ Android application that performs encryption and decryption of user's data, such
 
 ## Availability
 
-You can download Secret Manager from [Google Play](https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager), currently on its Beta version.
+You can free download Secret Manager from [Google Play](https://play.google.com/store/apps/details?id=es.miguelromeral.secretmanager), currently on its Beta version.
 
 This app requires Android 7.1 or better to be downloaded and installed on your device.
 
@@ -16,6 +16,7 @@ This app requires Android 7.1 or better to be downloaded and installed on your d
 * Conversion between other files (images, videos, documents, etc.)
 * Store text encrypted and retrieve it when you want to decrypt it.
 * Share the texts converted with other apps.
+* QR codes for processed text.
 * Process text directly when select some text in any other Android app.
 * Pass a file from other app to Secret Manager to be converted.
 * Export and import secrets stored oon the device.
@@ -30,7 +31,9 @@ If you need help with the application, please visit the [FAQs](https://github.co
 Version|Code|Changes
 --- | --- | ---
 1.1|2|Added File Limit to 50 MB.
-1.0|1|First Version
+|||Added QR Codes for output.
+|||App can return results for text.
+1.0|1|First Version.
 
 ## TO BE DONE
 
