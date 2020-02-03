@@ -1,0 +1,127 @@
+<resources>
+    <!-- App Details -->
+    <string name="app_name">Secret Manager</string>
+
+    <!-- Fragment Titles -->
+    <string name="title_home">Textos</string>
+    <string name="title_dashboard">Ficheros</string>
+    <string name="title_secrets">Secretos</string>
+    <string name="title_settings">Ajustes</string>
+
+    <!-- Buttons -->
+    <string name="decrypt">DESCIFRAR</string>
+    <string name="encrypt">CIFRAR</string>
+    <string name="open">ABRIR</string>
+    <string name="remove">ELIMINAR</string>
+
+    <!-- Hints -->
+    <string name="hint_password">Clave</string>
+    <string name="hint_store_secret">Alias para este secreto</string>
+    <string name="hint_long_click_qr">Mantén pulsado en la imagen QR para abrirla en tu navegador.</string>
+
+    <!-- Preferences -->
+    <string name="preference_filename_default">secret_manager_file</string>
+    <string name="preference_date_format_title">Formato de fecha</string>
+
+    <!-- Preferences Fragment -->
+    <string name="preference_section_execution">Ajustes de ejecución</string>
+    <string name="preference_section_display">Ajustes de diseño</string>
+    <string name="preference_section_help">Ayuda</string>
+
+    <string name="preference_save_qr_title">Auto Guardar QR</string>
+    <string name="preference_save_qr_summary">Guardar automaticamente el QR obtenido en el almacenamiento interno, en la carpeta de imagenes de la app (Android/data/es.miguelromeral.secretmanager/files/Pictures)</string>
+
+    <string name="preference_filename_title">Nuevo nombre de fichero</string>
+    <string name="preference_filename_summary">Nombre por defecto para el nuevo fichero procesado</string>
+    <string name="preference_filename_dialog">Establece el nombre de fichero</string>
+
+    <string name="preference_theme_title">Tema oscuro</string>
+    <string name="preference_theme_summary">Habilitar colores oscuros para la aplicación.</string>
+
+    <string name="preference_help_title">Preguntas y Respuestas Frecuentes (FAQs)</string>
+
+    <string name="preference_auto_return_title">Siempre devolver resultados.</string>
+    <string name="preference_auto_return_summary">Cuando abres la app al seleccionar un texto, si es posible, reemplazar el texto seleccionado con el texto procesado.</string>
+
+    <string name="preference_qr_size_summary">Obtener una imagen QR de estas dimensiones</string>
+
+
+
+    <!-- Text Execution -->
+    <string name="secret_stored">Guardado con éxito con el alias \"%1$s\"</string>
+    <string name="output_copied">Salida copiada al portapapeles</string>
+
+    <!-- File Converter -->
+
+    <!-- Secrets List -->
+    <string name="store_secret_switch">Almacenar Secreto</string>
+    <string name="list_open_secret">Abrir</string>
+    <string name="list_delete_secret">Eliminar</string>
+    <string name="list_get_qr_code">Código QR</string>
+    <string name="option_delete_input">Eliminar entrada</string>
+    <string name="option_output_to_clipboard">Copiar Salida</string>
+    <string name="option_export_secrets">Exportar secretos</string>
+    <string name="option_import_secrets">Importar secretos</string>
+    <string name="option_search_secrets">Buscar</string>
+    <string name="length_characters">Longitud: %1$d caracteres.</string>
+
+
+    <!-- Import / Export Secrets -->
+    <string name="open_file">Abrir fichero</string>
+    <string name="explanation_file_permissions">Para poder exportar tus secretos, necesitarás dar permiso a la aplicación para escribir la exportación en tu propio dispositivo. Por favor, habilita el permiso requerido para poder usar esta funcionalidad.</string>
+    <string name="clear_secrets_body">Estás a punto de eliminar todos los secretos almacenados en la base de datos de este dispositivo. Ten en cuenta que esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar todos los registros?</string>
+    <string name="clear_secrets_yes">Sí, eliminar</string>
+    <string name="clear_secrets_no">Cancelar</string>
+    <string name="clear_secret_title">Eliminar</string>
+    <string name="clear_secret_body">Esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar el secreto con alias \"%1$s\"?</string>
+    <string name="clear_secret_no">Cancelar</string>
+
+    <!-- Error messages -->
+    <string name="error_decryption">Error durante el descifrado</string>
+    <string name="error_encryption">Error al cifrar</string>
+    <string name="error_wrong_encryption">Ha ocurrido un problema durante el cifrado del fichero. Por favor, inténtalo más tarde.</string>
+    <string name="ok_answer">Vale</string>
+    <string name="error_output_empty">La salida aún está vacía</string>
+    <string name="error_no_file_process">No hay fichero que procesar</string>
+    <string name="error_empty_file">El archivo esta vacío</string>
+    <string name="error_unknown_file">Fichero Desconocido</string>
+    <string name="error_unprovided_alias">Debes proporcionar un alias para guardar el secreto.</string>
+    <string name="error_max_file_size_title">Fichero demasiado grande.</string>
+    <string name="error_file_size_not_allowed">Tu fichero excede el limite (%1$s) por %2$s.</string>
+    <string name="error_file_not_created">El fichero no pudo ser creado.</string>
+
+    <!-- Notifications -->
+    <string name="channel_files_id">channel_id_files</string>
+    <string name="channel_files_name">Conversión de archivos completado</string>
+    <string name="channel_files_title">Archivo convertido</string>
+    <string name="channel_files_body_decrypted">¡Archivo \"%1$s\" descifrado con éxito!</string>
+    <string name="channel_files_description">Muestra una notificación cuando la conversión del fichero se ha completado.</string>
+
+
+    <string name="show_pwd">Mostrar Clave</string>
+    <string name="hide_pwd">Ocultar Clave</string>
+    <string name="channel_files_body_encrypted">¡Archivo cifrado con éxito!</string>
+    <string name="clear_secret_yes">Sí, borrar</string>
+    <string name="clear_secrets_title">Eliminar todos los secretos</string>
+    <string name="copy_from_output">COPIAR DESDE LA SALIDA</string>
+    <string name="error_max_file_size">Desafortunadamente, el tamaño máximo del fichero a convertir es %1$s. Por favor, escoge otro archivo.</string>
+    <string name="error_mismatch_password">La contraseña no coincide con el fichero a descifrar</string>
+    <string name="exported_secrets_title">Secretos exportados en la carpeta de documentos de la aplicación.</string>
+    <string name="hint_input">Escribe el contenido aquí.</string>
+    <string name="hint_output">El texto procesado se mostrará aquí.</string>
+    <string name="option_clear_secrets">Eliminar todos los secretos</string>
+    <string name="option_output_to_input">Reemplazar texto de entrada con salida.</string>
+    <string name="pick_file">ESCOGER FICHERO</string>
+    <string name="preference_help_summary">Echa un vistazo a como usar la aplicación en la página de ayuda desde el repositorio de GitHub</string>
+    <string name="preference_qr_size_title">Tamaño de la imagen QR</string>
+    <string name="secret_list_empty">Debes almacenar secretos para poder verlos aquí</string>
+    <string name="imported_secrets_title">Secretos importados en la App</string>
+
+    <!-- Without tags -->
+
+
+
+
+
+
+</resources>

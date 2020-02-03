@@ -25,6 +25,7 @@ import es.miguelromeral.secretmanager.ui.viewmodels.SecretsViewModel
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import es.miguelromeral.secretmanager.classes.importSecretsFU
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
@@ -173,6 +174,8 @@ class SecretsFragment : Fragment(), SearchView.OnQueryTextListener {
                     binding.progressBar.visibility = View.VISIBLE
                     viewModel.importSecrets(binding.secretsList)
                     binding.progressBar.visibility = View.GONE
+                    val view: View = activity!!.findViewById(R.id.nav_host_fragment)
+                    Snackbar.make(view, R.string.imported_secrets_title, Snackbar.LENGTH_LONG).show()
                 }
 
                 es.miguelromeral.secretmanager.R.id.option_export_secrets -> {

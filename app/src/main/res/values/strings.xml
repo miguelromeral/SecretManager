@@ -64,7 +64,7 @@
     <string name="preference_auto_return_title">Always return results</string>
     <string name="preference_auto_return_summary">When you open the app from a text selected, if it\'s possible, replace the selected text with the execution output.</string>
 
-    <string name="preference_qr_size_title">QR image sie</string>
+    <string name="preference_qr_size_title">QR image size</string>
     <string name="preference_qr_size_summary">Get a QR image with this dimensions.</string>
 
 
@@ -94,14 +94,15 @@
 
     <!-- Import / Export Secrets -->
     <string name="exported_secrets_title">Secrets exported into App\'s file data folders</string>
+    <string name="imported_secrets_title">Secrets imported into the App</string>
     <string name="open_file">Open file</string>
-    <string name="explanation_file_permissions">In order to export your secrets, you\'ll need to allow the application to write the exported result in your device. Please, allow the permission required to use this functionality</string>
+    <string name="explanation_file_permissions">In order to export your secrets, you\'ll need to allow the application to write the exported result in your device. Please, allow the permission required to use this feature</string>
     <string name="clear_secrets_title">Clear all secrets</string>
     <string name="clear_secrets_body">You\'re about to perform a full clear of the list of secrets stored on this device.\nTake into account this action can\'t be restored.\nAre you sure you want to clear all records?</string>
     <string name="clear_secrets_yes">Yes, delete</string>
     <string name="clear_secrets_no">Cancel</string>
     <string name="clear_secret_title">Remove secret</string>
-    <string name="clear_secret_body">This action can\'t be restored.\nAre you sure you want to remove the secret with alias \"%1$s\"</string>
+    <string name="clear_secret_body">This action can\'t be restored.\nAre you sure you want to remove the secret with alias \"%1$s\"?</string>
     <string name="clear_secret_yes">Yes, delete</string>
     <string name="clear_secret_no">Cancel</string>
 
@@ -122,7 +123,7 @@
     <string name="error_file_not_created">The file couldn\'t be created.</string>
 
     <!-- Notifications -->
-    <string name="channel_files_id">channel_id_files</string>
+    <string name="channel_files_id" translatable="false">channel_id_files</string>
     <string name="channel_files_name">File Conversions Completed</string>
     <string name="channel_files_title">File Converted</string>
     <string name="channel_files_body_decrypted">File \"%1$s\" decrypted successfully!</string>

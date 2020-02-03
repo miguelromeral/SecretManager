@@ -45,12 +45,15 @@ class HomeViewModel(
     val item: TextItem = _item
 
 
-    private fun generateQR(text: String?){
+    private fun generateQR(context: Context, text: String?){
 
         if(text != null) {
             ApiQR.retrofitService.getImage(
                 data = text,
-                size = getSizeQuery()
+                size = getSizeQuery(PreferenceManager.getDefaultSharedPreferences(context).getString(
+                    context.getString(R.string.preference_qr_size_id),
+                    context.getString(R.string.qr_size_300)
+                ))
             ).enqueue(
                 object : Callback<ResponseBody> {
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -91,8 +94,9 @@ class HomeViewModel(
                         R.string.preference_save_qr_id
                     ), false
                 )
-            )
+            ) {
                 tools.createQrImage(context!!, it, item.alias)
+            }
 
             // Set the QR image from raw data
             image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
@@ -130,7 +134,7 @@ class HomeViewModel(
                             ).show()
                         }
                     }
-                    generateQR(item.output)
+                    generateQR(context, item.output)
                     return true
                 }else{
                     return false
@@ -138,7 +142,7 @@ class HomeViewModel(
             }
             true -> {
                 if(item.decrypt()) {
-                    generateQR(item.output)
+                    generateQR(context, item.output)
                     return true
                 }else
                     return false

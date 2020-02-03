@@ -107,16 +107,15 @@ class MainActivity : AppCompatActivity() {
     fun exportSecrets(){
         exportSecrets(baseContext, SecretDatabase.getInstance(baseContext))?.let{ uri ->
 
-            val view: View = findViewById(R.id.nav_view)
+            val view: View = findViewById(R.id.nav_host_fragment)
 
             val snackbar = Snackbar.make(view, R.string.exported_secrets_title, Snackbar.LENGTH_LONG)
-            snackbar.setAction(R.string.open_file){
+            /*snackbar.setAction(R.string.open_file){
 
 
                 Log.i("ExportCSV", "Preparing action: "+uri.path)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setData(uri)
-                //intent.setDataAndType(uri, "*/*")
 
 
                 if (intent.resolveActivityInfo(packageManager, 0) != null) {
@@ -129,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-            }
+            }*/
             //snackbar.setActionTextColor(Color.BLUE)
             snackbar.show()
             Log.i("ExportCSV", "Snack showed")
