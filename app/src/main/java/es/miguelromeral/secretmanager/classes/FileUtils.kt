@@ -28,21 +28,14 @@ import java.nio.file.Files.exists
 import org.bouncycastle.util.Strings.toByteArray
 
 
-
-
 private const val FILENAME = "secret_manager.csv"
 private const val TAG = "FileUtils"
 
 
 suspend fun importSecretsFU(context: Context, recyclerView: RecyclerView, db: SecretDatabaseDao): Boolean {
-    val exportDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.getAbsolutePath(), "")
-    if (!exportDir.exists()) {
-        exportDir.mkdirs()
-    }
-
-    val file = File(exportDir, FILENAME)
     try {
 
+        val file = openFile(context)
         val csvReader = CSVReader(FileReader(file))
 
         val job = Job()
@@ -102,41 +95,16 @@ suspend fun importSecretsFU(context: Context, recyclerView: RecyclerView, db: Se
     return false
 }
 
-
-fun createQrImage(context: Context, content: ByteArray, name: String = "secret_manager_qr"): Boolean{
-    var fos: FileOutputStream? = null
-    try {
-        val exportDir = File(context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.getAbsolutePath(), "")
-        if (!exportDir.exists()) {
-            exportDir.mkdirs()
-        }
-
-        val photo = File(exportDir, "${name}.png")
-
-        if (photo.exists()) {
-            photo.delete()
-        }
-
-        val fos = FileOutputStream(photo.getPath())
-        fos.write(content)
-
-        return true
-    }catch (e: java.lang.Exception){
-        Log.i("TAG", "Good!")
-            fos?.close()
-    }
-    return false
-}
-
-
-fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
-
+private fun openFile(context: Context, name: String? = FILENAME): File{
     val exportDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.getAbsolutePath(), "")
     if (!exportDir.exists()) {
         exportDir.mkdirs()
     }
+    return File(exportDir, name)
+}
 
-    val file = File(exportDir, FILENAME)
+fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
+    val file = openFile(context)
     try {
         file.createNewFile()
         val csvWrite = CSVWriter(FileWriter(file))
@@ -152,53 +120,12 @@ fun exportSecrets(context: Context, db: SecretDatabase): Uri?{
         }
         csvWrite.close()
         curCSV.close()
-        //Toast.makeText(context, "Exported", Toast.LENGTH_SHORT).show()
         return Uri.parse(file.absolutePath)
     } catch (sqlEx: Exception) {
         Log.e(TAG, sqlEx.message, sqlEx)
     }
     return null
 }
-
-
-
-fun getRealPathFromURI(context: Context, contentUri: Uri): String {
-    var cursor: Cursor? = null
-    try {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        cursor = context.getContentResolver().query(contentUri, proj, null, null, null)
-        val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor!!.moveToFirst()
-        return cursor!!.getString(column_index)
-    } catch (e: Exception) {
-        Log.e("FileUtils", "getRealPathFromURI Exception : $e")
-        return ""
-    } finally {
-        if (cursor != null) {
-            cursor!!.close()
-        }
-    }
-}
-
-fun readFile(filePath: String): ByteArray? {
-    try {
-        val file = File(filePath)
-        val fileContents = file.readBytes()
-        val inputBuffer = BufferedInputStream(
-            FileInputStream(file)
-        )
-
-        inputBuffer.read(fileContents)
-        inputBuffer.close()
-
-        return fileContents
-    } catch (e:Exception){
-        Log.i("FileUtils", "Problem during reading file: ${e.message}")
-        e.printStackTrace()
-        return null
-    }
-}
-
 
 fun getFileMimeType(context: Context, data: Uri): String? {
     val cR = context.getContentResolver()
@@ -225,71 +152,11 @@ fun writeFile(context: Context, to: Uri?, content: ByteArray): Boolean {
         }
 
         success = true
-    } catch (e: FileNotFoundException) {
-        Log.i(TAG, "Exception catched while writing file: ${e.message}.")
-        e.printStackTrace()
-    } catch (e: IOException) {
-        Log.i(TAG, "Exception catched while writing file: ${e.message}.")
-        e.printStackTrace()
     } catch (e: java.lang.Exception) {
         Log.i(TAG, "Exception catched while writing file: ${e.message}.")
-        e.printStackTrace()
     } finally {
-        Log.i(TAG, "FileOutputStream has been closed.")
         fos?.close()
+        Log.i(TAG, "FileOutputStream has been closed.")
         return success
     }
 }
-
-
-@Throws(IOException::class)
-fun readBytes(uri: Uri, contentResolver: ContentResolver): ByteArray {
-
-    val inputStream = contentResolver.openInputStream(uri)
-
-    // this dynamically extends to take the bytes you read
-    val byteBuffer = ByteArrayOutputStream()
-
-    // this is storage overwritten on each iteration with bytes
-    val bufferSize = 1024
-    val buffer = ByteArray(bufferSize)
-
-    // we need to know how may bytes were read to write them to the byteBuffer
-    var len = 0
-    while (true) {
-        len = inputStream?.read(buffer) ?: -1
-        if(len == -1)
-            break
-
-        byteBuffer.write(buffer, 0, len)
-    }
-
-    // and then we can return your byte array.
-    return byteBuffer.toByteArray()
-}
-
-// https://developer.android.com/guide/topics/providers/document-provider#c%C3%B3mo-obtener-un-inputstream
-
-fun readTextFromUri(uri: Uri, contentResolver: ContentResolver): ByteArray? {
-    try {
-        val ist = contentResolver.openInputStream(uri)?.readBytes()
-        return ist
-    }catch (e: java.lang.Exception){
-        Log.i("FileUtils", "Read Text Problem: ${e.message}")
-        return null
-    }
-    /*
-    val stringBuilder = StringBuilder()
-    contentResolver.openInputStream(uri)?.use { inputStream ->
-        BufferedReader(InputStreamReader(inputStream)).use { reader ->
-            var line: String? = reader.readLine()
-            while (line != null) {
-                stringBuilder.append(line)
-                line = reader.readLine()
-            }
-        }
-    }
-    return stringBuilder.toString()*/
-}
-
-

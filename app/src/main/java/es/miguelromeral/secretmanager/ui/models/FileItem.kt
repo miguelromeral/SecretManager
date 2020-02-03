@@ -9,7 +9,6 @@ import androidx.databinding.library.baseAdapters.BR
 import es.miguelromeral.secretmanager.classes.MyCipher
 import es.miguelromeral.secretmanager.classes.decode
 import es.miguelromeral.secretmanager.classes.encode
-import es.miguelromeral.secretmanager.classes.readTextFromUri
 
 private const val TAG = "FileItem"
 

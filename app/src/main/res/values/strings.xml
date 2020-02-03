@@ -32,11 +32,16 @@
     <string name="preference_help_id" translatable="false">preference_app_help</string>
     <string name="preference_save_qr_id" translatable="false">preference_save_qr_id</string>
     <string name="preference_auto_return_result_id" translatable="false">preference_auto_return_result_id</string>
+    <string name="preference_qr_size_id" translatable="false">preference_qr_size_id</string>
 
     <string name="date_format_one" translatable="false">yyyy\/MM\/dd HH:mm</string>
     <string name="date_format_two" translatable="false">dd\/MM\/yyyy HH:mm</string>
     <string name="date_format_three" translatable="false">yyyy\/MM\/dd</string>
     <string name="date_format_four" translatable="false">dd\/MM\/yyyy</string>
+
+    <string name="qr_size_150" translatable="false">150px</string>
+    <string name="qr_size_300" translatable="false">300px</string>
+    <string name="qr_size_600" translatable="false">600px</string>
 
     <!-- Preferences Fragment -->
     <string name="preference_section_execution">Execution Settings</string>
@@ -58,6 +63,9 @@
 
     <string name="preference_auto_return_title">Always return results</string>
     <string name="preference_auto_return_summary">When you open the app from a text selected, if it\'s possible, replace the selected text with the execution output.</string>
+
+    <string name="preference_qr_size_title">QR image sie</string>
+    <string name="preference_qr_size_summary">Get a QR image with this dimensions.</string>
 
 
 
@@ -111,6 +119,7 @@
     <string name="error_max_file_size_title">File too large.</string>
     <string name="error_max_file_size">Unfortunately, the max size of file to be converted is %1$s. Please, choose another file.</string>
     <string name="error_file_size_not_allowed">Your file is %1$s, exceeding the size limit by %2$s.</string>
+    <string name="error_file_not_created">The file couldn\'t be created.</string>
 
     <!-- Notifications -->
     <string name="channel_files_id">channel_id_files</string>

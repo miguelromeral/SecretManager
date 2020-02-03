@@ -43,10 +43,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
-import es.miguelromeral.secretmanager.classes.createQrImage
 import es.miguelromeral.secretmanager.classes.exportSecrets
 import es.miguelromeral.secretmanager.network.ServiceQR
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
+import kotlinx.android.synthetic.main.execute_button.view.*
+import kotlinx.android.synthetic.main.password_field.view.*
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
@@ -125,28 +126,9 @@ class HomeFragment : Fragment() {
             if(it != null){
                 icon.visibility = View.GONE
 
-                // We save the image to internal storage according to the preferences.
-                if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(getString(R.string.preference_save_qr_id), false))
-                    createQrImage(context!!, it, item.alias)
-
-                // Set the QR image from raw data
-                image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
-
-                // Long click behaviour
-                image.setOnLongClickListener{
-                    ServiceQR.openQRIntent(it.context, item.output)
-                    return@setOnLongClickListener true
-                }
+                viewModel.showQrImage(context!!, binding.qrLayout.imageQr)
 
                 image.visibility = View.VISIBLE
-
-                /*
-                val animator = ObjectAnimator.ofFloat(image, View.ALPHA, 0f)
-                animator.repeatCount = 1
-                animator.duration = 500
-                animator.repeatMode = ObjectAnimator.REVERSE
-                animator.start()
-*/
 
                 val fadeIn = AlphaAnimation(0f, 1f)
                 fadeIn.interpolator = DecelerateInterpolator() //add this

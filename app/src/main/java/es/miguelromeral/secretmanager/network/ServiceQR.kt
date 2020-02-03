@@ -34,13 +34,7 @@ interface ServiceQR {
             : Call<ResponseBody>
 
     companion object{
-        fun getURL(text: String, size: String) = "${BASE_URL}create-qr-code/?data=$text&size=${getSizeQuery()}&color=000&bgcolor=fff&qzone=1&format=png&ecc=M"
-
-        fun openQRIntent(context: Context, text: String){
-            context.startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(ServiceQR.getURL(text, "300"))
-            })
-        }
+        fun getURL(text: String, size: String) = "${BASE_URL}create-qr-code/?data=$text&size=${getSizeQuery(size)}&color=000&bgcolor=fff&qzone=1&format=png&ecc=M"
     }
 }
 
@@ -50,7 +44,4 @@ object ApiQR {
 }
 
 
-fun getSizeQuery() = "${size}x${size}"
-
-
-const val size = 300
+fun getSizeQuery(size: String? = "300") = "${size}x${size}"

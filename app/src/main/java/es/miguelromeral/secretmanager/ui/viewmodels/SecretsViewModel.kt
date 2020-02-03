@@ -31,7 +31,7 @@ class SecretsViewModel (
     val dataChanged: LiveData<Boolean>
         get() = _dataChanged
 
-
+    val TAG = "SecretViewModel"
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -109,24 +109,15 @@ class SecretsViewModel (
 
         val task = async(Dispatchers.IO) {
             importSecretsFU(list.context, list, database)
-
         }
 
         when(task.await()){
             true -> {
-               /* list.adapter?.let {
-                    it.notifyDataSetChanged()
-                    //secrets = database.getAllSecrets()
-                    //filterSecrets(null)
-                }*/
-
                 updateAllSecrets()
-                //secrets.value = database.getAllSecrets().value
-
-                Log.i("FileUtils", "Everything OK!")
+                Log.i(TAG, "Everything OK!")
             }
             false -> {
-                Log.i("FileUtils", "Something went wrong")
+                Log.i(TAG, "Something went wrong")
             }
         }
     }

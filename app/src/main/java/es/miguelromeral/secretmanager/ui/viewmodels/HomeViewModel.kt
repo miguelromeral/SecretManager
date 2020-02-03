@@ -2,14 +2,20 @@ package es.miguelromeral.secretmanager.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
+import es.miguelromeral.secretmanager.R
+import es.miguelromeral.secretmanager.classes.MyQR
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.database.SecretDatabaseDao
 import es.miguelromeral.secretmanager.network.ApiQR
+import es.miguelromeral.secretmanager.network.ServiceQR
 import es.miguelromeral.secretmanager.ui.models.TextItem
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -27,6 +33,8 @@ class HomeViewModel(
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    val tools = MyQR()
 
     private var _qr = MutableLiveData<ByteArray?>()
     val qr: LiveData<ByteArray?>
@@ -72,6 +80,28 @@ class HomeViewModel(
         else
         {
             _qr.value = null
+        }
+    }
+
+    fun showQrImage(context: Context, image: ImageView){
+        qr.value?.let {
+            // We save the image to internal storage according to the preferences.
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+                    context.getString(
+                        R.string.preference_save_qr_id
+                    ), false
+                )
+            )
+                tools.createQrImage(context!!, it, item.alias)
+
+            // Set the QR image from raw data
+            image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+
+            // Long click behaviour
+            image.setOnLongClickListener {view ->
+                MyQR.openQRIntent(view.context, item.output)
+                return@setOnLongClickListener true
+            }
         }
     }
 

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -35,7 +34,6 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
     private lateinit var viewModel: FileConverterViewModel
     private lateinit var binding: FragmentFileConverterBinding
 
-
     private val TAG = "FCVM"
 
     override fun onCreateView(
@@ -57,11 +55,12 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         binding.fileItem = viewModel.item
 
         binding.bPickFile.setOnClickListener{
+            // We open an intent to get the info of the file
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "*/*"
             }
-            startActivityForResult(intent, REQUEST_CODE)
+            startActivityForResult(intent, PICK_FILE_CODE)
         }
 
 
@@ -75,66 +74,39 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         }
 
         binding.executeButton.bExecute.setOnClickListener{
-
             viewModel.item.uri?.let { data ->
                 try
                 {
-                    /*
-                    val file = viewModel.item.uri!!
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        //setDataAndType(file, getFileMimeType(context!!, file))
-                        setData(file)
-                    }
-                    startActivity(intent)
-*/
-
-
-
-
+                    // Obtain file info.
                     val types = getFileMimeType(context!!, data)
                     val filename = PreferenceManager.getDefaultSharedPreferences(context)
                         .getString(
                             getString(R.string.preference_key_filename),
                             getString(R.string.preference_filename_default))
 
+                    // We create the document first and later we'll fill it with the data.
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                        // Filter to only show results that can be "opened", such as
-                        // a file (as opposed to a list of contacts or timezones).
                         addCategory(Intent.CATEGORY_OPENABLE)
-
-                        // Create a file with the requested MIME type.
                         type = types
                         putExtra(Intent.EXTRA_TITLE,  filename)
                     }
-                    startActivityForResult(intent, WRITE_REQUEST_CODE)
+                    startActivityForResult(intent, CREATE_FILE_CODE)
                 }catch (e: Exception){
-                    Log.i(TAG, "Error: ${e.message}")
-                    e.printStackTrace()
-                }finally {
-                    Log.i(TAG, "Pasó")
+                    Log.i(TAG, "Error while attempting to create the file: ${e.message}")
+                    Toast.makeText(context, R.string.error_file_not_created, Toast.LENGTH_LONG).show()
                 }
-
-
-                /*
-            when (item.decrypt) {
-                false -> item.encrypt()
-                true -> item.decrypt()
-            }*/
             }
-
-
         }
 
 
-
-
-
+        // If we received a file from another app, let's open it!
         arguments?.let{
             val args = FileConverterFragmentArgs.fromBundle(arguments!!)
-            handleSendImage(args.data)
-            Log.i("TAG", "YAY!")
+            (args.data.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+                viewModel.proccessNewFile(context!!, it)
+            }
+            Log.i(TAG, "Processed the file opened form another app.")
         }
-
 
         viewModel.loading.observe(this, Observer {
             if(it){
@@ -167,6 +139,7 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
             }
         })
 
+        // We create the channel for notifications when a file is encrypted.
         createChannel(
             getString(R.string.channel_files_id),
             getString(R.string.channel_files_name)
@@ -176,25 +149,18 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
         return binding.root
     }
 
-    private fun handleSendImage(intent: Intent) {
-        (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
-            viewModel.proccessNewFile(context!!, it)
-        }
-    }
-
-
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            REQUEST_CODE -> {
-                if(resultCode == Activity.RESULT_OK){
-                    viewModel.proccessNewFile(context!!, data?.data)
+        context?.let { context ->
+            when (requestCode) {
+                PICK_FILE_CODE -> {
+                    if (resultCode == Activity.RESULT_OK) {
+                        viewModel.proccessNewFile(context, data?.data)
+                    }
                 }
-            }
-            WRITE_REQUEST_CODE -> {
-                if(resultCode == Activity.RESULT_OK) {
-                    viewModel.execute(context!!, data?.data)
+                CREATE_FILE_CODE -> {
+                    if (resultCode == Activity.RESULT_OK) {
+                        viewModel.execute(context, data?.data)
+                    }
                 }
             }
         }
@@ -228,22 +194,7 @@ class FileConverterFragment(val data: Intent? = null) : Fragment() {
     }
 
     companion object{
-        private const val REQUEST_CODE = 10
-        private const val WRITE_REQUEST_CODE = 43
-
-
-        fun getInstance(data: Intent?): FileConverterFragment{
-            return FileConverterFragment(data)
-
-            /*
-            val intent = Intent(context, MainActivity::class.java).apply{
-                putExtra("message", "Message")
-            }
-            data?.let{
-                intent.putExtra(ARGUMENT_INTENT, data)
-            }
-            return intent*/
-        }
-
+        private const val PICK_FILE_CODE = 10
+        private const val CREATE_FILE_CODE = 43
     }
 }

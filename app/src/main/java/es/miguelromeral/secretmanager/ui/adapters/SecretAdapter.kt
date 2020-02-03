@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.miguelromeral.secretmanager.R
+import es.miguelromeral.secretmanager.classes.MyQR
 import es.miguelromeral.secretmanager.database.Secret
 import es.miguelromeral.secretmanager.databinding.ItemSecretBinding
 import es.miguelromeral.secretmanager.network.ServiceQR
@@ -54,7 +55,7 @@ class SecretAdapter(
                             true
                         }
                         R.id.option_get_qr -> {
-                            ServiceQR.openQRIntent(itemView.context, item.content)
+                            MyQR.openQRIntent(itemView.context, item.content)
                             true
                         }
                         else -> false

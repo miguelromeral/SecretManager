@@ -9,4 +9,16 @@
         <item>@string/date_format_four</item>
     </string-array>
 
+    <string-array name="qr_size">
+        <item>150</item>
+        <item>300</item>
+        <item>600</item>
+    </string-array>
+
+    <string-array name="qr_size_titles">
+        <item>@string/qr_size_150</item>
+        <item>@string/qr_size_300</item>
+        <item>@string/qr_size_600</item>
+    </string-array>
+
 </resources>

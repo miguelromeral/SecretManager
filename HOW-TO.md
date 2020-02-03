@@ -4,7 +4,7 @@
 
 ## Q1: I can't see the app in Google Play or it doesn't allow me to download the app.
 
-Secret Manager is available for Android devices which have Android 7.1 (Nougat) or better. You can check out your current Android version in Settings App > About Device > Operative System Version
+Secret Manager is available for Android devices which have Android 6.0 (Marshmallow) or higher. You can check out your current Android version in Settings App > About Device > Operative System Version
 
 If you type "Secret Manager" or "MiguelRomeral" on Google Play and it doesn't show you the application to be downloaded, then your device is not able to support the application and can't be neither downloaded nor installed on that device.
 

@@ -13,7 +13,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import es.miguelromeral.secretmanager.R
-import es.miguelromeral.secretmanager.classes.readTextFromUri
+import es.miguelromeral.secretmanager.classes.FileConverter
 import es.miguelromeral.secretmanager.classes.writeFile
 import es.miguelromeral.secretmanager.ui.models.FileItem
 import es.miguelromeral.secretmanager.ui.utils.createAlertDialog
@@ -26,6 +26,8 @@ class FileConverterViewModel
     (application: Application) :
     AndroidViewModel(application)
 {
+
+    private val tools = FileConverter()
 
     private val _item = FileItem()
     val item: FileItem = _item
@@ -61,19 +63,16 @@ class FileConverterViewModel
 
 
     private fun write(context: Context, to: Uri?): Boolean{
-//        item.input?.let{
         item.output?.let{
             if(writeFile(context, to, it)){
-                Log.i(TAG, "File written")
+                Log.i(TAG, "File has been written.")
                 return true
             }else{
-                Log.i(TAG, "File not written")
+                Log.i(TAG, "File hasn't been written.")
             }
         }
         return false
     }
-
-
 
     private fun isLoading(loading: Boolean){
         item.ready = !loading
@@ -82,22 +81,12 @@ class FileConverterViewModel
 
 
     fun execute(context: Context, outputFileUri: Uri?) {
+        isLoading(true)
         uiScope.launch {
-            isLoading(true)
-
-/*
-
-            val notificationManager = ContextCompat.getSystemService(context, NotificationManager::class.java) as NotificationManager
-
-            notificationManager.sendNotification("File encrypted successfully!", context,
-                item.uri!!)
-*/
             executeInScope(context, outputFileUri)
             isLoading(false)
         }
     }
-
-
 
 
     private suspend fun executeInScope(context: Context, outputFileUri: Uri?){
@@ -107,8 +96,7 @@ class FileConverterViewModel
                 return@withContext
             }
 
-            //item.input = readBytes(item.uri!!, context.contentResolver)
-            item.input = readTextFromUri(item.uri!!, context.contentResolver)
+            item.input = tools.readTextFromUri(item.uri!!, context)
 
             if (item.input == null) {
                 _errorMessage.postValue(context.getString(R.string.error_empty_file))
@@ -121,8 +109,7 @@ class FileConverterViewModel
                 true -> {
                     if (item.decrypt()) {
                         if (write(context, outputFileUri)){
-                            notificationManager.sendNotification(
-                                context.getString(R.string.channel_files_body_decrypted, item.name), context, outputFileUri!!)
+                            notificationManager.sendNotification(context.getString(R.string.channel_files_body_decrypted, item.name), context, outputFileUri!!)
                         }
                     } else {
                         _errorDecrypting.postValue(true)
@@ -131,14 +118,10 @@ class FileConverterViewModel
                 false -> {
                     if (item.encrypt()) {
                         if (write(context, outputFileUri)) {
-
-
-                            notificationManager.sendNotification(context.getString(R.string.channel_files_body_encrypted), context,
-                                outputFileUri!!)
-
+                            notificationManager.sendNotification(context.getString(R.string.channel_files_body_encrypted), context, outputFileUri!!)
                         }
                     } else {
-                        _errorDecrypting.postValue(false)
+                        _errorDecrypting.postValue(true)
                     }
                 }
             }
@@ -193,7 +176,6 @@ class FileConverterViewModel
 
         }
     }
-
 
     override fun onCleared(){
         super.onCleared()
