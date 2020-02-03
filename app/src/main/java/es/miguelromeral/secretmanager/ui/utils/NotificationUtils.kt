@@ -9,7 +9,9 @@ import android.net.Uri
 import android.os.Environment
 import android.webkit.MimeTypeMap
 import androidx.core.app.NotificationCompat
+import androidx.core.content.FileProvider
 import es.miguelromeral.secretmanager.R
+import es.miguelromeral.secretmanager.classes.actionViewFile
 import es.miguelromeral.secretmanager.classes.getFileMimeType
 import es.miguelromeral.secretmanager.ui.activities.MainActivity
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -19,33 +21,11 @@ private val NOTIFICATION_ID = 0
 
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context, file: Uri){
 
-    /*
-    val pathUri = Uri.parse(file.path)
-    val contentIntent = Intent(applicationContext, MainActivity::class.java).apply {
-        setAction(Intent.ACTION_GET_CONTENT)
-        setDataAndType(pathUri, "file/*")
-    }
-    val contentPendingIntent = PendingIntent.getActivity(
-        applicationContext,
-        NOTIFICATION_ID,
-        contentIntent,
-        PendingIntent.FLAG_UPDATE_CURRENT)
-*/
-     */
+    var myIntent = Intent(Intent.ACTION_VIEW)
+    myIntent.data = file
+    myIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
 
-
-    val intent = Intent(Intent.ACTION_VIEW).apply {
-        //setDataAndType(file, getFileMimeType(context!!, file))
-        setData(file)
-        //setDataAndType(file, "*/*")
-    }
-
-/*    val taskStackBuilder = TaskStackBuilder.create(applicationContext).apply {
-        addNextIntent(intent)
-    }
-    val contentPendingIntent = taskStackBuilder.getPendingIntent(NOTIFICATION_ID, PendingIntent.FLAG_UPDATE_CURRENT)
-*/
-    val contentPendingIntent = PendingIntent.getActivity(applicationContext, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val contentPendingIntent = PendingIntent.getActivity(applicationContext, NOTIFICATION_ID, myIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
     val builder = NotificationCompat.Builder(
@@ -53,7 +33,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         applicationContext.getString(R.string.channel_files_id)
     )
         .setSmallIcon(R.drawable.sm_logo_72)
-        .setPriority(NotificationCompat.PRIORITY_LOW)
+        .setPriority(NotificationCompat.PRIORITY_MIN)
         .setContentTitle(applicationContext.getString(R.string.channel_files_title))
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)

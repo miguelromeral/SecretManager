@@ -9,13 +9,17 @@ import android.util.Log
 import android.provider.MediaStore
 import android.provider.DocumentsContract
 import android.content.ContentUris
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Environment.getExternalStorageDirectory
 import android.os.Build
 import android.os.Environment
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -159,4 +163,24 @@ fun writeFile(context: Context, to: Uri?, content: ByteArray): Boolean {
         Log.i(TAG, "FileOutputStream has been closed.")
         return success
     }
+}
+
+
+fun actionViewFile(context:Context, uri: Uri): Intent {
+    var file = File(uri.path)
+
+    var auth = context.getApplicationContext().getPackageName()
+
+    var nu = FileProvider.getUriForFile(context,
+        auth + ".provider",
+        file)
+
+    var myIntent = Intent(Intent.ACTION_VIEW)
+    /*myIntent.setDataAndType(
+        nu,
+        MimeTypeMap.getSingleton().getMimeTypeFromExtension("csv")
+    )*/
+    myIntent.data = nu
+    myIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+    return myIntent
 }

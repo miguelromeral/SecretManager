@@ -4,10 +4,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.FileUtils
 import android.util.Log
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,18 +22,18 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import es.miguelromeral.secretmanager.R
-import es.miguelromeral.secretmanager.classes.MyCipher
-import es.miguelromeral.secretmanager.classes.encode
-import es.miguelromeral.secretmanager.classes.exportSecrets
 import es.miguelromeral.secretmanager.database.SecretDatabase
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
-import es.miguelromeral.secretmanager.classes.importSecretsFU
+import es.miguelromeral.secretmanager.classes.*
 import es.miguelromeral.secretmanager.ui.fragments.*
+import java.io.File
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -110,26 +112,22 @@ class MainActivity : AppCompatActivity() {
             val view: View = findViewById(R.id.nav_host_fragment)
 
             val snackbar = Snackbar.make(view, R.string.exported_secrets_title, Snackbar.LENGTH_LONG)
-            /*snackbar.setAction(R.string.open_file){
+            snackbar.setAction(R.string.open_file){
 
-
-                Log.i("ExportCSV", "Preparing action: "+uri.path)
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setData(uri)
-
-
-                if (intent.resolveActivityInfo(packageManager, 0) != null) {
-                    startActivity(intent)
-                    Log.i("ExportCSV", "Opening it!")
-                } else {
-                    // if you reach this place, it means there is no any file
-                    // explorer app installed on your device
-                    Log.i("ExportCSV", "No apps to open it")
-
+                try {
+                    startActivity(actionViewFile(baseContext, uri))
+                }catch (e: Exception){
+                    Log.i(TAG, "Exception while opening csv.")
+                    e.printStackTrace()
                 }
 
-            }*/
-            //snackbar.setActionTextColor(Color.BLUE)
+                /*
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(uri)
+                startActivity(intent)
+*/
+            }
             snackbar.show()
             Log.i("ExportCSV", "Snack showed")
         }

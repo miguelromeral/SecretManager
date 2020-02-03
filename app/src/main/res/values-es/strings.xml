@@ -67,7 +67,7 @@
 
 
     <!-- Import / Export Secrets -->
-    <string name="open_file">Abrir fichero</string>
+    <string name="open_file">ABRIR FICHERO</string>
     <string name="explanation_file_permissions">Para poder exportar tus secretos, necesitarás dar permiso a la aplicación para escribir la exportación en tu propio dispositivo. Por favor, habilita el permiso requerido para poder usar esta funcionalidad.</string>
     <string name="clear_secrets_body">Estás a punto de eliminar todos los secretos almacenados en la base de datos de este dispositivo. Ten en cuenta que esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar todos los registros?</string>
     <string name="clear_secrets_yes">Sí, eliminar</string>

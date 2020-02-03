@@ -44,9 +44,6 @@ This app requires Android 6.0 or higher to be downloaded and installed on your d
 
 * Day / Night app theme.
 
-
-<img src="" height="400px" width="auto">
-
 ## Help
 
 If you need help with the application, please visit the [FAQs](https://github.com/miguelromeral/SecretManager/blob/master/HOW-TO.md) or contact the developer via the information given below.
@@ -55,10 +52,12 @@ If you need help with the application, please visit the [FAQs](https://github.co
 
 Version|Code|Changes
 --- | --- | ---
+1.3|4|Now we can open files from the app: exported secrets and processed files from notification.
+1.2|3|Spanish Translation.
 1.1|2|Added File Limit to 50 MB.
 |||Added QR Codes for output.
 |||App can return results for text.
-|||Help link in Settings
+|||Help link in Settings.
 1.0|1|First Version.
 
 ## TO BE DONE
@@ -66,8 +65,7 @@ Version|Code|Changes
 * Fix some bugs
 * Refactor code
 * Comment code
-* Test functionalities
-* Spanish Translation
+* Test features
 
 ## About
 

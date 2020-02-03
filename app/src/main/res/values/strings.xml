@@ -95,7 +95,7 @@
     <!-- Import / Export Secrets -->
     <string name="exported_secrets_title">Secrets exported into App\'s file data folders</string>
     <string name="imported_secrets_title">Secrets imported into the App</string>
-    <string name="open_file">Open file</string>
+    <string name="open_file">OPEN FILE</string>
     <string name="explanation_file_permissions">In order to export your secrets, you\'ll need to allow the application to write the exported result in your device. Please, allow the permission required to use this feature</string>
     <string name="clear_secrets_title">Clear all secrets</string>
     <string name="clear_secrets_body">You\'re about to perform a full clear of the list of secrets stored on this device.\nTake into account this action can\'t be restored.\nAre you sure you want to clear all records?</string>
